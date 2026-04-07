@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Gallery - Samira & Murad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; padding: 20px; color: #8b5e83; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 20px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 400px; margin: 0 auto; }
+        .img-box { width: 100%; aspect-ratio: 1/1; background: #ddd; border-radius: 15px; overflow: hidden; opacity: 0; border: 2px solid white; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .nav-btn { margin-top: 30px; padding: 12px 40px; background: #8b5e83; color: white; border: none; border-radius: 50px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Our Story</h1>
+    <div class="gallery-grid">
+        <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=200"></div>
+        <div class="img-box"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=200"></div>
+        <div class="img-box"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=200"></div>
+        <div class="img-box"><img src="https://images.unsplash.com/photo-1465495910483-0d6749718482?q=80&w=200"></div>
+    </div>
+    <button class="nav-btn" onclick="next()">KIRIM DOA & UCAPAN ✨</button>
+    <script>
+        gsap.to(".img-box", { opacity: 1, scale: 1, duration: 0.8, stagger: 0.2, ease: "back.out" });
+        function next() { window.location.href = "wish.html"; }
+    </script>
+</body>
+</html>
