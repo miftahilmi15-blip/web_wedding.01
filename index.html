@@ -3,142 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Samira & Murad</title>
+    <title>Wedding Invitation - Pink Luxury</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
-            background: #000; 
+            /* Pink Soft ke arah Rose Gold biar gak norak */
+            background: radial-gradient(circle, #ffdee9 0%, #ffb6c1 100%);
             font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; /* Anti-scroll di halaman 1 */
+            overflow: hidden;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        #opening-scene {
-            position: fixed; inset: 0;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* Kontainer Gambar Puzzle (350px x 600px - Ukuran HP Standar) */
-        .puzzle-box {
+        /* Bingkai Mewah Pakai CSS */
+        .frame-container {
             position: relative;
-            width: 350px; height: 600px;
-            display: flex; flex-wrap: wrap;
-            box-shadow: 0 0 50px rgba(184, 146, 106, 0.2);
+            width: 85vw;
+            height: 85vh;
+            max-width: 400px;
+            border: 2px solid #d4af37; /* Garis Emas */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            opacity: 0; scale: 0.8;
         }
 
-        /* Kepingan Gambar (Pecahan 5x5 = 25 keping) */
-        .fragment {
-            width: 20%; height: 20%;
-            background-image: url('opening-full.png'); /* PASTIKAN NAMA FILE SAMA BOS */
-            background-size: 500% 500%;
-            background-repeat: no-repeat;
+        /* Ornamen Bunga (Pake Simbol Karakter/Vector CSS) */
+        .flower {
             position: absolute;
+            font-size: 3rem;
+            color: #d4af37;
+            opacity: 0;
+        }
+        .f-top { top: -20px; left: -20px; transform: rotate(-45deg); }
+        .f-bot { bottom: -20px; right: -20px; transform: rotate(135deg); }
+
+        .title-top {
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            color: #8b5e83;
+            margin-bottom: 10px;
+        }
+
+        .couple-name {
+            font-family: 'Great Vibes', cursive;
+            color: #8b5e83;
+            font-size: 3.5rem;
+            text-align: center;
+            margin: 20px 0;
             opacity: 0;
         }
 
-        /* Overlay Teks & Tombol */
-        .overlay-content {
-            position: absolute; z-index: 100;
-            text-align: center; width: 100%;
-            bottom: 60px; opacity: 0; transform: translateY(30px);
+        .guest-box {
+            text-align: center;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .guest-name {
             font-family: 'Great Vibes', cursive;
-            color: #b8926a; font-size: 2.5rem; margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            color: #d4af37;
+            font-size: 2.2rem;
+            margin: 10px 0;
+            background: linear-gradient(to right, #d4af37, #f7e1a0, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .btn-buka {
-            padding: 12px 30px; background: #b8926a; color: #fff;
-            border: none; border-radius: 50px; cursor: pointer;
-            font-weight: 600; letter-spacing: 2px; transition: 0.3s;
+            margin-top: 25px;
+            padding: 12px 35px;
+            background: #8b5e83;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 94, 131, 0.3);
+            transition: 0.3s;
         }
-        .btn-buka:hover { background: #d4af37; scale: 1.1; }
 
-        /* Efek Kilau pada Gambar (Opsional) */
-        .puzzle-box::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, transparent 70%);
-            background-size: 200% 200%; animation: shine 4s infinite; pointer-events: none;
+        .btn-buka:hover { scale: 1.1; background: #a6759c; }
+
+        /* Partikel Melayang (Biar Gak Sepi) */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
         }
-        @keyframes shine { 0% { background-position: -200% -200%; } 100% { background-position: 200% 200%; } }
     </style>
 </head>
 <body>
 
-    <div id="opening-scene">
-        <div class="puzzle-box" id="puzzle-box">
-            </div>
+    <div class="frame-container" id="main-frame">
+        <div class="flower f-top">✿</div>
+        <div class="flower f-bot">✿</div>
 
-        <div class="overlay-content" id="ui-content">
-            <p style="color: #eee; font-size: 0.7rem; letter-spacing: 3px;">KEPADA YTH:</p>
+        <p class="title-top">THE WEDDING OF</p>
+        
+        <h1 class="couple-name">Samira & Murad</h1>
+
+        <div class="guest-box" id="guest-ui">
+            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
             <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
             <button class="btn-buka" onclick="nextPage()">BUKA UNDANGAN</button>
         </div>
     </div>
 
     <script>
-        // 1. DUKUN TRACKER: Ambil nama dari URL
+        // 1. DUKUN TRACKER (LocalStorage Tetap Jalan)
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) {
             const decodedNama = decodeURIComponent(nama);
             document.getElementById('nama-tamu').innerText = decodedNama;
-            // "Iket" nama buat halaman profil.html besok
             localStorage.setItem('namaTamu', decodedNama);
         }
 
-        // 2. GENERATE PUZZLE FRAGMENTS (5x5)
-        const box = document.getElementById('puzzle-box');
-        const rows = 5; const cols = 5;
-
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                const frag = document.createElement('div');
-                frag.className = 'fragment';
-                frag.style.width = '20%'; frag.style.height = '20%';
-                frag.style.left = (c * 20) + '%';
-                frag.style.top = (r * 20) + '%';
-                frag.style.backgroundPosition = (c * 25) + '% ' + (r * 25) + '%';
-                box.appendChild(frag);
-            }
+        // 2. GENERATE PARTIKEL (Biar Mewah)
+        for(let i=0; i<20; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            let size = Math.random() * 10 + 5;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(p);
+            
+            // Gerakin partikel pelan-pelan
+            gsap.to(p, {
+                y: "-=100", x: "+=50",
+                duration: Math.random() * 3 + 2,
+                repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
         }
 
-        // 3. ANIMASI LIAR GSAP: Kepingan terbang masuk
+        // 3. ANIMASI MASUK (Elegant Pink)
         window.onload = () => {
-            const frags = document.querySelectorAll('.fragment');
             const tl = gsap.timeline();
-
-            frags.forEach((f, i) => {
-                // Posisi acak dari luar layar
-                gsap.set(f, { 
-                    x: (Math.random() - 0.5) * 1500, 
-                    y: (Math.random() - 0.5) * 1500, 
-                    rotation: (Math.random() - 0.5) * 1000,
-                    scale: 0, opacity: 0 
-                });
-            });
-
-            // Terbang menyatu
-            tl.to(".fragment", {
-                x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
-                duration: 2.5, stagger: 0.05, ease: "expo.out"
-            })
-            // Munculin Teks & Tombol
-            .to("#ui-content", { opacity: 1, y: 0, duration: 1 }, "-=1");
+            
+            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "back.out(1.7)" })
+              .to(".flower", { opacity: 1, duration: 1, stagger: 0.5 }, "-=0.5")
+              .to(".couple-name", { opacity: 1, duration: 1.5 }, "-=0.5")
+              .to("#guest-ui", { opacity: 1, y: 0, duration: 1 }, "-=1");
         };
 
-        // 4. PINDAH HALAMAN (Anti-Scroll)
+        // 4. TRANSISI PINDAH HALAMAN
         function nextPage() {
-            gsap.to("#opening-scene", { 
-                y: -1000, opacity: 0, duration: 1.2, ease: "power4.inOut",
+            gsap.to("body", { backgroundColor: "#fff", duration: 1 });
+            gsap.to("#main-frame", { 
+                y: -100, opacity: 0, scale: 0.9, duration: 0.8, ease: "power2.in",
                 onComplete: () => {
-                    window.location.href = "profil.html"; // Pindah ke halaman 2
+                    window.location.href = "profil.html";
                 }
             });
         }
