@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Flower Vinyl</title>
+    <title>Wedding Invitation - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
@@ -18,91 +18,82 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- PIRINGAN BUNGA (FLOWER VINYL) --- */
-        .vinyl-container {
-            position: fixed; top: -50px; left: -50px;
-            width: 200px; height: 200px; z-index: 5;
-        }
-        .vinyl-plate {
-            width: 100%; height: 100%;
-            background: repeating-conic-gradient(from 0deg, #d4af37 0deg 10deg, #ffb6c1 10deg 20deg);
-            border-radius: 50%; border: 5px solid #fff;
+        /* --- PIRINGAN EMAS KECIL (POJOK KANAN BAWAH) --- */
+        .vinyl-gold {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 80px; height: 80px; z-index: 20;
+            background: conic-gradient(from 0deg, #d4af37, #f7e1a0, #d4af37, #b8926a, #d4af37);
+            border-radius: 50%; border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-        .vinyl-center {
-            width: 40px; height: 40px; background: #fff;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 1.5rem; color: #d4af37;
+        .vinyl-gold::after {
+            content: ''; width: 15px; height: 15px; background: #fff; border-radius: 50%;
         }
 
         /* --- FRAME UTAMA --- */
         .frame-container {
             position: relative; width: 85vw; height: 85vh; max-width: 400px;
-            border: 2px solid #d4af37; background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px); border-radius: 20px;
+            border: 1.5px solid #d4af37; background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px); border-radius: 30px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; opacity: 0; scale: 0.8;
+            z-index: 10; opacity: 0; scale: 0.9;
         }
 
-        /* --- RAMAINKAN BUNGA --- */
-        .flower-deco {
-            position: absolute; font-size: 2.5rem; color: #d4af37; opacity: 0;
+        /* --- BUNGA BERGUGURAN (PETALS) --- */
+        .petal {
+            position: absolute; color: #fff; /* Satu warna: Putih */
+            pointer-events: none; z-index: 5;
+            font-size: 1.2rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
         }
 
-        /* --- TEKS & TOMBOL --- */
         .couple-name {
             font-family: 'Great Vibes', cursive; color: #8b5e83;
             font-size: 3.5rem; text-align: center; margin: 20px 0;
         }
+
         .guest-name {
             font-family: 'Great Vibes', cursive; color: #d4af37;
             font-size: 2.2rem; margin: 10px 0;
         }
+
         .btn-buka {
-            margin-top: 25px; padding: 12px 35px; background: #8b5e83;
+            margin-top: 30px; padding: 12px 40px; background: #8b5e83;
             color: white; border: none; border-radius: 50px; font-weight: 600;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer; letter-spacing: 1px; transition: 0.4s;
         }
 
-        /* --- EFEK AMPLOP (TRANSISI) --- */
+        /* --- EFEK AMPLOP (TRANSISI HALUS) --- */
         .env-flap {
             position: fixed; left: 0; width: 100%; height: 50%;
             background: #8b5e83; z-index: 1000;
             display: flex; justify-content: center; align-items: center;
-            transform: translateY(-100%); /* Sembunyi di atas */
+            transform: translateY(-100%);
         }
-        .env-bottom { top: auto; bottom: 0; transform: translateY(100%); } /* Sembunyi di bawah */
-        .env-logo { font-size: 3rem; color: #d4af37; }
+        .env-bottom { top: auto; bottom: 0; transform: translateY(100%); }
+        .env-logo { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #d4af37; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <div class="vinyl-container">
-        <div class="vinyl-plate" id="vinyl">
-            <div class="vinyl-center">✿</div>
-        </div>
-    </div>
+    <div class="vinyl-gold" id="vinyl"></div>
+
+    <div id="petal-container"></div>
 
     <div class="frame-container" id="main-frame">
-        <div class="flower-deco" style="top:10px; left:10px;">🌸</div>
-        <div class="flower-deco" style="top:10px; right:10px;">🌺</div>
-        <div class="flower-deco" style="bottom:10px; left:10px;">🌼</div>
-        <div class="flower-deco" style="bottom:10px; right:10px;">🌹</div>
-        <div class="flower-deco" style="top:50%; left:-20px;">🌷</div>
-        <div class="flower-deco" style="top:50%; right:-20px;">🌻</div>
-
-        <p style="letter-spacing: 3px; font-size: 0.7rem; color: #8b5e83;">THE WEDDING OF</p>
+        <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83;">THE WEDDING OF</p>
         <h1 class="couple-name">Samira & Murad</h1>
 
         <div style="text-align: center; margin-top: 20px;">
             <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
             <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-            <button class="btn-buka" onclick="tutupAmplop()">BUKA UNDANGAN</button>
+            <button class="btn-buka" onclick="bukaUndangan()">BUKA UNDANGAN</button>
         </div>
     </div>
 
-    <div class="env-flap env-top" id="top-flap"><div class="env-logo">S & M</div></div>
+    <div class="env-flap env-top" id="top-flap">
+        <div class="env-logo" id="logo-sm">S & M</div>
+    </div>
     <div class="env-flap env-bottom" id="bot-flap"></div>
 
     <script>
@@ -114,27 +105,47 @@
             localStorage.setItem('namaTamu', decodeURIComponent(nama));
         }
 
-        // 2. ANIMASI MASUK
+        // 2. GENERATE BUNGA BERGUGURAN (WHITE PETALS)
+        const petalContainer = document.getElementById('petal-container');
+        for (let i = 0; i < 25; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.innerHTML = '🌸'; // Gunakan satu warna bunga (putih via CSS filter atau karakter)
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.top = -20 + 'px';
+            petal.style.opacity = Math.random();
+            petalContainer.appendChild(petal);
+
+            // Animasi Jatuh & Goyang (Swing)
+            gsap.to(petal, {
+                y: window.innerHeight + 50,
+                x: "+=" + (Math.random() * 100 - 50),
+                rotation: Math.random() * 360,
+                duration: Math.random() * 5 + 5,
+                repeat: -1,
+                delay: Math.random() * 5,
+                ease: "none"
+            });
+        }
+
+        // 3. ANIMASI MASUK
         window.onload = () => {
-            const tl = gsap.timeline();
-            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.2, ease: "back.out" })
-              .to(".flower-deco", { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.5");
-            
-            // Putar Piringan Bunga Selamanya
-            gsap.to("#vinyl", { rotate: 360, duration: 5, repeat: -1, ease: "linear" });
+            gsap.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" });
+            gsap.to("#vinyl", { rotate: 360, duration: 4, repeat: -1, ease: "linear" });
         };
 
-        // 3. EFEK AMPLOP MENUTUP & PINDAH HALAMAN
-        function tutupAmplop() {
+        // 4. TRANSISI AMPLOP (HALUS & BERWIBAWA)
+        function bukaUndangan() {
             const tl = gsap.timeline();
             
-            // Amplop nutup dari atas & bawah
-            tl.to("#top-flap", { translateY: "0%", duration: 0.8, ease: "power4.inOut" })
-              .to("#bot-flap", { translateY: "0%", duration: 0.8, ease: "power4.inOut" }, "-=0.8")
-              .to("body", { backgroundColor: "#8b5e83", duration: 0.1 })
+            // Amplop Menutup Pelan
+            tl.to("#top-flap", { translateY: "0%", duration: 1.2, ease: "expo.inOut" })
+              .to("#bot-flap", { translateY: "0%", duration: 1.2, ease: "expo.inOut" }, "-=1.2")
+              .to("#logo-sm", { opacity: 1, duration: 0.5 }) // Logo muncul pas amplop tutup
+              .to({}, { duration: 0.5 }) // Jeda sebentar biar tamu liat amplopnya
               .call(() => {
                   window.location.href = "profil.html";
-              }, null, "+=0.2");
+              });
         }
     </script>
 </body>
