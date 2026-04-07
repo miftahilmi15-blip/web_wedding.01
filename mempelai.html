@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Couple - Samira & Murad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; color: #8b5e83; }
+        .profile-card { margin: 50px auto; opacity: 0; transform: translateY(30px); }
+        .photo { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        h2 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin-top: 10px; }
+        .btn-event { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); padding: 15px 40px; background: #d4af37; color: white; border-radius: 50px; border: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="profile-card" id="p1">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=200" class="photo">
+        <h2>Samira Putri</h2>
+        <p>Putri dari Bpk. Fulan & Ibu Fulanah</p>
+    </div>
+    <div style="font-family: 'Great Vibes'; font-size: 2rem;">&</div>
+    <div class="profile-card" id="p2">
+        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200" class="photo">
+        <h2>Murad Al-Fatih</h2>
+        <p>Putra dari Bpk. John & Ibu Doe</p>
+    </div>
+    <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
+    <script>
+        gsap.to("#p1", { opacity: 1, y: 0, duration: 1, delay: 0.2 });
+        gsap.to("#p2", { opacity: 1, y: 0, duration: 1, delay: 0.5 });
+        function next() { window.location.href = "acara.html"; }
+    </script>
+</body>
+</html>
