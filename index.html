@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Pink Luxury</title>
+    <title>Wedding Invitation - Flower Vinyl</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
@@ -12,166 +12,129 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            /* Pink Soft ke arah Rose Gold biar gak norak */
             background: radial-gradient(circle, #ffdee9 0%, #ffb6c1 100%);
             font-family: 'Montserrat', sans-serif; 
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* Bingkai Mewah Pakai CSS */
+        /* --- PIRINGAN BUNGA (FLOWER VINYL) --- */
+        .vinyl-container {
+            position: fixed; top: -50px; left: -50px;
+            width: 200px; height: 200px; z-index: 5;
+        }
+        .vinyl-plate {
+            width: 100%; height: 100%;
+            background: repeating-conic-gradient(from 0deg, #d4af37 0deg 10deg, #ffb6c1 10deg 20deg);
+            border-radius: 50%; border: 5px solid #fff;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .vinyl-center {
+            width: 40px; height: 40px; background: #fff;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; color: #d4af37;
+        }
+
+        /* --- FRAME UTAMA --- */
         .frame-container {
-            position: relative;
-            width: 85vw;
-            height: 85vh;
-            max-width: 400px;
-            border: 2px solid #d4af37; /* Garis Emas */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            opacity: 0; scale: 0.8;
+            position: relative; width: 85vw; height: 85vh; max-width: 400px;
+            border: 2px solid #d4af37; background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px); border-radius: 20px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; opacity: 0; scale: 0.8;
         }
 
-        /* Ornamen Bunga (Pake Simbol Karakter/Vector CSS) */
-        .flower {
-            position: absolute;
-            font-size: 3rem;
-            color: #d4af37;
-            opacity: 0;
-        }
-        .f-top { top: -20px; left: -20px; transform: rotate(-45deg); }
-        .f-bot { bottom: -20px; right: -20px; transform: rotate(135deg); }
-
-        .title-top {
-            letter-spacing: 4px;
-            font-size: 0.7rem;
-            color: #8b5e83;
-            margin-bottom: 10px;
+        /* --- RAMAINKAN BUNGA --- */
+        .flower-deco {
+            position: absolute; font-size: 2.5rem; color: #d4af37; opacity: 0;
         }
 
+        /* --- TEKS & TOMBOL --- */
         .couple-name {
-            font-family: 'Great Vibes', cursive;
-            color: #8b5e83;
-            font-size: 3.5rem;
-            text-align: center;
-            margin: 20px 0;
-            opacity: 0;
+            font-family: 'Great Vibes', cursive; color: #8b5e83;
+            font-size: 3.5rem; text-align: center; margin: 20px 0;
         }
-
-        .guest-box {
-            text-align: center;
-            margin-top: 30px;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
         .guest-name {
-            font-family: 'Great Vibes', cursive;
-            color: #d4af37;
-            font-size: 2.2rem;
-            margin: 10px 0;
-            background: linear-gradient(to right, #d4af37, #f7e1a0, #d4af37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Great Vibes', cursive; color: #d4af37;
+            font-size: 2.2rem; margin: 10px 0;
         }
-
         .btn-buka {
-            margin-top: 25px;
-            padding: 12px 35px;
-            background: #8b5e83;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(139, 94, 131, 0.3);
-            transition: 0.3s;
+            margin-top: 25px; padding: 12px 35px; background: #8b5e83;
+            color: white; border: none; border-radius: 50px; font-weight: 600;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .btn-buka:hover { scale: 1.1; background: #a6759c; }
-
-        /* Partikel Melayang (Biar Gak Sepi) */
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
+        /* --- EFEK AMPLOP (TRANSISI) --- */
+        .env-flap {
+            position: fixed; left: 0; width: 100%; height: 50%;
+            background: #8b5e83; z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            transform: translateY(-100%); /* Sembunyi di atas */
         }
+        .env-bottom { top: auto; bottom: 0; transform: translateY(100%); } /* Sembunyi di bawah */
+        .env-logo { font-size: 3rem; color: #d4af37; }
     </style>
 </head>
 <body>
 
-    <div class="frame-container" id="main-frame">
-        <div class="flower f-top">✿</div>
-        <div class="flower f-bot">✿</div>
-
-        <p class="title-top">THE WEDDING OF</p>
-        
-        <h1 class="couple-name">Samira & Murad</h1>
-
-        <div class="guest-box" id="guest-ui">
-            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
-            <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-            <button class="btn-buka" onclick="nextPage()">BUKA UNDANGAN</button>
+    <div class="vinyl-container">
+        <div class="vinyl-plate" id="vinyl">
+            <div class="vinyl-center">✿</div>
         </div>
     </div>
 
+    <div class="frame-container" id="main-frame">
+        <div class="flower-deco" style="top:10px; left:10px;">🌸</div>
+        <div class="flower-deco" style="top:10px; right:10px;">🌺</div>
+        <div class="flower-deco" style="bottom:10px; left:10px;">🌼</div>
+        <div class="flower-deco" style="bottom:10px; right:10px;">🌹</div>
+        <div class="flower-deco" style="top:50%; left:-20px;">🌷</div>
+        <div class="flower-deco" style="top:50%; right:-20px;">🌻</div>
+
+        <p style="letter-spacing: 3px; font-size: 0.7rem; color: #8b5e83;">THE WEDDING OF</p>
+        <h1 class="couple-name">Samira & Murad</h1>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
+            <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
+            <button class="btn-buka" onclick="tutupAmplop()">BUKA UNDANGAN</button>
+        </div>
+    </div>
+
+    <div class="env-flap env-top" id="top-flap"><div class="env-logo">S & M</div></div>
+    <div class="env-flap env-bottom" id="bot-flap"></div>
+
     <script>
-        // 1. DUKUN TRACKER (LocalStorage Tetap Jalan)
+        // 1. DUKUN TRACKER
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) {
-            const decodedNama = decodeURIComponent(nama);
-            document.getElementById('nama-tamu').innerText = decodedNama;
-            localStorage.setItem('namaTamu', decodedNama);
+            document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
+            localStorage.setItem('namaTamu', decodeURIComponent(nama));
         }
 
-        // 2. GENERATE PARTIKEL (Biar Mewah)
-        for(let i=0; i<20; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            let size = Math.random() * 10 + 5;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = Math.random() * 100 + 'vh';
-            document.body.appendChild(p);
-            
-            // Gerakin partikel pelan-pelan
-            gsap.to(p, {
-                y: "-=100", x: "+=50",
-                duration: Math.random() * 3 + 2,
-                repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
-        }
-
-        // 3. ANIMASI MASUK (Elegant Pink)
+        // 2. ANIMASI MASUK
         window.onload = () => {
             const tl = gsap.timeline();
+            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.2, ease: "back.out" })
+              .to(".flower-deco", { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.5");
             
-            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "back.out(1.7)" })
-              .to(".flower", { opacity: 1, duration: 1, stagger: 0.5 }, "-=0.5")
-              .to(".couple-name", { opacity: 1, duration: 1.5 }, "-=0.5")
-              .to("#guest-ui", { opacity: 1, y: 0, duration: 1 }, "-=1");
+            // Putar Piringan Bunga Selamanya
+            gsap.to("#vinyl", { rotate: 360, duration: 5, repeat: -1, ease: "linear" });
         };
 
-        // 4. TRANSISI PINDAH HALAMAN
-        function nextPage() {
-            gsap.to("body", { backgroundColor: "#fff", duration: 1 });
-            gsap.to("#main-frame", { 
-                y: -100, opacity: 0, scale: 0.9, duration: 0.8, ease: "power2.in",
-                onComplete: () => {
-                    window.location.href = "profil.html";
-                }
-            });
+        // 3. EFEK AMPLOP MENUTUP & PINDAH HALAMAN
+        function tutupAmplop() {
+            const tl = gsap.timeline();
+            
+            // Amplop nutup dari atas & bawah
+            tl.to("#top-flap", { translateY: "0%", duration: 0.8, ease: "power4.inOut" })
+              .to("#bot-flap", { translateY: "0%", duration: 0.8, ease: "power4.inOut" }, "-=0.8")
+              .to("body", { backgroundColor: "#8b5e83", duration: 0.1 })
+              .call(() => {
+                  window.location.href = "profil.html";
+              }, null, "+=0.2");
         }
     </script>
 </body>
