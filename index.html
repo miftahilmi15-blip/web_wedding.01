@@ -3,106 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding - Samira & Murad</title>
+    <title>Wedding Invitation - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            /* Background Marmer Hitam (Pure CSS Gradient & Texture) */
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-            color: #d4af37;
-            font-family: 'Cinzel', serif; 
+            /* Pink Dusty Rose - Lebih mewah & kalem */
+            background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%);
+            font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- TEKSTUR MARMER EMAS (ANIMATED) --- */
-        .marble-vein {
-            position: fixed; inset: 0; pointer-events: none; opacity: 0.3;
-            background: url('https://www.transparenttextures.com/patterns/black-linen.png');
+        /* --- PIRINGAN EMAS KECIL (POJOK KANAN BAWAH) --- */
+        .mini-vinyl {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 70px; height: 70px; z-index: 50;
+            background: conic-gradient(from 0deg, #d4af37, #f7e1a0, #d4af37);
+            border-radius: 50%; border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .mini-vinyl::after {
+            content: '♪'; color: #fff; font-size: 1.2rem;
         }
 
-        /* --- BINGKAI LINGKARAN EMAS (DARI GAMBAR BOS) --- */
-        .gold-ring {
-            position: relative; width: 320px; height: 320px;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            border-radius: 50%; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10;
-            opacity: 0; scale: 0.5;
-        }
-        .gold-ring::before {
-            content: ''; position: absolute; inset: -10px;
-            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 50%;
+        /* --- FRAME UTAMA (GLASSMORPHISM) --- */
+        .frame-container {
+            position: relative; width: 85vw; height: 85vh; max-width: 400px;
+            border: 1.5px solid #d4af37; background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px); border-radius: 30px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; opacity: 0; scale: 0.9;
         }
 
-        /* --- ORNAMEN MANDALA POJOK (HITAM EMAS) --- */
-        .mandala {
-            position: absolute; width: 150px; height: 150px;
-            color: #d4af37; opacity: 0; z-index: 5;
+        /* --- BUNGA BERGUGURAN --- */
+        .petal {
+            position: absolute; color: #fff; pointer-events: none; z-index: 5;
+            font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
         }
-        .m-top { top: -40px; right: -40px; transform: rotate(180deg); }
-        .m-bot { bottom: -40px; left: -40px; }
 
-        /* --- TEKS MEWAH --- */
-        .title-sub { letter-spacing: 6px; font-size: 0.6rem; margin-bottom: 10px; color: #fff; }
-        
         .couple-name {
-            font-family: 'Great Vibes', cursive; font-size: 3.5rem;
-            background: linear-gradient(to bottom, #f7e1a0 0%, #d4af37 50%, #b8926a 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+            font-family: 'Great Vibes', cursive; color: #8b5e83;
+            font-size: 3.5rem; text-align: center; margin: 20px 0;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        .guest-box { text-align: center; margin-top: 40px; opacity: 0; }
-        
         .guest-name {
-            font-family: 'Great Vibes', cursive; color: #fff;
-            font-size: 2rem; margin: 10px 0;
+            font-family: 'Great Vibes', cursive; color: #d4af37;
+            font-size: 2.2rem; margin: 10px 0;
         }
 
-        /* --- TOMBOL MINIMALIS (GAK KAKU) --- */
         .btn-buka {
-            margin-top: 20px; padding: 10px 40px;
-            background: transparent; color: #d4af37;
-            border: 1px solid #d4af37; border-radius: 0; /* Kotak Tajam Lebih Mewah */
-            font-family: 'Cinzel', serif; font-weight: 700;
-            cursor: pointer; transition: 0.5s; overflow: hidden; position: relative;
+            margin-top: 30px; padding: 12px 40px; background: #8b5e83;
+            color: white; border: none; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: 0.4s; box-shadow: 0 5px 15px rgba(139,94,131,0.3);
         }
-        .btn-buka:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
+        .btn-buka:hover { scale: 1.1; background: #a6759c; }
 
-        /* --- EFEK DEBU EMAS (SHIMMER FADE) --- */
-        .shimmer-overlay {
-            position: fixed; inset: 0; background: #fff;
-            z-index: 9999; display: none; opacity: 0;
+        /* --- TRANSISI BADAI BUNGA --- */
+        #storm-layer {
+            position: fixed; inset: 0; z-index: 9999; 
+            pointer-events: none; display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="marble-vein"></div>
+    <div class="mini-vinyl" id="vinyl"></div>
+    <div id="petal-container"></div>
+    <div id="storm-layer"></div>
 
-    <svg class="mandala m-top" viewBox="0 0 100 100"><path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" fill="currentColor" opacity="0.5"/></svg>
-    <svg class="mandala m-bot" viewBox="0 0 100 100"><path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" fill="currentColor" opacity="0.5"/></svg>
+    <div class="frame-container" id="main-frame">
+        <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 600;">THE WEDDING OF</p>
+        <h1 class="couple-name" id="shimmer-text">Samira & Murad</h1>
 
-    <div class="gold-ring" id="ring">
-        <p class="title-sub">THE WEDDING OF</p>
-        <h1 class="couple-name">Samira & Murad</h1>
-        
-        <div class="guest-box" id="guest-ui">
-            <p style="font-size: 0.6rem; letter-spacing: 2px; color: rgba(255,255,255,0.6);">SPECIAL INVITE FOR:</p>
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
             <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-            <button class="btn-buka" onclick="shimmerTransition()">ENTER EXPERIENCE</button>
+            <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
         </div>
     </div>
 
-    <div class="shimmer-overlay" id="shimmer"></div>
-
     <script>
-        // 1. DUKUN TRACKER (Tetap Simpan Nama)
+        // 1. DUKUN TRACKER
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) {
@@ -110,28 +98,64 @@
             localStorage.setItem('namaTamu', decodeURIComponent(nama));
         }
 
-        // 2. ANIMASI MASUK (Elegant & Slow)
+        // 2. GENERATE FLOATING PETALS
+        const petalContainer = document.getElementById('petal-container');
+        const petals = ['🌸', '💮', '✨'];
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = -20 + 'px';
+            petalContainer.appendChild(p);
+
+            gsap.to(p, {
+                y: window.innerHeight + 50,
+                x: "+=" + (Math.random() * 60 - 30),
+                rotation: Math.random() * 360,
+                duration: Math.random() * 6 + 4,
+                repeat: -1,
+                delay: Math.random() * 5,
+                ease: "none"
+            });
+        }
+
+        // 3. ANIMASI MASUK & VINYL MUTER
         window.onload = () => {
-            const tl = gsap.timeline();
-            tl.to("#ring", { opacity: 1, scale: 1, duration: 2, ease: "power4.out" })
-              .to(".mandala", { opacity: 0.3, duration: 1.5, stagger: 0.5 }, "-=1")
-              .to("#guest-ui", { opacity: 1, duration: 1 }, "-=0.5");
+            gsap.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" });
+            gsap.to("#vinyl", { rotate: 360, duration: 3, repeat: -1, ease: "linear" });
             
-            // Efek Napas Ring
-            gsap.to("#ring", { scale: 1.03, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            // Efek Shimmer pada Teks Nama
+            gsap.to("#shimmer-text", { opacity: 0.7, duration: 2, repeat: -1, yoyo: true });
         };
 
-        // 3. SHIMMER TRANSITION (Ganti Amplop Kaku)
-        function shimmerTransition() {
-            const shim = document.getElementById('shimmer');
-            shim.style.display = 'block';
+        // 4. TRANSISI BADAI BUNGA (Bukan Amplop Kaku)
+        function startStorm() {
+            const storm = document.getElementById('storm-layer');
+            storm.style.display = 'block';
+            
+            // Generate Badai Bunga Mendadak
+            for(let i=0; i<50; i++) {
+                let div = document.createElement('div');
+                div.innerHTML = '🌸';
+                div.style.position = 'fixed';
+                div.style.left = Math.random() * 100 + 'vw';
+                div.style.top = '110vh';
+                div.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                storm.appendChild(div);
 
-            const tl = gsap.timeline();
-            tl.to("#ring", { scale: 1.2, opacity: 0, filter: "blur(20px)", duration: 1.5, ease: "power2.in" })
-              .to(shim, { opacity: 1, duration: 1 }, "-=1")
-              .call(() => {
-                  window.location.href = "profil.html";
-              });
+                gsap.to(div, {
+                    y: '-120vh', x: "+=" + (Math.random() * 200 - 100),
+                    rotation: 720, duration: 1.5, ease: "power2.in",
+                    delay: Math.random() * 0.5
+                });
+            }
+
+            // Pindah Halaman setelah Badai Lewat
+            gsap.to("#main-frame", { opacity: 0, scale: 0.8, duration: 1 });
+            setTimeout(() => {
+                window.location.href = "profil.html";
+            }, 1800);
         }
     </script>
 </body>
