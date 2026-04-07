@@ -12,39 +12,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            /* Pink Dusty Rose - Lebih mewah & kalem */
             background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- PIRINGAN EMAS KECIL (POJOK KANAN BAWAH) --- */
-        .mini-vinyl {
+        /* --- 1. BUNGA MUTER POJOK (PENGGANTI PIRINGAN) --- */
+        .flower-vinyl {
             position: fixed; bottom: 20px; right: 20px;
-            width: 70px; height: 70px; z-index: 50;
-            background: conic-gradient(from 0deg, #d4af37, #f7e1a0, #d4af37);
-            border-radius: 50%; border: 2px solid #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex; justify-content: center; align-items: center;
-        }
-        .mini-vinyl::after {
-            content: '♪'; color: #fff; font-size: 1.2rem;
+            width: 75px; height: 75px; z-index: 50;
+            filter: drop-shadow(0 4px 10px rgba(212,175,55,0.3));
         }
 
-        /* --- FRAME UTAMA (GLASSMORPHISM) --- */
+        /* --- 2. FRAME PRESISI --- */
+        .frame-wrapper {
+            position: relative; 
+            z-index: 10; /* Di belakang bunga berjatuhan */
+            opacity: 0; scale: 0.9;
+        }
         .frame-container {
-            position: relative; width: 85vw; height: 85vh; max-width: 400px;
-            border: 1.5px solid #d4af37; background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px); border-radius: 30px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; opacity: 0; scale: 0.9;
+            width: 320px; height: 550px; /* Ukuran presisi HP */
+            border: 2px solid #d4af37; 
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px); border-radius: 40px;
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
         }
 
-        /* --- BUNGA BERGUGURAN --- */
+        /* --- 3. BUNGA BERGUGURAN (Z-INDEX 100 - DI DEPAN FRAME) --- */
+        #petal-container {
+            position: fixed; inset: 0; z-index: 100;
+            pointer-events: none;
+        }
         .petal {
-            position: absolute; color: #fff; pointer-events: none; z-index: 5;
-            font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+            position: absolute; color: #fff; font-size: 1.5rem;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
         }
 
         .couple-name {
@@ -74,18 +78,26 @@
 </head>
 <body>
 
-    <div class="mini-vinyl" id="vinyl"></div>
     <div id="petal-container"></div>
     <div id="storm-layer"></div>
 
-    <div class="frame-container" id="main-frame">
-        <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 600;">THE WEDDING OF</p>
-        <h1 class="couple-name" id="shimmer-text">Samira & Murad</h1>
+    <div class="flower-vinyl" id="vinyl">
+        <svg viewBox="0 0 100 100" fill="#d4af37">
+            <path d="M50 50 L50 10 A15 15 0 0 1 65 25 L50 50 Z M50 50 L90 50 A15 15 0 0 1 75 65 L50 50 Z M50 50 L50 90 A15 15 0 0 1 35 75 L50 50 Z M50 50 L10 50 A15 15 0 0 1 25 35 L50 50 Z M50 50 L78 22 A15 15 0 0 1 93 37 L50 50 Z M50 50 L78 78 A15 15 0 0 1 63 93 L50 50 Z M50 50 L22 78 A15 15 0 0 1 7 63 L50 50 Z M50 50 L22 22 A15 15 0 0 1 37 7 L50 50 Z"/>
+            <circle cx="50" cy="50" r="8" fill="#fff"/>
+        </svg>
+    </div>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
-            <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-            <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
+    <div class="frame-wrapper" id="main-frame">
+        <div class="frame-container">
+            <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 600;">THE WEDDING OF</p>
+            <h1 class="couple-name" id="shimmer-text">Samira & Murad</h1>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
+                <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
+                <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
+            </div>
         </div>
     </div>
 
@@ -98,61 +110,62 @@
             localStorage.setItem('namaTamu', decodeURIComponent(nama));
         }
 
-        // 2. GENERATE FLOATING PETALS
+        // 2. GENERATE FLOATING PETALS (DI DEPAN FRAME)
         const petalContainer = document.getElementById('petal-container');
-        const petals = ['🌸', '💮', '✨'];
-        for (let i = 0; i < 30; i++) {
+        const petals = ['🌸', '💮', '✨', '🤍'];
+        for (let i = 0; i < 35; i++) {
             const p = document.createElement('div');
             p.className = 'petal';
             p.innerHTML = petals[Math.floor(Math.random() * petals.length)];
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = -20 + 'px';
+            p.style.top = -50 + 'px';
+            p.style.opacity = Math.random() * 0.7 + 0.3;
             petalContainer.appendChild(p);
 
             gsap.to(p, {
-                y: window.innerHeight + 50,
-                x: "+=" + (Math.random() * 60 - 30),
-                rotation: Math.random() * 360,
-                duration: Math.random() * 6 + 4,
+                y: window.innerHeight + 100,
+                x: "+=" + (Math.random() * 100 - 50),
+                rotation: Math.random() * 720,
+                duration: Math.random() * 8 + 4,
                 repeat: -1,
                 delay: Math.random() * 5,
                 ease: "none"
             });
         }
 
-        // 3. ANIMASI MASUK & VINYL MUTER
+        // 3. ANIMASI MASUK & BUNGA MUTER
         window.onload = () => {
             gsap.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" });
-            gsap.to("#vinyl", { rotate: 360, duration: 3, repeat: -1, ease: "linear" });
+            gsap.to("#vinyl", { rotate: 360, duration: 8, repeat: -1, ease: "linear" });
             
-            // Efek Shimmer pada Teks Nama
-            gsap.to("#shimmer-text", { opacity: 0.7, duration: 2, repeat: -1, yoyo: true });
+            // Shimmer pelan pada nama
+            gsap.to("#shimmer-text", { opacity: 0.8, duration: 2, repeat: -1, yoyo: true });
         };
 
-        // 4. TRANSISI BADAI BUNGA (Bukan Amplop Kaku)
+        // 4. TRANSISI BADAI BUNGA
         function startStorm() {
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
             
-            // Generate Badai Bunga Mendadak
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<60; i++) {
                 let div = document.createElement('div');
-                div.innerHTML = '🌸';
+                div.innerHTML = (i % 2 === 0) ? '🌸' : '🤍';
                 div.style.position = 'fixed';
                 div.style.left = Math.random() * 100 + 'vw';
-                div.style.top = '110vh';
+                div.style.top = '120vh';
                 div.style.fontSize = (Math.random() * 2 + 1) + 'rem';
                 storm.appendChild(div);
 
                 gsap.to(div, {
-                    y: '-120vh', x: "+=" + (Math.random() * 200 - 100),
-                    rotation: 720, duration: 1.5, ease: "power2.in",
+                    y: '-130vh', x: "+=" + (Math.random() * 300 - 150),
+                    rotation: 1080, duration: 2, ease: "power2.inOut",
                     delay: Math.random() * 0.5
                 });
             }
 
-            // Pindah Halaman setelah Badai Lewat
             gsap.to("#main-frame", { opacity: 0, scale: 0.8, duration: 1 });
+            gsap.to("#vinyl", { opacity: 0, duration: 1 });
+            
             setTimeout(() => {
                 window.location.href = "profil.html";
             }, 1800);
