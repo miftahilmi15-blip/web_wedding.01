@@ -3,101 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation - Samira & Murad</title>
+    <title>The Wedding - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: radial-gradient(circle, #ffdee9 0%, #ffb6c1 100%);
-            font-family: 'Montserrat', sans-serif; 
+            /* Background Marmer Hitam (Pure CSS Gradient & Texture) */
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: #d4af37;
+            font-family: 'Cinzel', serif; 
             overflow: hidden; height: 100vh;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- PIRINGAN EMAS KECIL (POJOK KANAN BAWAH) --- */
-        .vinyl-gold {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 80px; height: 80px; z-index: 20;
-            background: conic-gradient(from 0deg, #d4af37, #f7e1a0, #d4af37, #b8926a, #d4af37);
-            border-radius: 50%; border: 2px solid #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex; justify-content: center; align-items: center;
-        }
-        .vinyl-gold::after {
-            content: ''; width: 15px; height: 15px; background: #fff; border-radius: 50%;
+        /* --- TEKSTUR MARMER EMAS (ANIMATED) --- */
+        .marble-vein {
+            position: fixed; inset: 0; pointer-events: none; opacity: 0.3;
+            background: url('https://www.transparenttextures.com/patterns/black-linen.png');
         }
 
-        /* --- FRAME UTAMA --- */
-        .frame-container {
-            position: relative; width: 85vw; height: 85vh; max-width: 400px;
-            border: 1.5px solid #d4af37; background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(8px); border-radius: 30px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; opacity: 0; scale: 0.9;
+        /* --- BINGKAI LINGKARAN EMAS (DARI GAMBAR BOS) --- */
+        .gold-ring {
+            position: relative; width: 320px; height: 320px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 50%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10;
+            opacity: 0; scale: 0.5;
+        }
+        .gold-ring::before {
+            content: ''; position: absolute; inset: -10px;
+            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 50%;
         }
 
-        /* --- BUNGA BERGUGURAN (PETALS) --- */
-        .petal {
-            position: absolute; color: #fff; /* Satu warna: Putih */
-            pointer-events: none; z-index: 5;
-            font-size: 1.2rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        /* --- ORNAMEN MANDALA POJOK (HITAM EMAS) --- */
+        .mandala {
+            position: absolute; width: 150px; height: 150px;
+            color: #d4af37; opacity: 0; z-index: 5;
         }
+        .m-top { top: -40px; right: -40px; transform: rotate(180deg); }
+        .m-bot { bottom: -40px; left: -40px; }
 
+        /* --- TEKS MEWAH --- */
+        .title-sub { letter-spacing: 6px; font-size: 0.6rem; margin-bottom: 10px; color: #fff; }
+        
         .couple-name {
-            font-family: 'Great Vibes', cursive; color: #8b5e83;
-            font-size: 3.5rem; text-align: center; margin: 20px 0;
+            font-family: 'Great Vibes', cursive; font-size: 3.5rem;
+            background: linear-gradient(to bottom, #f7e1a0 0%, #d4af37 50%, #b8926a 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
+        .guest-box { text-align: center; margin-top: 40px; opacity: 0; }
+        
         .guest-name {
-            font-family: 'Great Vibes', cursive; color: #d4af37;
-            font-size: 2.2rem; margin: 10px 0;
+            font-family: 'Great Vibes', cursive; color: #fff;
+            font-size: 2rem; margin: 10px 0;
         }
 
+        /* --- TOMBOL MINIMALIS (GAK KAKU) --- */
         .btn-buka {
-            margin-top: 30px; padding: 12px 40px; background: #8b5e83;
-            color: white; border: none; border-radius: 50px; font-weight: 600;
-            cursor: pointer; letter-spacing: 1px; transition: 0.4s;
+            margin-top: 20px; padding: 10px 40px;
+            background: transparent; color: #d4af37;
+            border: 1px solid #d4af37; border-radius: 0; /* Kotak Tajam Lebih Mewah */
+            font-family: 'Cinzel', serif; font-weight: 700;
+            cursor: pointer; transition: 0.5s; overflow: hidden; position: relative;
         }
+        .btn-buka:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
 
-        /* --- EFEK AMPLOP (TRANSISI HALUS) --- */
-        .env-flap {
-            position: fixed; left: 0; width: 100%; height: 50%;
-            background: #8b5e83; z-index: 1000;
-            display: flex; justify-content: center; align-items: center;
-            transform: translateY(-100%);
+        /* --- EFEK DEBU EMAS (SHIMMER FADE) --- */
+        .shimmer-overlay {
+            position: fixed; inset: 0; background: #fff;
+            z-index: 9999; display: none; opacity: 0;
         }
-        .env-bottom { top: auto; bottom: 0; transform: translateY(100%); }
-        .env-logo { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #d4af37; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <div class="vinyl-gold" id="vinyl"></div>
+    <div class="marble-vein"></div>
 
-    <div id="petal-container"></div>
+    <svg class="mandala m-top" viewBox="0 0 100 100"><path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" fill="currentColor" opacity="0.5"/></svg>
+    <svg class="mandala m-bot" viewBox="0 0 100 100"><path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" fill="currentColor" opacity="0.5"/></svg>
 
-    <div class="frame-container" id="main-frame">
-        <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83;">THE WEDDING OF</p>
+    <div class="gold-ring" id="ring">
+        <p class="title-sub">THE WEDDING OF</p>
         <h1 class="couple-name">Samira & Murad</h1>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
+        
+        <div class="guest-box" id="guest-ui">
+            <p style="font-size: 0.6rem; letter-spacing: 2px; color: rgba(255,255,255,0.6);">SPECIAL INVITE FOR:</p>
             <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-            <button class="btn-buka" onclick="bukaUndangan()">BUKA UNDANGAN</button>
+            <button class="btn-buka" onclick="shimmerTransition()">ENTER EXPERIENCE</button>
         </div>
     </div>
 
-    <div class="env-flap env-top" id="top-flap">
-        <div class="env-logo" id="logo-sm">S & M</div>
-    </div>
-    <div class="env-flap env-bottom" id="bot-flap"></div>
+    <div class="shimmer-overlay" id="shimmer"></div>
 
     <script>
-        // 1. DUKUN TRACKER
+        // 1. DUKUN TRACKER (Tetap Simpan Nama)
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) {
@@ -105,44 +110,25 @@
             localStorage.setItem('namaTamu', decodeURIComponent(nama));
         }
 
-        // 2. GENERATE BUNGA BERGUGURAN (WHITE PETALS)
-        const petalContainer = document.getElementById('petal-container');
-        for (let i = 0; i < 25; i++) {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            petal.innerHTML = '🌸'; // Gunakan satu warna bunga (putih via CSS filter atau karakter)
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.top = -20 + 'px';
-            petal.style.opacity = Math.random();
-            petalContainer.appendChild(petal);
-
-            // Animasi Jatuh & Goyang (Swing)
-            gsap.to(petal, {
-                y: window.innerHeight + 50,
-                x: "+=" + (Math.random() * 100 - 50),
-                rotation: Math.random() * 360,
-                duration: Math.random() * 5 + 5,
-                repeat: -1,
-                delay: Math.random() * 5,
-                ease: "none"
-            });
-        }
-
-        // 3. ANIMASI MASUK
+        // 2. ANIMASI MASUK (Elegant & Slow)
         window.onload = () => {
-            gsap.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" });
-            gsap.to("#vinyl", { rotate: 360, duration: 4, repeat: -1, ease: "linear" });
+            const tl = gsap.timeline();
+            tl.to("#ring", { opacity: 1, scale: 1, duration: 2, ease: "power4.out" })
+              .to(".mandala", { opacity: 0.3, duration: 1.5, stagger: 0.5 }, "-=1")
+              .to("#guest-ui", { opacity: 1, duration: 1 }, "-=0.5");
+            
+            // Efek Napas Ring
+            gsap.to("#ring", { scale: 1.03, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut" });
         };
 
-        // 4. TRANSISI AMPLOP (HALUS & BERWIBAWA)
-        function bukaUndangan() {
+        // 3. SHIMMER TRANSITION (Ganti Amplop Kaku)
+        function shimmerTransition() {
+            const shim = document.getElementById('shimmer');
+            shim.style.display = 'block';
+
             const tl = gsap.timeline();
-            
-            // Amplop Menutup Pelan
-            tl.to("#top-flap", { translateY: "0%", duration: 1.2, ease: "expo.inOut" })
-              .to("#bot-flap", { translateY: "0%", duration: 1.2, ease: "expo.inOut" }, "-=1.2")
-              .to("#logo-sm", { opacity: 1, duration: 0.5 }) // Logo muncul pas amplop tutup
-              .to({}, { duration: 0.5 }) // Jeda sebentar biar tamu liat amplopnya
+            tl.to("#ring", { scale: 1.2, opacity: 0, filter: "blur(20px)", duration: 1.5, ease: "power2.in" })
+              .to(shim, { opacity: 1, duration: 1 }, "-=1")
               .call(() => {
                   window.location.href = "profil.html";
               });
