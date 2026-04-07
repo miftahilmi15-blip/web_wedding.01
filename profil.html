@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Message - Samira & Murad</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #fce4ec; /* Pink Soft Solid biar fokus ke teks */
+            font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .container {
+            width: 90vw; max-width: 400px; text-align: center;
+            padding: 30px; z-index: 10;
+        }
+
+        .arabic {
+            font-size: 1.4rem; color: #8b5e83; line-height: 2.5;
+            margin-bottom: 20px; opacity: 0; transform: translateY(20px);
+        }
+
+        .artinya {
+            font-size: 0.9rem; font-style: italic; color: #555;
+            line-height: 1.6; margin-bottom: 30px; opacity: 0;
+        }
+
+        /* --- VISUAL MENARIK UNTUK TOMBOL --- */
+        .gate-container {
+            position: relative; margin: 20px auto;
+            width: 150px; height: 150px; opacity: 0; scale: 0.5;
+        }
+        .gate-img {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 4px solid #d4af37; object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .text-kepo {
+            margin-top: 15px; font-size: 0.8rem; color: #8b5e83;
+            font-weight: 600; opacity: 0;
+        }
+
+        .btn-kepo {
+            margin-top: 10px; padding: 12px 30px;
+            background: #d4af37; color: white; border: none;
+            border-radius: 10px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(212,175,55,0.3);
+            opacity: 0;
+        }
+
+        /* Dekorasi Bunga Pojok (Tetap konsisten) */
+        .deco { position: fixed; font-size: 2rem; opacity: 0.3; }
+    </style>
+</head>
+<body>
+
+    <div class="deco" style="top:20px; left:20px;">🌸</div>
+    <div class="deco" style="bottom:20px; right:20px;">🌺</div>
+
+    <div class="container">
+        <div class="arabic" id="txt1">
+            وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
+        </div>
+        
+        <div class="artinya" id="txt2">
+            “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya...”
+        </div>
+
+        <div class="gate-container" id="gate">
+            <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=500" class="gate-img" alt="Royal Gate">
+        </div>
+
+        <p class="text-kepo" id="txt3">Pasti kepo ya biar beda dari web receh wkwkkqkw</p>
+        
+        <button class="btn-kepo" id="btn" onclick="pindahHalaman()">GASSPOLL KE TKP! 🚀</button>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const tl = gsap.timeline();
+
+            tl.to("#txt1", { opacity: 1, translateY: 0, duration: 1.2 })
+              .to("#txt2", { opacity: 1, duration: 1 }, "-=0.5")
+              .to("#gate", { opacity: 1, scale: 1, duration: 1, ease: "back.out" })
+              .to("#txt3", { opacity: 1, duration: 0.8 })
+              .to("#btn", { 
+                  opacity: 1, 
+                  y: -5, 
+                  repeat: -1, 
+                  yoyo: true, 
+                  duration: 0.6, 
+                  ease: "sine.inOut" 
+              });
+        };
+
+        function pindahHalaman() {
+            gsap.to(".container", { opacity: 0, scale: 2, duration: 1, ease: "power4.in" });
+            setTimeout(() => {
+                window.location.href = "detail.html"; // Ke halaman 3
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
