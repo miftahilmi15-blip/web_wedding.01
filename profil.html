@@ -19,14 +19,12 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- EFEK BUNGA JATUH --- */
         .flower {
             position: fixed; top: -10%;
             font-size: 1.5rem; pointer-events: none;
             z-index: 5; opacity: 0.6;
         }
 
-        /* --- NAMA MELAYANG --- */
         .bounce-element {
             position: fixed; white-space: nowrap;
             font-family: 'Great Vibes', cursive;
@@ -64,12 +62,14 @@
             min-height: 160px;
         }
 
+        /* --- TOMBOL NEXT TERSEMBUNYI TOTAL DI AWAL --- */
         .btn-next {
-            margin-top: auto; padding: 14px 40px; background: #ec407a;
+            position: fixed; bottom: 50px;
+            padding: 14px 40px; background: #ec407a;
             color: white; border: none; border-radius: 50px; 
             font-weight: 600; cursor: pointer; z-index: 110;
             box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
-            transition: 0.3s; opacity: 0; transform: translateY(20px);
+            display: none; /* Benar-benar hilang agar tidak bisa di-skip */
         }
     </style>
 </head>
@@ -88,17 +88,16 @@
             
             <div class="arabic" id="txtArab"></div>
             <div class="artinya" id="typewriter"></div>
-
-            <button class="btn-next" id="btnNext" onclick="nextPage()">NEXT CHAPTER 🩷</button>
         </div>
     </div>
+
+    <button class="btn-next" id="btnNext" onclick="nextPage()">NEXT CHAPTER 🩷</button>
 
     <script>
         gsap.registerPlugin(TextPlugin);
 
         let isBouncing = true;
 
-        // Fungsi Bunga Berjatuhan
         function createFlower() {
             const flowers = ['🌸', '🌺', '🍃', '🌹'];
             const flower = document.createElement('div');
@@ -106,28 +105,17 @@
             flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
             flower.style.left = Math.random() * 100 + 'vw';
             document.body.appendChild(flower);
-
             gsap.to(flower, {
-                y: '110vh',
-                x: (Math.random() - 0.5) * 200,
-                rotation: Math.random() * 360,
-                duration: 5 + Math.random() * 5,
-                ease: "none",
-                onComplete: () => flower.remove()
+                y: '110vh', x: (Math.random() - 0.5) * 200, rotation: Math.random() * 360,
+                duration: 5 + Math.random() * 5, ease: "none", onComplete: () => flower.remove()
             });
         }
-
-        // Jalankan hujan bunga setiap 500ms
         setInterval(createFlower, 500);
 
         function createBounce(id) {
             const el = document.getElementById(id);
-            let pos = { 
-                x: Math.random() * (window.innerWidth - 100), 
-                y: Math.random() * (window.innerHeight - 50) 
-            };
+            let pos = { x: Math.random() * (window.innerWidth - 100), y: Math.random() * (window.innerHeight - 50) };
             let vel = { x: 1.2, y: 1.2 };
-
             function update() {
                 if (!isBouncing) return;
                 pos.x += vel.x; pos.y += vel.y;
@@ -142,7 +130,7 @@
         window.onload = () => {
             const audio = document.getElementById('weddingAudio');
             const startPlay = () => {
-                audio.play();
+                audio.play().catch(() => {});
                 window.removeEventListener('click', startPlay);
                 window.removeEventListener('touchstart', startPlay);
             };
@@ -156,23 +144,27 @@
             
             tl.to("#main-frame", { opacity: 1, duration: 1.5 });
 
+            // 1. Arab Mengetik (10s)
             tl.to("#txtArab", {
                 duration: 10,
                 text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ",
                 ease: "none"
             });
 
+            // 2. Arti Mengetik (18s)
             tl.to("#typewriter", {
                 duration: 18, 
                 text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”",
                 ease: "none"
             });
 
+            // 3. Momen Bersatu (Setelah teks selesai)
             tl.add(() => {
                 isBouncing = false;
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
 
+                // Samira & Murad bergerak ke tengah
                 gsap.to("#bounce1", { 
                     left: centerX - 110, top: centerY - 50, 
                     fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
@@ -184,10 +176,20 @@
                     fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
                 });
 
+                // Frame ayat menghilang pelan
                 gsap.to(".frame-container", { opacity: 0, scale: 0.9, duration: 1 });
             });
 
-            tl.to("#btnNext", { opacity: 1, y: 0, duration: 0.8 });
+            // 4. Tombol Muncul TERAKHIR (Setelah nama bersatu)
+            tl.to("#btnNext", { 
+                display: "block", // Munculkan elemennya
+                opacity: 1, 
+                y: -10, 
+                duration: 1,
+                onStart: () => {
+                    gsap.set("#btnNext", { opacity: 0, y: 20 });
+                }
+            }, "+=1.5"); // Jeda sedikit setelah nama bersatu baru tombol muncul
         };
 
         function nextPage() {
