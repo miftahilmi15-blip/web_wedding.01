@@ -19,7 +19,6 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- NAMA MANTUL (DI DEPAN FRAME) --- */
         .bounce-element {
             position: fixed; white-space: nowrap;
             font-family: 'Great Vibes', cursive;
@@ -29,7 +28,6 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.4);
         }
 
-        /* --- FRAME DASHBOARD (320x560) --- */
         .frame-wrapper {
             position: relative; z-index: 20;
             opacity: 0; transform: scale(0.9);
@@ -55,7 +53,7 @@
         .artinya {
             font-size: 0.78rem; color: #6d4c67;
             line-height: 1.7; font-style: italic;
-            min-height: 160px; /* Lebih tinggi karena teks lebih panjang */
+            min-height: 160px;
             margin-bottom: 10px;
         }
 
@@ -123,32 +121,27 @@
         }
 
         window.onload = () => {
-            // LOGIKA AUDIO DIPERKUAT
             const audio = document.getElementById('weddingAudio');
             
             const startPlay = () => {
                 audio.play().then(() => {
-                    // Hapus listener jika sudah berhasil putar
                     window.removeEventListener('click', startPlay);
                     window.removeEventListener('touchstart', startPlay);
-                }).catch((err) => {
-                    console.log("Menunggu interaksi...");
+                }).catch(() => {
+                    console.log("Menunggu interaksi user untuk musik...");
                 });
             };
 
-            // Coba putar otomatis
             startPlay();
-            
-            // Pemicu cadangan saat klik atau sentuh pertama kali
             window.addEventListener('click', startPlay);
             window.addEventListener('touchstart', startPlay);
 
             const tl = gsap.timeline();
             
             tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.2, ease: "power4.out" })
-              .to("#txtArab", { opacity: 1, y: -5, duration: 1 }, "-=0.5")
+              .to("#txtArab", { opacity: 1, y: -5, duration: 2 }, "-=0.5") // Animasi Arab muncul 2 detik
               .to("#typewriter", {
-                  duration: 7, 
+                  duration: 28, // DURASI DISESUAIKAN KE 28 DETIK
                   text: "“Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.”",
                   ease: "none"
               })
