@@ -19,6 +19,13 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* --- EFEK BUNGA JATUH --- */
+        .flower {
+            position: fixed; top: -10%;
+            font-size: 1.5rem; pointer-events: none;
+            z-index: 5; opacity: 0.6;
+        }
+
         /* --- NAMA MELAYANG --- */
         .bounce-element {
             position: fixed; white-space: nowrap;
@@ -57,7 +64,6 @@
             min-height: 160px;
         }
 
-        /* --- TOMBOL NEXT (TETAP ADA DI BAWAH) --- */
         .btn-next {
             margin-top: auto; padding: 14px 40px; background: #ec407a;
             color: white; border: none; border-radius: 50px; 
@@ -65,7 +71,6 @@
             box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
             transition: 0.3s; opacity: 0; transform: translateY(20px);
         }
-
     </style>
 </head>
 <body>
@@ -93,6 +98,28 @@
 
         let isBouncing = true;
 
+        // Fungsi Bunga Berjatuhan
+        function createFlower() {
+            const flowers = ['🌸', '🌺', '🍃', '🌹'];
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+            flower.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(flower);
+
+            gsap.to(flower, {
+                y: '110vh',
+                x: (Math.random() - 0.5) * 200,
+                rotation: Math.random() * 360,
+                duration: 5 + Math.random() * 5,
+                ease: "none",
+                onComplete: () => flower.remove()
+            });
+        }
+
+        // Jalankan hujan bunga setiap 500ms
+        setInterval(createFlower, 500);
+
         function createBounce(id) {
             const el = document.getElementById(id);
             let pos = { 
@@ -117,55 +144,49 @@
             const startPlay = () => {
                 audio.play();
                 window.removeEventListener('click', startPlay);
+                window.removeEventListener('touchstart', startPlay);
             };
             window.addEventListener('click', startPlay);
+            window.addEventListener('touchstart', startPlay);
 
             createBounce('bounce1');
             createBounce('bounce2');
 
             const tl = gsap.timeline();
             
-            // 1. Munculkan Frame
             tl.to("#main-frame", { opacity: 1, duration: 1.5 });
 
-            // 2. Animasi Arab Berjalan (Perbaikan Teks)
             tl.to("#txtArab", {
                 duration: 10,
                 text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ",
                 ease: "none"
             });
 
-            // 3. Animasi Arti Berjalan (Total durasi sinkron 28-30s)
             tl.to("#typewriter", {
                 duration: 18, 
                 text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”",
                 ease: "none"
             });
 
-            // 4. MOMEN BERSATU
             tl.add(() => {
                 isBouncing = false;
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
 
-                // Samira ke kiri tengah
                 gsap.to("#bounce1", { 
                     left: centerX - 110, top: centerY - 50, 
                     fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
                 });
                 
-                // Murad ke kanan tengah
                 document.getElementById("bounce2").innerHTML = "🩷 Murad";
                 gsap.to("#bounce2", { 
                     left: centerX + 10, top: centerY - 50, 
                     fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
                 });
 
-                // Sembunyikan frame ayat
                 gsap.to(".frame-container", { opacity: 0, scale: 0.9, duration: 1 });
             });
 
-            // 5. Munculkan Tombol Next di akhir segalanya
             tl.to("#btnNext", { opacity: 1, y: 0, duration: 0.8 });
         };
 
