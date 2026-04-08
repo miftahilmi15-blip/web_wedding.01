@@ -6,112 +6,135 @@
     <title>The Message - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Amiri&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            /* Ganti ke Dark Luxury Grey-Navy (Anti-Receh) */
+            background: #1a1a1a; 
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh;
             display: flex; justify-content: center; align-items: center;
+            color: #efefef;
+        }
+
+        /* Efek partikel halus di background */
+        #bg-canvas {
+            position: fixed; inset: 0; z-index: 1;
+            background: radial-gradient(circle at center, #2c3e50 0%, #000000 100%);
         }
 
         .container {
             width: 85vw; max-width: 400px; text-align: center;
-            padding: 20px; z-index: 10;
+            z-index: 10; position: relative;
         }
 
         .arabic {
             font-family: 'Amiri', serif;
-            font-size: 1.5rem; color: #8b5e83; line-height: 2.3;
-            margin-bottom: 20px; opacity: 0;
+            font-size: 1.6rem; color: #d4af37; /* Emas tipis buat teks Arab saja */
+            line-height: 2.5; margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.3));
         }
 
         .artinya {
-            font-size: 0.85rem; font-style: italic; color: #555;
-            line-height: 1.7; margin-bottom: 30px; opacity: 0;
+            font-size: 0.9rem; font-style: italic; color: #ccc;
+            line-height: 1.8; min-height: 80px; /* Biar gak goyang pas ngetik */
         }
 
-        /* --- GAMBAR TANPA BINGKAI (CLEAN) --- */
-        .gate-container {
-            position: relative; margin: 20px auto;
-            width: 160px; height: 160px; opacity: 0; scale: 0.8;
+        /* GAMBAR TANPA BINGKAI - EFEK GHOSTY */
+        .img-wrapper {
+            margin: 30px auto; width: 180px; height: 180px;
+            position: relative; opacity: 0;
         }
         .gate-img {
             width: 100%; height: 100%; border-radius: 50%;
             object-fit: cover;
-            /* Efek bayangan halus saja, tanpa garis border emas */
-            filter: drop-shadow(0 10px 15px rgba(139, 94, 131, 0.2));
+            /* Masking biar pinggirannya halus menyatu sama gelap */
+            -webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
+            mask-image: radial-gradient(circle, black 40%, transparent 80%);
         }
 
         .text-kepo {
-            margin-top: 20px; font-size: 0.8rem; color: #8b5e83;
-            font-weight: 600; opacity: 0;
+            margin-top: 20px; font-size: 0.75rem; color: #888;
+            letter-spacing: 2px; text-transform: uppercase; opacity: 0;
         }
 
-        /* --- TOMBOL WARNA DEEP ROSE (ANTI-EMAS) --- */
-        .btn-kepo {
-            margin-top: 15px; padding: 12px 40px;
-            background: #8b5e83; /* Warna senada nama mempelai */
-            color: white; border: none;
-            border-radius: 50px; font-weight: 600; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(139, 94, 131, 0.3);
-            opacity: 0; transition: 0.3s;
+        /* TOMBOL DARK LUXE */
+        .btn-next {
+            margin-top: 20px; padding: 15px 50px;
+            background: transparent; color: #fff;
+            border: 1px solid #555; border-radius: 2px; /* Kotak tegas biar maskulin */
+            font-weight: 600; cursor: pointer;
+            overflow: hidden; position: relative;
+            transition: 0.4s; opacity: 0;
         }
         
-        .btn-kepo:hover { background: #a6759c; transform: scale(1.05); }
-
-        .deco { position: fixed; font-size: 2rem; opacity: 0.3; }
+        .btn-next:hover {
+            background: #fff; color: #000; border-color: #fff;
+        }
     </style>
 </head>
 <body>
 
-    <div class="deco" style="top:20px; left:20px;">🌸</div>
-    <div class="deco" style="bottom:20px; right:20px;">🌺</div>
+    <div id="bg-canvas"></div>
 
     <div class="container">
-        <div class="arabic" id="txt1">
-            وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
+        <div class="arabic" id="arabicText">
+            وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا
         </div>
         
-        <div class="artinya" id="txt2">
-            “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri...”
+        <div class="artinya" id="typewriter"></div>
+
+        <div class="img-wrapper" id="imgBox">
+            <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=500" class="gate-img">
         </div>
 
-        <div class="gate-container" id="gate">
-            <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=500" class="gate-img" alt="Clean Gate">
-        </div>
-
-        <p class="text-kepo" id="txt3">Jangan bengong, langsung pencet next!</p>
+        <p class="text-kepo" id="kepoText">Scroll is boring, Just click next</p>
         
-        <button class="btn-kepo" id="btn" onclick="pindahHalaman()">Next Chapter 🩷</button>
+        <button class="btn-next" id="nextBtn" onclick="pindah()">NEXT CHAPTER</button>
     </div>
 
     <script>
+        // Register GSAP Text Plugin
+        gsap.registerPlugin(TextPlugin);
+
         window.onload = () => {
             const tl = gsap.timeline();
 
-            tl.to("#txt1", { opacity: 1, duration: 1.2 })
-              .to("#txt2", { opacity: 1, duration: 1 }, "-=0.5")
-              .to("#gate", { opacity: 1, scale: 1, duration: 1, ease: "power2.out" })
-              .to("#txt3", { opacity: 1, duration: 0.8 })
-              .to("#btn", { 
-                  opacity: 1, 
-                  y: -5, 
-                  repeat: -1, 
-                  yoyo: true, 
-                  duration: 0.8, 
-                  ease: "sine.inOut" 
-              });
+            // 1. Animasi Teks Arab Muncul (Fade In + Blur)
+            tl.from("#arabicText", { opacity: 0, filter: "blur(10px)", y: 20, duration: 1.5 });
+
+            // 2. Efek Ngetik (Typewriter) untuk Artinya
+            tl.to("#typewriter", {
+                duration: 4,
+                text: "“Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan untukmu agar kamu merasa tenteram...”",
+                ease: "none"
+            });
+
+            // 3. Gambar muncul pelan (Fade & Scale)
+            tl.to("#imgBox", { opacity: 1, scale: 1.1, duration: 2 }, "-=1");
+
+            // 4. Tombol & Tulisan Kepo muncul
+            tl.to("#kepoText", { opacity: 1, duration: 1 });
+            tl.to("#nextBtn", { opacity: 1, y: -10, duration: 1 }, "-=0.5");
+
+            // Loop Shimmer Effect pada teks Arab
+            gsap.to("#arabicText", {
+                textShadow: "0 0 20px rgba(212,175,55,0.8)",
+                duration: 2,
+                repeat: -1,
+                yoyo: true
+            });
         };
 
-        function pindahHalaman() {
-            gsap.to(".container", { opacity: 0, scale: 0.9, duration: 0.5 });
+        function pindah() {
+            gsap.to(".container", { opacity: 0, y: -50, duration: 0.8, ease: "power2.in" });
             setTimeout(() => {
                 window.location.href = "mempelai.html";
-            }, 500);
+            }, 800);
         }
     </script>
 </body>
