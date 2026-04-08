@@ -27,12 +27,11 @@
             font-size: 2rem; pointer-events: none; 
             z-index: 100; 
             text-shadow: 0 0 15px rgba(255,255,255,0.6);
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         .frame-wrapper {
             position: relative; z-index: 20;
-            opacity: 0; transform: scale(0.9);
         }
         .frame-container {
             width: 320px; height: 560px;
@@ -40,7 +39,7 @@
             backdrop-filter: blur(15px); border-radius: 40px;
             display: flex; flex-direction: column; 
             padding: 35px 20px; align-items: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(252, 228, 236, 0.5);
             box-shadow: 0 20px 45px rgba(0,0,0,0.08);
             text-align: center;
         }
@@ -49,29 +48,22 @@
             font-family: 'Amiri', serif;
             font-size: 1.25rem; color: #8b5e83; 
             line-height: 2.1; margin: 20px 0;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         .artinya {
             font-size: 0.78rem; color: #6d4c67;
             line-height: 1.7; font-style: italic;
             min-height: 160px;
-            margin-bottom: 10px;
         }
 
-        .hint-text {
-            font-size: 0.7rem; color: #8b5e83; 
-            margin-top: 10px; font-weight: 600;
-            opacity: 0;
-        }
-
+        /* --- TOMBOL NEXT (TETAP ADA DI BAWAH) --- */
         .btn-next {
-            margin-top: auto; padding: 14px; background: #8b5e83;
+            margin-top: auto; padding: 14px 40px; background: #ec407a;
             color: white; border: none; border-radius: 50px; 
-            font-weight: 600; cursor: pointer; width: 100%; 
-            transition: 0.3s; letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(139, 94, 131, 0.2);
-            opacity: 0; visibility: hidden;
+            font-weight: 600; cursor: pointer; z-index: 110;
+            box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
+            transition: 0.3s; opacity: 0; transform: translateY(20px);
         }
 
     </style>
@@ -87,12 +79,10 @@
 
     <div class="frame-wrapper" id="main-frame">
         <div class="frame-container">
-            <p style="letter-spacing: 3px; font-size: 0.65rem; color: #d4af37; font-weight: 700;">AR-RUM : 21</p>
+            <p style="letter-spacing: 3px; font-size: 0.65rem; color: #ad1457; font-weight: 700;">AR-RUM : 21</p>
             
             <div class="arabic" id="txtArab"></div>
             <div class="artinya" id="typewriter"></div>
-
-            <p class="hint-text" id="hint">Cinta yang dipersatukan dalam doa...</p>
 
             <button class="btn-next" id="btnNext" onclick="nextPage()">NEXT CHAPTER 🩷</button>
         </div>
@@ -106,10 +96,10 @@
         function createBounce(id) {
             const el = document.getElementById(id);
             let pos = { 
-                x: Math.random() * (window.innerWidth - 150), 
+                x: Math.random() * (window.innerWidth - 100), 
                 y: Math.random() * (window.innerHeight - 50) 
             };
-            let vel = { x: Math.random() > 0.5 ? 1.5 : -1.5, y: Math.random() > 0.5 ? 1.5 : -1.5 };
+            let vel = { x: 1.2, y: 1.2 };
 
             function update() {
                 if (!isBouncing) return;
@@ -125,13 +115,10 @@
         window.onload = () => {
             const audio = document.getElementById('weddingAudio');
             const startPlay = () => {
-                audio.play().then(() => {
-                    window.removeEventListener('click', startPlay);
-                    window.removeEventListener('touchstart', startPlay);
-                }).catch(() => {});
+                audio.play();
+                window.removeEventListener('click', startPlay);
             };
             window.addEventListener('click', startPlay);
-            window.addEventListener('touchstart', startPlay);
 
             createBounce('bounce1');
             createBounce('bounce2');
@@ -139,65 +126,52 @@
             const tl = gsap.timeline();
             
             // 1. Munculkan Frame
-            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" });
+            tl.to("#main-frame", { opacity: 1, duration: 1.5 });
 
-            // 2. Tulisan Arab Bergerak (Mengetik/Fade) - Durasi total 28 detik dibagi dua dengan arti
+            // 2. Animasi Arab Berjalan (Perbaikan Teks)
             tl.to("#txtArab", {
                 duration: 10,
-                text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ lِّقَوْمٍ يَّتَفَكَّرُوْنَ",
+                text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ",
                 ease: "none"
             });
 
-            // 3. Tulisan Arti Bergerak - Sisa durasi agar pas 28-30 detik total
+            // 3. Animasi Arti Berjalan (Total durasi sinkron 28-30s)
             tl.to("#typewriter", {
                 duration: 18, 
-                text: "“Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang...”",
+                text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”",
                 ease: "none"
-            }, "-=2"); // Overlap sedikit agar halus
+            });
 
-            // 4. MOMEN BERSATU (Setelah detik ke 28)
+            // 4. MOMEN BERSATU
             tl.add(() => {
-                isBouncing = false; // Berhenti mantul
-                
-                // Ambil titik tengah layar
+                isBouncing = false;
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
 
+                // Samira ke kiri tengah
                 gsap.to("#bounce1", { 
-                    left: centerX - 85, top: centerY, 
-                    fontSize: "2.5rem", opacity: 1, 
-                    duration: 2, ease: "back.out(1.7)" 
+                    left: centerX - 110, top: centerY - 50, 
+                    fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
                 });
                 
-                // Ganti teks Murad menjadi ada simbol love
+                // Murad ke kanan tengah
                 document.getElementById("bounce2").innerHTML = "🩷 Murad";
-                
                 gsap.to("#bounce2", { 
-                    left: centerX + 10, top: centerY, 
-                    fontSize: "2.5rem", opacity: 1, 
-                    duration: 2, ease: "back.out(1.7)" 
+                    left: centerX + 10, top: centerY - 50, 
+                    fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
                 });
 
-                // Hilangkan frame agar fokus ke nama yang bersatu
-                gsap.to("#main-frame", { opacity: 0, scale: 0.8, duration: 1.5 });
+                // Sembunyikan frame ayat
+                gsap.to(".frame-container", { opacity: 0, scale: 0.9, duration: 1 });
             });
 
-            // 5. Munculkan tombol Next di akhir
-            tl.to("#btnNext", { 
-                autoAlpha: 1, y: -20, duration: 1, 
-                onStart: () => {
-                    document.getElementById("btnNext").style.position = "fixed";
-                    document.getElementById("btnNext").style.bottom = "50px";
-                    document.getElementById("btnNext").style.width = "200px";
-                }
-            });
+            // 5. Munculkan Tombol Next di akhir segalanya
+            tl.to("#btnNext", { opacity: 1, y: 0, duration: 0.8 });
         };
 
         function nextPage() {
             gsap.to("body", { opacity: 0, duration: 1 });
-            setTimeout(() => {
-                window.location.href = "mempelai.html";
-            }, 1000);
+            setTimeout(() => { window.location.href = "mempelai.html"; }, 1000);
         }
     </script>
 </body>
