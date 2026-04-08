@@ -3,110 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Couple - Samira & Murad</title>
+    <title>Jadwal Acara - Samira & Murad</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; color: #8b5e83; margin: 0; padding-bottom: 100px; }
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; color: #8b5e83; margin: 0; padding: 40px 20px; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 30px; color: #ad1457; }
         
-        .profile-card { margin: 50px auto; opacity: 0; transform: translateY(30px); }
-        
-        /* --- STYLING FOTO BULAT (PRO) --- */
-        .photo-wrapper {
-            width: 160px; height: 160px;
-            margin: 0 auto 20px auto;
-            border-radius: 50%;
-            background: #fff; /* Bingkai putih */
-            padding: 5px; /* Jarak bingkai ke foto */
-            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.2);
-            overflow: hidden; /* Memastikan foto tetap bulat */
-            opacity: 0; scale: 0.5; /* Untuk animasi masuk */
+        .event-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 2px solid #f8bbd0;
+            box-shadow: 0 10px 20px rgba(173, 20, 87, 0.05);
+            opacity: 0; transform: scale(0.9);
         }
-        
-        .photo {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover; /* Foto tidak gepeng */
-            object-position: center; /* Fokus di tengah foto */
+
+        .event-title { 
+            font-size: 1.4rem; font-weight: 600; color: #c2185b; 
+            margin-bottom: 10px; letter-spacing: 1px;
         }
-        
-        h2 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; margin: 10px 0 5px 0; color: #8b5e83; }
-        
-        .parent-info { font-size: 0.85rem; font-weight: 300; color: #a6759c; }
-        
-        .ampersand { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin: 20px 0; color: #d4af37; opacity: 0; }
-        
-        /* --- TOMBOL (DIPERBAIKI AGAR TIDAK MENUTUPI KONTEN) --- */
-        .btn-event-wrapper {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            padding: 20px 0;
-            background: linear-gradient(to top, #fce4ec 80%, rgba(252, 228, 236, 0));
-            z-index: 100;
+
+        .event-info { font-size: 0.9rem; line-height: 1.8; color: #880e4f; }
+        .event-info strong { color: #ad1457; }
+
+        .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+
+        .btn-back {
+            margin-top: 20px; padding: 12px 30px;
+            background: transparent; border: 2px solid #ec407a;
+            color: #ec407a; border-radius: 50px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
         }
-        
-        .btn-event {
-            padding: 15px 40px;
-            background: #d4af37;
-            color: white;
-            border-radius: 50px;
-            border: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-            transition: 0.3s;
-        }
-        .btn-event:hover { background: #b8926a; transform: scale(1.05); }
-        
+        .btn-back:hover { background: #ec407a; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="profile-card" id="p1">
-        <div class="photo-wrapper" id="pw1">
-            <img src="samira.jpg" class="photo" alt="Samira Putri">
+    <h1>Save The Date</h1>
+
+    <div class="event-card" id="akad">
+        <span class="icon">💍</span>
+        <div class="event-title">AKAD NIKAH</div>
+        <div class="event-info">
+            <strong>Minggu, 12 Juli 2026</strong><br>
+            Pukul 08.00 - 10.00 WIB<br>
+            Masjid Raya Al-Barokah<br>
+            Jl. Melati No. 123, Cirebon
         </div>
-        <h2>Samira Putri</h2>
-        <p class="parent-info">Putri tercinta dari Bpk. Fulan & Ibu Fulanah</p>
     </div>
 
-    <div class="ampersand" id="amp">&</div>
-
-    <div class="photo-wrapper" id="pw1">
-    <img src="samira.png" class="photo" alt="Ilustrasi Samira Syar'i">
-</div>
-
-<div class="photo-wrapper" id="pw2">
-    <img src="murad.png" class="photo" alt="Ilustrasi Murad Syar'i">
-</div>
-
-    <div class="btn-event-wrapper">
-        <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
+    <div class="event-card" id="resepsi">
+        <span class="icon">🌸</span>
+        <div class="event-title">RESEPSI</div>
+        <div class="event-info">
+            <strong>Minggu, 12 Juli 2026</strong><br>
+            Pukul 11.00 - 14.00 WIB<br>
+            Gedung Grand Rose Ballroom<br>
+            Kawasan Bunga Indah, Cirebon
+        </div>
     </div>
+
+    <button class="btn-back" onclick="history.back()">KEMBALI</button>
 
     <script>
-        // Timeline Animasi GSAP
-        const tl = gsap.timeline();
-
-        // Animasi Mempelai Wanita
-        tl.to("#p1", { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
-          .to("#pw1", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.5")
-          
-        // Animasi Ampersand
-          .to("#amp", { opacity: 1, duration: 0.5 }, "-=0.3")
-          
-        // Animasi Mempelai Pria
-          .to("#p2", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.3")
-          .to("#pw2", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.5");
-
-        function next() {
-            // Efek transisi keluar sebelum pindah halaman
-            gsap.to("body", { opacity: 0, duration: 0.5 });
-            setTimeout(() => {
-                window.location.href = "acara.html";
-            }, 500);
-        }
+        // Animasi muncul berurutan
+        gsap.to("#akad", { opacity: 1, scale: 1, duration: 1, delay: 0.3, ease: "power2.out" });
+        gsap.to("#resepsi", { opacity: 1, scale: 1, duration: 1, delay: 0.6, ease: "power2.out" });
     </script>
 </body>
 </html>
