@@ -3,75 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Acara - Samira & Murad</title>
+    <title>The Couple - Samira & Murad</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; color: #8b5e83; margin: 0; padding: 40px 20px; }
-        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 30px; color: #ad1457; }
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; color: #8b5e83; margin: 0; padding-bottom: 120px; }
+        .profile-card { margin: 40px auto; opacity: 0; transform: translateY(30px); }
+        .photo-wrapper {
+            width: 160px; height: 160px; margin: 0 auto 15px auto;
+            border-radius: 50%; background: #fff; padding: 5px;
+            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.15);
+            overflow: hidden; opacity: 0; scale: 0.5;
+        }
+        .photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        h2 { font-family: 'Great Vibes', cursive; font-size: 2.6rem; margin: 10px 0 5px 0; color: #8b5e83; }
+        .parent-info { font-size: 0.8rem; font-weight: 300; color: #a6759c; line-height: 1.5; }
+        .ampersand { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin: 15px 0; color: #f06292; opacity: 0; }
         
-        .event-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 2px solid #f8bbd0;
-            box-shadow: 0 10px 20px rgba(173, 20, 87, 0.05);
-            opacity: 0; transform: scale(0.9);
+        .btn-event-wrapper {
+            position: fixed; bottom: 0; left: 0; width: 100%; padding: 25px 0;
+            background: linear-gradient(to top, #fce4ec 70%, rgba(252, 228, 236, 0)); z-index: 100;
         }
-
-        .event-title { 
-            font-size: 1.4rem; font-weight: 600; color: #c2185b; 
-            margin-bottom: 10px; letter-spacing: 1px;
+        .btn-event {
+            padding: 15px 40px; background: #ec407a; color: white;
+            border-radius: 50px; border: none; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3); cursor: pointer;
         }
-
-        .event-info { font-size: 0.9rem; line-height: 1.8; color: #880e4f; }
-        .event-info strong { color: #ad1457; }
-
-        .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-
-        .btn-back {
-            margin-top: 20px; padding: 12px 30px;
-            background: transparent; border: 2px solid #ec407a;
-            color: #ec407a; border-radius: 50px; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
-        }
-        .btn-back:hover { background: #ec407a; color: white; }
     </style>
 </head>
 <body>
 
-    <h1>Save The Date</h1>
-
-    <div class="event-card" id="akad">
-        <span class="icon">💍</span>
-        <div class="event-title">AKAD NIKAH</div>
-        <div class="event-info">
-            <strong>Minggu, 12 Juli 2026</strong><br>
-            Pukul 08.00 - 10.00 WIB<br>
-            Masjid Raya Al-Barokah<br>
-            Jl. Melati No. 123, Cirebon
+    <div class="profile-card" id="p1">
+        <div class="photo-wrapper" id="pw1">
+            <img src="samira.png" class="photo" alt="Samira">
         </div>
+        <h2>Samira Putri</h2>
+        <p class="parent-info">Putri tercinta dari<br>Bpk. Fulan & Ibu Fulanah</p>
     </div>
 
-    <div class="event-card" id="resepsi">
-        <span class="icon">🌸</span>
-        <div class="event-title">RESEPSI</div>
-        <div class="event-info">
-            <strong>Minggu, 12 Juli 2026</strong><br>
-            Pukul 11.00 - 14.00 WIB<br>
-            Gedung Grand Rose Ballroom<br>
-            Kawasan Bunga Indah, Cirebon
+    <div class="ampersand" id="amp">&</div>
+
+    <div class="profile-card" id="p2">
+        <div class="photo-wrapper" id="pw2">
+            <img src="murad.png" class="photo" alt="Murad">
         </div>
+        <h2>Murad Al-Fatih</h2>
+        <p class="parent-info">Putra tercinta dari<br>Bpk. John & Ibu Doe</p>
     </div>
 
-    <button class="btn-back" onclick="history.back()">KEMBALI</button>
+    <div class="btn-event-wrapper">
+        <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
+    </div>
 
     <script>
-        // Animasi muncul berurutan
-        gsap.to("#akad", { opacity: 1, scale: 1, duration: 1, delay: 0.3, ease: "power2.out" });
-        gsap.to("#resepsi", { opacity: 1, scale: 1, duration: 1, delay: 0.6, ease: "power2.out" });
+        const tl = gsap.timeline();
+        tl.to("#p1", { opacity: 1, y: 0, duration: 1 })
+          .to("#pw1", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out" }, "-=0.5")
+          .to("#amp", { opacity: 1, duration: 0.5 }, "-=0.2")
+          .to("#p2", { opacity: 1, y: 0, duration: 1 }, "-=0.3")
+          .to("#pw2", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out" }, "-=0.5");
+
+        function next() {
+            gsap.to("body", { opacity: 0, duration: 0.5 });
+            setTimeout(() => { window.location.href = "acara.html"; }, 500);
+        }
     </script>
 </body>
 </html>
