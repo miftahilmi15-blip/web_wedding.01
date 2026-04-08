@@ -19,13 +19,15 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* --- NAMA MELAYANG --- */
         .bounce-element {
             position: fixed; white-space: nowrap;
             font-family: 'Great Vibes', cursive;
-            color: rgba(139, 94, 131, 0.5);
-            font-size: 1.8rem; pointer-events: none; 
+            color: #8b5e83;
+            font-size: 2rem; pointer-events: none; 
             z-index: 100; 
-            text-shadow: 0 0 10px rgba(255,255,255,0.4);
+            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+            opacity: 0.6;
         }
 
         .frame-wrapper {
@@ -47,7 +49,7 @@
             font-family: 'Amiri', serif;
             font-size: 1.25rem; color: #8b5e83; 
             line-height: 2.1; margin: 20px 0;
-            opacity: 0;
+            min-height: 80px;
         }
 
         .artinya {
@@ -69,8 +71,8 @@
             font-weight: 600; cursor: pointer; width: 100%; 
             transition: 0.3s; letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(139, 94, 131, 0.2);
+            opacity: 0; visibility: hidden;
         }
-        .btn-next:hover { background: #a6759c; transform: translateY(-2px); }
 
     </style>
 </head>
@@ -80,37 +82,37 @@
         <source src="rum.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="bounce1" class="bounce-element">Samira 🌸</div>
-    <div id="bounce2" class="bounce-element">Murad 🌺</div>
+    <div id="bounce1" class="bounce-element">Samira</div>
+    <div id="bounce2" class="bounce-element">Murad</div>
 
     <div class="frame-wrapper" id="main-frame">
         <div class="frame-container">
             <p style="letter-spacing: 3px; font-size: 0.65rem; color: #d4af37; font-weight: 700;">AR-RUM : 21</p>
             
-            <div class="arabic" id="txtArab">
-                وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ
-            </div>
-
+            <div class="arabic" id="txtArab"></div>
             <div class="artinya" id="typewriter"></div>
 
-            <p class="hint-text" id="hint">Sentuhan cinta di setiap kata...</p>
+            <p class="hint-text" id="hint">Cinta yang dipersatukan dalam doa...</p>
 
-            <button class="btn-next" onclick="nextPage()">NEXT CHAPTER 🩷</button>
+            <button class="btn-next" id="btnNext" onclick="nextPage()">NEXT CHAPTER 🩷</button>
         </div>
     </div>
 
     <script>
         gsap.registerPlugin(TextPlugin);
 
+        let isBouncing = true;
+
         function createBounce(id) {
             const el = document.getElementById(id);
             let pos = { 
-                x: Math.random() * (window.innerWidth - 120), 
+                x: Math.random() * (window.innerWidth - 150), 
                 y: Math.random() * (window.innerHeight - 50) 
             };
-            let vel = { x: 1.3, y: 1.3 };
+            let vel = { x: Math.random() > 0.5 ? 1.5 : -1.5, y: Math.random() > 0.5 ? 1.5 : -1.5 };
 
             function update() {
+                if (!isBouncing) return;
                 pos.x += vel.x; pos.y += vel.y;
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= window.innerWidth) vel.x *= -1;
                 if (pos.y <= 0 || pos.y + el.offsetHeight >= window.innerHeight) vel.y *= -1;
@@ -122,41 +124,80 @@
 
         window.onload = () => {
             const audio = document.getElementById('weddingAudio');
-            
             const startPlay = () => {
                 audio.play().then(() => {
                     window.removeEventListener('click', startPlay);
                     window.removeEventListener('touchstart', startPlay);
-                }).catch(() => {
-                    console.log("Menunggu interaksi user untuk musik...");
-                });
+                }).catch(() => {});
             };
-
-            startPlay();
             window.addEventListener('click', startPlay);
             window.addEventListener('touchstart', startPlay);
 
-            const tl = gsap.timeline();
-            
-            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.2, ease: "power4.out" })
-              .to("#txtArab", { opacity: 1, y: -5, duration: 2 }, "-=0.5") // Animasi Arab muncul 2 detik
-              .to("#typewriter", {
-                  duration: 28, // DURASI DISESUAIKAN KE 28 DETIK
-                  text: "“Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.”",
-                  ease: "none"
-              })
-              .to("#hint", { opacity: 1, duration: 1 })
-              .to(".btn-next", { scale: 1.05, repeat: -1, yoyo: true, duration: 0.8, ease: "sine.inOut" });
-
             createBounce('bounce1');
             createBounce('bounce2');
+
+            const tl = gsap.timeline();
+            
+            // 1. Munculkan Frame
+            tl.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" });
+
+            // 2. Tulisan Arab Bergerak (Mengetik/Fade) - Durasi total 28 detik dibagi dua dengan arti
+            tl.to("#txtArab", {
+                duration: 10,
+                text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ lِّقَوْمٍ يَّتَفَكَّرُوْنَ",
+                ease: "none"
+            });
+
+            // 3. Tulisan Arti Bergerak - Sisa durasi agar pas 28-30 detik total
+            tl.to("#typewriter", {
+                duration: 18, 
+                text: "“Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang...”",
+                ease: "none"
+            }, "-=2"); // Overlap sedikit agar halus
+
+            // 4. MOMEN BERSATU (Setelah detik ke 28)
+            tl.add(() => {
+                isBouncing = false; // Berhenti mantul
+                
+                // Ambil titik tengah layar
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                gsap.to("#bounce1", { 
+                    left: centerX - 85, top: centerY, 
+                    fontSize: "2.5rem", opacity: 1, 
+                    duration: 2, ease: "back.out(1.7)" 
+                });
+                
+                // Ganti teks Murad menjadi ada simbol love
+                document.getElementById("bounce2").innerHTML = "🩷 Murad";
+                
+                gsap.to("#bounce2", { 
+                    left: centerX + 10, top: centerY, 
+                    fontSize: "2.5rem", opacity: 1, 
+                    duration: 2, ease: "back.out(1.7)" 
+                });
+
+                // Hilangkan frame agar fokus ke nama yang bersatu
+                gsap.to("#main-frame", { opacity: 0, scale: 0.8, duration: 1.5 });
+            });
+
+            // 5. Munculkan tombol Next di akhir
+            tl.to("#btnNext", { 
+                autoAlpha: 1, y: -20, duration: 1, 
+                onStart: () => {
+                    document.getElementById("btnNext").style.position = "fixed";
+                    document.getElementById("btnNext").style.bottom = "50px";
+                    document.getElementById("btnNext").style.width = "200px";
+                }
+            });
         };
 
         function nextPage() {
-            gsap.to("#main-frame, .bounce-element", { opacity: 0, duration: 0.8, ease: "power3.in" });
+            gsap.to("body", { opacity: 0, duration: 1 });
             setTimeout(() => {
                 window.location.href = "mempelai.html";
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
