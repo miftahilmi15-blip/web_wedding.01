@@ -7,30 +7,106 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; color: #8b5e83; }
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; text-align: center; color: #8b5e83; margin: 0; padding-bottom: 100px; }
+        
         .profile-card { margin: 50px auto; opacity: 0; transform: translateY(30px); }
-        .photo { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        h2 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin-top: 10px; }
-        .btn-event { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); padding: 15px 40px; background: #d4af37; color: white; border-radius: 50px; border: none; font-weight: bold; }
+        
+        /* --- STYLING FOTO BULAT (PRO) --- */
+        .photo-wrapper {
+            width: 160px; height: 160px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            background: #fff; /* Bingkai putih */
+            padding: 5px; /* Jarak bingkai ke foto */
+            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.2);
+            overflow: hidden; /* Memastikan foto tetap bulat */
+            opacity: 0; scale: 0.5; /* Untuk animasi masuk */
+        }
+        
+        .photo {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover; /* Foto tidak gepeng */
+            object-position: center; /* Fokus di tengah foto */
+        }
+        
+        h2 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; margin: 10px 0 5px 0; color: #8b5e83; }
+        
+        .parent-info { font-size: 0.85rem; font-weight: 300; color: #a6759c; }
+        
+        .ampersand { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin: 20px 0; color: #d4af37; opacity: 0; }
+        
+        /* --- TOMBOL (DIPERBAIKI AGAR TIDAK MENUTUPI KONTEN) --- */
+        .btn-event-wrapper {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            padding: 20px 0;
+            background: linear-gradient(to top, #fce4ec 80%, rgba(252, 228, 236, 0));
+            z-index: 100;
+        }
+        
+        .btn-event {
+            padding: 15px 40px;
+            background: #d4af37;
+            color: white;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            transition: 0.3s;
+        }
+        .btn-event:hover { background: #b8926a; transform: scale(1.05); }
+        
     </style>
 </head>
 <body>
+
     <div class="profile-card" id="p1">
-        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=200" class="photo">
+        <div class="photo-wrapper" id="pw1">
+            <img src="samira.jpg" class="photo" alt="Samira Putri">
+        </div>
         <h2>Samira Putri</h2>
-        <p>Putri dari Bpk. Fulan & Ibu Fulanah</p>
+        <p class="parent-info">Putri tercinta dari Bpk. Fulan & Ibu Fulanah</p>
     </div>
-    <div style="font-family: 'Great Vibes'; font-size: 2rem;">&</div>
+
+    <div class="ampersand" id="amp">&</div>
+
     <div class="profile-card" id="p2">
-        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200" class="photo">
+        <div class="photo-wrapper" id="pw2">
+            <img src="murad.jpg" class="photo" alt="Murad Al-Fatih">
+        </div>
         <h2>Murad Al-Fatih</h2>
-        <p>Putra dari Bpk. John & Ibu Doe</p>
+        <p class="parent-info">Putra tercinta dari Bpk. John & Ibu Doe</p>
     </div>
-    <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
+
+    <div class="btn-event-wrapper">
+        <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
+    </div>
+
     <script>
-        gsap.to("#p1", { opacity: 1, y: 0, duration: 1, delay: 0.2 });
-        gsap.to("#p2", { opacity: 1, y: 0, duration: 1, delay: 0.5 });
-        function next() { window.location.href = "acara.html"; }
+        // Timeline Animasi GSAP
+        const tl = gsap.timeline();
+
+        // Animasi Mempelai Wanita
+        tl.to("#p1", { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+          .to("#pw1", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.5")
+          
+        // Animasi Ampersand
+          .to("#amp", { opacity: 1, duration: 0.5 }, "-=0.3")
+          
+        // Animasi Mempelai Pria
+          .to("#p2", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.3")
+          .to("#pw2", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.5");
+
+        function next() {
+            // Efek transisi keluar sebelum pindah halaman
+            gsap.to("body", { opacity: 0, duration: 0.5 });
+            setTimeout(() => {
+                window.location.href = "acara.html";
+            }, 500);
+        }
     </script>
 </body>
 </html>
