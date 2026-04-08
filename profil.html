@@ -123,15 +123,25 @@
         }
 
         window.onload = () => {
-            // LOGIKA AUDIO
+            // LOGIKA AUDIO DIPERKUAT
             const audio = document.getElementById('weddingAudio');
+            
             const startPlay = () => {
-                audio.play().catch(() => {
-                    // Jika diblokir browser, coba lagi saat ada interaksi pertama
-                    document.addEventListener('click', () => audio.play(), { once: true });
+                audio.play().then(() => {
+                    // Hapus listener jika sudah berhasil putar
+                    window.removeEventListener('click', startPlay);
+                    window.removeEventListener('touchstart', startPlay);
+                }).catch((err) => {
+                    console.log("Menunggu interaksi...");
                 });
             };
+
+            // Coba putar otomatis
             startPlay();
+            
+            // Pemicu cadangan saat klik atau sentuh pertama kali
+            window.addEventListener('click', startPlay);
+            window.addEventListener('touchstart', startPlay);
 
             const tl = gsap.timeline();
             
