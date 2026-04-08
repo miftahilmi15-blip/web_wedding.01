@@ -6,7 +6,7 @@
     <title>Wedding Invitation - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,57 +15,65 @@
             background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh; width: 100vw;
+            color: #8b5e83;
+        }
+
+        /* --- BACKGROUND ELEMENTS --- */
+        #petal-container {
+            position: fixed; inset: 0; z-index: 5; pointer-events: none;
+        }
+        .petal {
+            position: absolute; color: #fff; font-size: 1.2rem;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+        }
+
+        /* --- BOUNCING NAMES --- */
+        .bounce-element {
+            position: fixed; white-space: nowrap;
+            font-family: 'Great Vibes', cursive;
+            color: rgba(139, 94, 131, 0.4);
+            font-size: 1.8rem; pointer-events: none; 
+            z-index: 10;
+        }
+
+        /* --- SECTION WRAPPERS --- */
+        .section {
+            position: fixed; inset: 0;
             display: flex; justify-content: center; align-items: center;
+            transition: transform 1s ease-in-out;
+            z-index: 20;
         }
 
-        /* --- 1. BUNGA MUTER POJOK (ROYAL FLORAL) --- */
-        .flower-vinyl {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 85px; height: 85px; z-index: 50;
-            filter: drop-shadow(0 4px 12px rgba(212,175,55,0.4));
+        #profile-section {
+            display: none; /* Sembunyi dulu */
+            opacity: 0;
+            background: #fffafa;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 40px 20px;
         }
 
-        /* --- 2. FRAME PRESISI --- */
-        .frame-wrapper {
-            position: relative; z-index: 20;
-            opacity: 0; scale: 0.9;
-        }
+        /* --- COVER FRAME --- */
         .frame-container {
             width: 320px; height: 550px;
-            border: 2px solid #d4af37; 
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(12px); border-radius: 40px;
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
             box-shadow: 0 15px 35px rgba(0,0,0,0.05);
             border: 1px solid rgba(212, 175, 55, 0.5);
+            text-align: center;
+            padding: 20px;
         }
 
-        /* --- 3. BUNGA BERGUGURAN --- */
-        #petal-container {
-            position: fixed; inset: 0; z-index: 80; /* Di bawah nama mantul sedikit */
-            pointer-events: none;
-        }
-        .petal {
-            position: absolute; color: #fff; font-size: 1.5rem;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
-        }
-
-        /* --- 4. NAMA MANTUL-MANTUL (Z-INDEX TERTINGGI) --- */
-        .bounce-element {
-            position: fixed; white-space: nowrap;
-            font-family: 'Great Vibes', cursive;
-            color: rgba(139, 94, 131, 0.6); /* Warna lebih tegas tapi tetap soft */
-            font-size: 1.8rem; pointer-events: none; 
-            z-index: 200; /* DI DEPAN SEMUA ELEMEN */
-            display: flex; align-items: center; gap: 8px;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+        .flower-vinyl {
+            position: absolute; bottom: -30px; right: -30px;
+            width: 120px; height: 120px; z-index: 30;
         }
 
         .couple-name {
             font-family: 'Great Vibes', cursive; color: #8b5e83;
-            font-size: 3.5rem; text-align: center; margin: 20px 0;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            font-size: 3.5rem; margin: 20px 0;
         }
 
         .guest-name {
@@ -77,16 +85,30 @@
             margin-top: 30px; padding: 12px 40px; background: #8b5e83;
             color: white; border: none; border-radius: 50px; font-weight: 600;
             cursor: pointer; transition: 0.4s; box-shadow: 0 5px 15px rgba(139,94,131,0.3);
+            z-index: 100;
         }
-        .btn-buka:hover { scale: 1.1; background: #a6759c; }
+
+        /* --- PROFILE CONTENT --- */
+        .profile-card {
+            text-align: center; max-width: 500px;
+        }
+        .profile-img {
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 3px solid #d4af37; margin: 20px auto;
+            object-fit: cover;
+        }
 
         #storm-layer {
-            position: fixed; inset: 0; z-index: 9999; 
+            position: fixed; inset: 0; z-index: 999; 
             pointer-events: none; display: none;
         }
     </style>
 </head>
 <body>
+
+    <audio id="weddingAudio" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="petal-container"></div>
     <div id="storm-layer"></div>
@@ -94,70 +116,84 @@
     <div id="bounce1" class="bounce-element">Samira 🌸</div>
     <div id="bounce2" class="bounce-element">Murad 🌺</div>
 
-    <div class="flower-vinyl" id="vinyl">
-        <svg viewBox="0 0 100 100">
-            <defs>
-                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#f7e1a0;stop-opacity:1" />
-                    <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#b8926a;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            <g fill="url(#goldGrad)">
-                <path d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/>
-                <path d="M50 50 Q75 25 85 15 Q65 35 50 50 M50 50 Q75 75 85 85 Q65 65 50 50 M50 50 Q25 75 15 85 Q35 65 50 50 M50 50 Q25 25 15 15 Q35 35 50 50" opacity="0.8"/>
-            </g>
-            <circle cx="50" cy="50" r="10" fill="white" stroke="#d4af37" stroke-width="1"/>
-        </svg>
-    </div>
-
-    <div class="frame-wrapper" id="main-frame">
-        <div class="frame-container">
-            <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 600;">THE WEDDING OF</p>
-            <h1 class="couple-name" id="shimmer-text">Samira & Murad</h1>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
+    <section id="cover-section" class="section">
+        <div class="frame-container" id="main-frame">
+            <p style="letter-spacing: 4px; font-size: 0.7rem; font-weight: 600;">THE WEDDING OF</p>
+            <h1 class="couple-name">Samira & Murad</h1>
+            
+            <div style="margin-top: 20px;">
+                <p style="font-size: 0.8rem;">Kepada Yth:</p>
                 <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-                <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
+                <button class="btn-buka" onclick="startInvitation()">BUKA UNDANGAN</button>
+            </div>
+
+            <div class="flower-vinyl" id="vinyl">
+                <svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f7e1a0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#b8926a;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <g fill="url(#goldGrad)">
+                        <path d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/>
+                    </g>
+                    <circle cx="50" cy="50" r="10" fill="white" stroke="#d4af37" stroke-width="1"/>
+                </svg>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="profile-section" class="section">
+        <div class="profile-card">
+            <h2 class="couple-name" style="font-size: 2.5rem;">Mempelai Pria & Wanita</h2>
+            <p>Maha Suci Allah yang telah menciptakan mahluk-Nya berpasang-pasangan...</p>
+            
+            <div style="margin: 40px 0;">
+                <div class="profile-img-placeholder" style="background: #eee; width:150px; height:150px; border-radius:50%; margin:auto; display:flex; align-items:center; justify-content:center;">Foto Pria</div>
+                <h3 style="margin-top:10px;">Murad Al-Fatih</h3>
+                <p style="font-size: 0.8rem;">Putra dari Bpk. X & Ibu Y</p>
+            </div>
+
+            <h1 class="couple-name" style="font-size: 2rem;">&</h1>
+
+            <div style="margin: 40px 0;">
+                <div class="profile-img-placeholder" style="background: #eee; width:150px; height:150px; border-radius:50%; margin:auto; display:flex; align-items:center; justify-content:center;">Foto Wanita</div>
+                <h3 style="margin-top:10px;">Samira Azzahra</h3>
+                <p style="font-size: 0.8rem;">Putri dari Bpk. A & Ibu B</p>
+            </div>
+
+            <button class="btn-buka" onclick="location.reload()" style="background:#d4af37">Kembali</button>
+        </div>
+    </section>
 
     <script>
-        // 1. DUKUN TRACKER
+        // 1. Ambil Nama Tamu dari URL
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
-        if (nama) {
-            document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
-        }
+        if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
-        // 2. BOUNCING LOGIC (Z-INDEX DEPAN)
+        // 2. Logika Bouncing Names
         function createBounce(id) {
             const el = document.getElementById(id);
-            let rect = el.getBoundingClientRect();
-            let pos = { x: Math.random() * (window.innerWidth - 150), y: Math.random() * (window.innerHeight - 50) };
-            let vel = { x: (Math.random() > 0.5 ? 2 : -2), y: (Math.random() > 0.5 ? 2 : -2) };
+            let pos = { x: Math.random() * (window.innerWidth - 100), y: Math.random() * (window.innerHeight - 50) };
+            let vel = { x: 1.5, y: 1.5 };
 
             function update() {
-                pos.x += vel.x;
-                pos.y += vel.y;
-
-                // Pantulan Dinding
+                pos.x += vel.x; pos.y += vel.y;
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= window.innerWidth) vel.x *= -1;
                 if (pos.y <= 0 || pos.y + el.offsetHeight >= window.innerHeight) vel.y *= -1;
-
-                el.style.left = pos.x + 'px';
-                el.style.top = pos.y + 'px';
+                el.style.left = pos.x + 'px'; el.style.top = pos.y + 'px';
                 requestAnimationFrame(update);
             }
             update();
         }
 
-        // 3. GENERATE PETALS
+        // 3. Petal Falling
         const petalContainer = document.getElementById('petal-container');
         const petals = ['🌸', '🩷', '🤍' , '🌺'];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 25; i++) {
             const p = document.createElement('div');
             p.className = 'petal';
             p.innerHTML = petals[Math.floor(Math.random() * petals.length)];
@@ -171,27 +207,48 @@
         }
 
         window.onload = () => {
-            gsap.to("#main-frame", { opacity: 1, scale: 1, duration: 1.5 });
-            gsap.to("#vinyl", { rotate: 360, duration: 10, repeat: -1, ease: "linear" });
+            gsap.from("#main-frame", { opacity: 0, scale: 0.8, duration: 1.5, ease: "back.out(1.7)" });
+            gsap.to("#vinyl", { rotate: 360, duration: 8, repeat: -1, ease: "linear" });
             createBounce('bounce1');
             createBounce('bounce2');
         };
 
-        function startStorm() {
+        // 4. TRANSISI UTAMA (Buka Undangan)
+        function startInvitation() {
+            // Putar Musik
+            const audio = document.getElementById('weddingAudio');
+            audio.volume = 0;
+            audio.play();
+            gsap.to(audio, { volume: 1, duration: 3 });
+
+            // Efek Storm Bunga
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
-            for(let i=0; i<60; i++) {
+            for(let i=0; i<50; i++) {
                 let div = document.createElement('div');
                 div.innerHTML = '🌸';
                 div.style.position = 'fixed';
                 div.style.left = Math.random() * 100 + 'vw';
-                div.style.top = '120vh';
+                div.style.top = '110vh';
+                div.style.fontSize = '2rem';
                 storm.appendChild(div);
-                gsap.to(div, { y: '-130vh', x: "+=" + (Math.random() * 300 - 150), rotation: 1080, duration: 2, ease: "power2.inOut", delay: Math.random() * 0.5 });
+                gsap.to(div, { 
+                    y: '-120vh', x: (Math.random() - 0.5) * 400, 
+                    rotation: 720, duration: 2, ease: "power2.inOut", 
+                    delay: Math.random() * 0.5 
+                });
             }
-            gsap.to("#main-frame", { opacity: 0, scale: 0.8, duration: 1 });
-            gsap.to(".bounce-element", { opacity: 0, duration: 0.5 });
-            setTimeout(() => { window.location.href = "profil.html"; }, 1800);
+
+            // Animasi Keluar Cover & Masuk Profil
+            const tl = gsap.timeline();
+            tl.to("#main-frame, .bounce-element", { opacity: 0, scale: 0.5, duration: 1, ease: "power2.in" })
+              .to("#cover-section", { display: "none" })
+              .set("#profile-section", { display: "flex", overflowY: "auto" })
+              .to("body", { background: "#fffafa", duration: 1 })
+              .to("#profile-section", { opacity: 1, duration: 1.5 });
+            
+            // Allow scrolling on profile
+            document.body.style.overflow = "auto";
         }
     </script>
 </body>
