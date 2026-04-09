@@ -19,12 +19,14 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* --- EFEK BUNGA JATUH --- */
         .flower {
             position: fixed; top: -10%;
             font-size: 1.5rem; pointer-events: none;
             z-index: 5; opacity: 0.6;
         }
 
+        /* --- NAMA MELAYANG --- */
         .bounce-element {
             position: fixed; white-space: nowrap;
             font-family: 'Great Vibes', cursive;
@@ -38,38 +40,52 @@
         .frame-wrapper {
             position: relative; z-index: 20;
         }
+
         .frame-container {
             width: 320px; height: 560px;
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(15px); border-radius: 40px;
             display: flex; flex-direction: column; 
-            padding: 35px 20px; align-items: center;
-            border: 1px solid rgba(252, 228, 236, 0.5);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+            padding: 40px 25px; align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.1);
             text-align: center;
+            position: relative;
         }
+
+        /* --- ORNAMEN TAMBAHAN BIAR RAME --- */
+        .frame-container::before, .frame-container::after {
+            content: '✿'; position: absolute; color: #ec407a; opacity: 0.4; font-size: 1.2rem;
+        }
+        .frame-container::before { top: 20px; left: 20px; }
+        .frame-container::after { bottom: 20px; right: 20px; }
+
+        .corner {
+            position: absolute; width: 40px; height: 40px; border-color: #ec407a; border-style: solid; opacity: 0.3;
+        }
+        .top-right { top: 15px; right: 15px; border-width: 2px 2px 0 0; border-radius: 0 15px 0 0; }
+        .bottom-left { bottom: 15px; left: 15px; border-width: 0 0 2px 2px; border-radius: 0 0 0 15px; }
 
         .arabic {
             font-family: 'Amiri', serif;
             font-size: 1.25rem; color: #8b5e83; 
-            line-height: 2.1; margin: 20px 0;
+            line-height: 2.1; margin: 25px 0;
             min-height: 100px;
         }
 
         .artinya {
-            font-size: 0.78rem; color: #6d4c67;
-            line-height: 1.7; font-style: italic;
-            min-height: 160px;
+            font-size: 0.8rem; color: #6d4c67;
+            line-height: 1.8; font-style: italic;
+            min-height: 160px; font-weight: 300;
         }
 
-        /* --- TOMBOL NEXT TERSEMBUNYI TOTAL DI AWAL --- */
         .btn-next {
-            position: fixed; bottom: 50px;
-            padding: 14px 40px; background: #ec407a;
+            position: fixed; bottom: 60px;
+            padding: 15px 45px; background: #ec407a;
             color: white; border: none; border-radius: 50px; 
             font-weight: 600; cursor: pointer; z-index: 110;
-            box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
-            display: none; /* Benar-benar hilang agar tidak bisa di-skip */
+            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.4);
+            display: none; letter-spacing: 1px;
         }
     </style>
 </head>
@@ -82,9 +98,12 @@
     <div id="bounce1" class="bounce-element">Samira</div>
     <div id="bounce2" class="bounce-element">Murad</div>
 
-    <div class="frame-wrapper" id="main-frame">
+    <div class="frame-wrapper" id="main-frame" style="opacity: 0;">
         <div class="frame-container">
-            <p style="letter-spacing: 3px; font-size: 0.65rem; color: #ad1457; font-weight: 700;">AR-RUM : 21</p>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+
+            <p style="letter-spacing: 4px; font-size: 0.7rem; color: #ad1457; font-weight: 800; text-transform: uppercase;">Ar-Rum : 21</p>
             
             <div class="arabic" id="txtArab"></div>
             <div class="artinya" id="typewriter"></div>
@@ -98,24 +117,26 @@
 
         let isBouncing = true;
 
+        // --- HUJAN BUNGA ---
         function createFlower() {
-            const flowers = ['🌸', '🌺', '🍃', '🌹'];
+            const flowers = ['🌸', '🌺', '🍃', '🌹', '✨'];
             const flower = document.createElement('div');
             flower.className = 'flower';
             flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
             flower.style.left = Math.random() * 100 + 'vw';
             document.body.appendChild(flower);
             gsap.to(flower, {
-                y: '110vh', x: (Math.random() - 0.5) * 200, rotation: Math.random() * 360,
-                duration: 5 + Math.random() * 5, ease: "none", onComplete: () => flower.remove()
+                y: '110vh', x: (Math.random() - 0.5) * 250, rotation: Math.random() * 720,
+                duration: 6 + Math.random() * 4, ease: "none", onComplete: () => flower.remove()
             });
         }
-        setInterval(createFlower, 500);
+        setInterval(createFlower, 400);
 
+        // --- ANIMASI NAMA MANTUL ---
         function createBounce(id) {
             const el = document.getElementById(id);
-            let pos = { x: Math.random() * (window.innerWidth - 100), y: Math.random() * (window.innerHeight - 50) };
-            let vel = { x: 1.2, y: 1.2 };
+            let pos = { x: Math.random() * (window.innerWidth - 150), y: Math.random() * (window.innerHeight - 100) };
+            let vel = { x: 1.5, y: 1.5 };
             function update() {
                 if (!isBouncing) return;
                 pos.x += vel.x; pos.y += vel.y;
@@ -142,54 +163,56 @@
 
             const tl = gsap.timeline();
             
+            // Tampilkan Frame
             tl.to("#main-frame", { opacity: 1, duration: 1.5 });
 
-            // 1. Arab Mengetik (10s)
+            // 1. Teks Arab (10 detik)
             tl.to("#txtArab", {
                 duration: 10,
                 text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ",
                 ease: "none"
             });
 
-            // 2. Arti Mengetik (18s)
+            // 2. Teks Arti (18 detik)
             tl.to("#typewriter", {
                 duration: 18, 
                 text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”",
                 ease: "none"
             });
 
-            // 3. Momen Bersatu (Setelah teks selesai)
+            // 3. MOMEN BERSATU (EXACT CENTER)
             tl.add(() => {
                 isBouncing = false;
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-
-                // Samira & Murad bergerak ke tengah
+                
+                // Animasi Samira ke tengah
                 gsap.to("#bounce1", { 
-                    left: centerX - 110, top: centerY - 50, 
-                    fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
+                    left: "50%", top: "50%", 
+                    xPercent: -105, yPercent: -50, // Geser sedikit ke kiri dari titik tengah
+                    fontSize: "3.5rem", opacity: 1, duration: 2.5, ease: "expo.out" 
                 });
                 
-                document.getElementById("bounce2").innerHTML = "🩷 Murad";
+                // Animasi Murad ke tengah
+                document.getElementById("bounce2").innerHTML = "& Murad";
                 gsap.to("#bounce2", { 
-                    left: centerX + 10, top: centerY - 50, 
-                    fontSize: "2.8rem", opacity: 1, duration: 2, ease: "back.out" 
+                    left: "50%", top: "50%", 
+                    xPercent: 5, yPercent: -50, // Geser sedikit ke kanan dari titik tengah
+                    fontSize: "3.5rem", opacity: 1, duration: 2.5, ease: "expo.out" 
                 });
 
-                // Frame ayat menghilang pelan
-                gsap.to(".frame-container", { opacity: 0, scale: 0.9, duration: 1 });
+                // Frame menghilang
+                gsap.to(".frame-container", { opacity: 0, scale: 0.8, duration: 1.5, ease: "power2.inOut" });
             });
 
-            // 4. Tombol Muncul TERAKHIR (Setelah nama bersatu)
+            // 4. Munculkan Tombol (Hanya setelah nama bersatu)
             tl.to("#btnNext", { 
-                display: "block", // Munculkan elemennya
+                display: "block",
                 opacity: 1, 
-                y: -10, 
-                duration: 1,
+                y: -20, 
+                duration: 1.2,
                 onStart: () => {
-                    gsap.set("#btnNext", { opacity: 0, y: 20 });
+                    gsap.set("#btnNext", { opacity: 0, y: 30 });
                 }
-            }, "+=1.5"); // Jeda sedikit setelah nama bersatu baru tombol muncul
+            }, "+=1.5");
         };
 
         function nextPage() {
