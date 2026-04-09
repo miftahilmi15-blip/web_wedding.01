@@ -3,37 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Couple - Samira & Murad</title>
+    <title>3D Pop-Out Edition - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: #fce4ec; 
-            background-image: radial-gradient(#f8bbd0 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
+            background: #1a0a16; /* Gelap di dasar untuk kontras 3D */
+            background-image: radial-gradient(circle at center, #4a148c 0%, #1a0a16 100%);
             font-family: 'Montserrat', sans-serif; 
-            text-align: center; 
-            color: #8b5e83; 
-            overflow: hidden; /* Biar partikel nggak bikin scroll */
+            overflow: hidden;
             height: 100vh;
-            perspective: 1500px; /* Diperkuat perspektifnya */
+            perspective: 2000px; /* Perspektif sangat dalam */
         }
 
-        .decoration {
-            position: fixed; width: 150px; opacity: 0.4; z-index: -1;
-            pointer-events: none;
-        }
-        .top-left { top: -20px; left: -20px; transform: rotate(90deg); }
-        .bottom-right { bottom: 80px; right: -20px; transform: rotate(-90deg); }
-
-        /* Partikel melayang untuk depth */
-        .particle {
-            position: fixed; background: rgba(236, 64, 122, 0.2);
-            border-radius: 50%; pointer-events: none; z-index: 1;
+        /* Ornamen Melayang (Parallax Layers) */
+        .layer {
+            position: fixed; pointer-events: none;
+            font-size: 3rem; opacity: 0.3;
         }
 
         .scene {
@@ -45,68 +35,154 @@
         }
 
         .profile-card { 
-            margin: 20px auto; 
+            margin: 15px auto; 
             opacity: 0; 
-            position: relative;
             transform-style: preserve-3d;
-            width: 90%; max-width: 320px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px; border-radius: 30px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            /* Bayangan dinamis */
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            width: 85%; max-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px; border-radius: 40px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Bayangan super tebal untuk depth */
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
         }
 
         .photo-wrapper {
             position: relative;
-            width: 150px; height: 150px; margin: 0 auto 15px auto;
-            opacity: 0; scale: 0.5;
+            width: 140px; height: 140px; margin: 0 auto 15px;
             transform-style: preserve-3d;
         }
         
-        .photo-frame {
-            position: absolute; top: -8px; left: -8px;
-            width: 166px; height: 166px;
-            border: 2px solid #ec407a; border-radius: 50%;
-            border-style: double; opacity: 0.4;
-            animation: rotateFrame 15s linear infinite;
-            transform: translateZ(-30px); /* Jauh di belakang */
-        }
-
-        @keyframes rotateFrame { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         .photo { 
             width: 100%; height: 100%; 
             border-radius: 50%; object-fit: cover; 
             border: 4px solid #fff;
-            transform: translateZ(60px); /* Sangat menonjol ke depan */
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: translateZ(80px); /* Keluar dari kartu */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         h2 { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 2.8rem; margin: 10px 0; 
-            color: #ad1457;
-            transform: translateZ(90px); /* Paling depan */
-            text-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            font-size: 2.8rem; color: #fce4ec;
+            transform: translateZ(120px); /* Lebih depan lagi */
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .parent-info { 
-            font-size: 0.8rem; font-weight: 400; color: #6d4c67; 
-            line-height: 1.5; transform: translateZ(40px);
+            font-size: 0.75rem; color: #f8bbd0; 
+            line-height: 1.5; transform: translateZ(50px);
         }
 
         .ampersand { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 3rem; margin: 10px 0; 
-            color: #ec407a; opacity: 0;
-            transform: translateZ(120px); /* Sangat menonjol */
+            font-size: 3.5rem; color: #ec407a;
+            transform: translateZ(150px) rotateZ(-10deg); /* Elemen paling depan */
         }
 
-        .btn-event-wrapper {
-            position: fixed; bottom: 0; left: 0; width: 100%; padding: 30px 0;
-            background: linear-gradient(to top, #fce4ec 80%, rgba(252, 228, 236, 0)); 
+        /* FIX TOMBOL KETUTUP */
+        .btn-container {
+            position: fixed; bottom: 40px; left: 0; width: 100%;
+            display: flex; justify-content: center;
+            z-index: 999; /* Paling atas */
+            pointer-events: auto;
+        }
+
+        .btn-event {
+            padding: 16px 40px; 
+            background: linear-gradient(45deg, #ec407a, #ad1457);
+            color: white; border-radius: 50px; border: none; 
+            font-weight: 700; cursor: pointer;
+            box-shadow: 0 15px 30px rgba(236, 64, 122, 0.4);
+            text-transform: uppercase; letter-spacing: 2px;
+            transform: translateZ(200px); /* Tombol juga ikut 3D */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layer" style="top:10%; left:10%;" data-depth="0.2">🌸</div>
+    <div class="layer" style="top:70%; left:80%;" data-depth="0.5">✨</div>
+    <div class="layer" style="top:40%; left:5%;" data-depth="0.1">🌹</div>
+
+    <div class="scene" id="mainScene">
+        <div class="profile-card" id="p1">
+            <div class="photo-wrapper">
+                <img src="samira.png" class="photo" alt="Samira">
+            </div>
+            <h2>Samira Putri</h2>
+            <p class="parent-info">Putri tercinta dari<br><b>Bpk. Fulan</b> & <b>Ibu Fulanah</b></p>
+        </div>
+
+        <div class="ampersand">&</div>
+
+        <div class="profile-card" id="p2">
+            <div class="photo-wrapper">
+                <img src="murad.png" class="photo" alt="Murad">
+            </div>
+            <h2>Murad Al-Fatih</h2>
+            <p class="parent-info">Putra tercinta dari<br><b>Bpk. John</b> & <b>Ibu Doe</b></p>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="btn-event" onclick="next()">Lanjut Acara</button>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const tl = gsap.timeline();
+
+            // Animasi Masuk Cinematic
+            tl.to(".profile-card", { opacity: 1, duration: 1.5, stagger: 0.3, ease: "power4.out" })
+              .from(".profile-card", { z: -1000, rotationX: 45, duration: 2 }, "-=1.5");
+
+            // EFEK 3D TERCENGANG (TILT + AUTO)
+            const scene = document.getElementById('mainScene');
+            const layers = document.querySelectorAll('.layer');
+            
+            // Gerakan auto biar "hidup"
+            gsap.to(scene, {
+                rotationY: 10, rotationX: 5, 
+                duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
+
+            const handleMove = (e) => {
+                const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                
+                const rotateY = (window.innerWidth / 2 - xVal) / 10; 
+                const rotateX = (yVal - window.innerHeight / 2) / 10;
+
+                // Scene bergerak
+                gsap.to(scene, {
+                    rotationY: rotateY,
+                    rotationX: rotateX,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+                // Layer ornamen bergerak berlawanan (Parallax)
+                layers.forEach(layer => {
+                    const depth = layer.getAttribute('data-depth');
+                    gsap.to(layer, {
+                        x: rotateY * (depth * 50),
+                        y: -rotateX * (depth * 50),
+                        duration: 1
+                    });
+                });
+            };
+
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', (e) => handleMove(e));
+        };
+
+        function next() {
+            gsap.to("body", { opacity: 0, scale: 2, duration: 1 });
+            setTimeout(() => { window.location.href = "acara.html"; }, 1000);
+        }
+    </script>
+</body>
+</html>
             z-index: 100;
         }
         .btn-event {
