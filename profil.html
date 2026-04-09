@@ -53,13 +53,6 @@
             position: relative;
         }
 
-        /* --- ORNAMEN TAMBAHAN BIAR RAME --- */
-        .frame-container::before, .frame-container::after {
-            content: '✿'; position: absolute; color: #ec407a; opacity: 0.4; font-size: 1.2rem;
-        }
-        .frame-container::before { top: 20px; left: 20px; }
-        .frame-container::after { bottom: 20px; right: 20px; }
-
         .corner {
             position: absolute; width: 40px; height: 40px; border-color: #ec407a; border-style: solid; opacity: 0.3;
         }
@@ -76,7 +69,7 @@
         .artinya {
             font-size: 0.8rem; color: #6d4c67;
             line-height: 1.8; font-style: italic;
-            min-height: 160px; font-weight: 300;
+            min-height: 160px;
         }
 
         .btn-next {
@@ -102,9 +95,7 @@
         <div class="frame-container">
             <div class="corner top-right"></div>
             <div class="corner bottom-left"></div>
-
             <p style="letter-spacing: 4px; font-size: 0.7rem; color: #ad1457; font-weight: 800; text-transform: uppercase;">Ar-Rum : 21</p>
-            
             <div class="arabic" id="txtArab"></div>
             <div class="artinya" id="typewriter"></div>
         </div>
@@ -114,10 +105,8 @@
 
     <script>
         gsap.registerPlugin(TextPlugin);
-
         let isBouncing = true;
 
-        // --- HUJAN BUNGA ---
         function createFlower() {
             const flowers = ['🌸', '🌺', '🍃', '🌹', '✨'];
             const flower = document.createElement('div');
@@ -132,11 +121,10 @@
         }
         setInterval(createFlower, 400);
 
-        // --- ANIMASI NAMA MANTUL ---
         function createBounce(id) {
             const el = document.getElementById(id);
-            let pos = { x: Math.random() * (window.innerWidth - 150), y: Math.random() * (window.innerHeight - 100) };
-            let vel = { x: 1.5, y: 1.5 };
+            let pos = { x: Math.random() * (window.innerWidth - 100), y: Math.random() * (window.innerHeight - 50) };
+            let vel = { x: 1.2, y: 1.2 };
             function update() {
                 if (!isBouncing) return;
                 pos.x += vel.x; pos.y += vel.y;
@@ -162,57 +150,51 @@
             createBounce('bounce2');
 
             const tl = gsap.timeline();
-            
-            // Tampilkan Frame
             tl.to("#main-frame", { opacity: 1, duration: 1.5 });
 
-            // 1. Teks Arab (10 detik)
             tl.to("#txtArab", {
                 duration: 10,
-                text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ",
+                text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْمٍ يَّتَفَكَّرُوْنَ",
                 ease: "none"
             });
 
-            // 2. Teks Arti (18 detik)
             tl.to("#typewriter", {
                 duration: 18, 
                 text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”",
                 ease: "none"
             });
 
-            // 3. MOMEN BERSATU (EXACT CENTER)
             tl.add(() => {
                 isBouncing = false;
                 
-                // Animasi Samira ke tengah
+                // Samira ke Tengah Presisi
                 gsap.to("#bounce1", { 
-                    left: "50%", top: "50%", 
-                    xPercent: -105, yPercent: -50, // Geser sedikit ke kiri dari titik tengah
-                    fontSize: "3.5rem", opacity: 1, duration: 2.5, ease: "expo.out" 
+                    left: "50%", top: "45%", 
+                    xPercent: -50, yPercent: -50, 
+                    fontSize: "2.8rem", opacity: 1, duration: 2, ease: "power3.out",
+                    onComplete: () => {
+                        document.getElementById("bounce1").innerHTML = "Samira & Murad";
+                        gsap.set("#bounce2", { display: "none" }); // Hilangkan Murad yang satunya
+                    }
                 });
                 
-                // Animasi Murad ke tengah
-                document.getElementById("bounce2").innerHTML = "& Murad";
+                // Murad Mendekat lalu menghilang (digabung ke bounce1)
                 gsap.to("#bounce2", { 
-                    left: "50%", top: "50%", 
-                    xPercent: 5, yPercent: -50, // Geser sedikit ke kanan dari titik tengah
-                    fontSize: "3.5rem", opacity: 1, duration: 2.5, ease: "expo.out" 
+                    left: "50%", top: "45%", 
+                    xPercent: -50, yPercent: -50, 
+                    opacity: 0, duration: 1.5, ease: "power3.out"
                 });
 
-                // Frame menghilang
-                gsap.to(".frame-container", { opacity: 0, scale: 0.8, duration: 1.5, ease: "power2.inOut" });
+                gsap.to(".frame-container", { opacity: 0, scale: 0.8, duration: 1.5 });
             });
 
-            // 4. Munculkan Tombol (Hanya setelah nama bersatu)
             tl.to("#btnNext", { 
                 display: "block",
                 opacity: 1, 
-                y: -20, 
-                duration: 1.2,
-                onStart: () => {
-                    gsap.set("#btnNext", { opacity: 0, y: 30 });
-                }
-            }, "+=1.5");
+                y: -10, 
+                duration: 1,
+                onStart: () => { gsap.set("#btnNext", { opacity: 0, y: 20 }); }
+            }, "+=1");
         };
 
         function nextPage() {
