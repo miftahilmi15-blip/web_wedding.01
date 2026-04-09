@@ -4,40 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Save The Date - Samira & Murad</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%); font-family: 'Montserrat', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8b5e83; padding: 20px; }
-        .card { width: 100%; max-width: 350px; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px); border-radius: 30px; border: 1.5px solid #d4af37; padding: 30px; margin-bottom: 20px; opacity: 0; transform: scale(0.9); }
-        h2 { font-family: 'Great Vibes', cursive; font-size: 2.2rem; margin-bottom: 10px; color: #d4af37; }
-        .info { font-size: 0.9rem; line-height: 1.8; margin-bottom: 15px; }
-        .btn-maps { display: inline-block; padding: 10px 20px; background: #8b5e83; color: white; text-decoration: none; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-top: 10px; }
-        .nav-btn { position: fixed; bottom: 30px; padding: 12px 40px; background: #d4af37; color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #fce4ec; 
+            background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
+            font-family: 'Montserrat', sans-serif; 
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px; /* Kedalaman 3D */
+        }
+
+        .scene {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-style: preserve-3d;
+            padding-bottom: 100px;
+        }
+
+        .card { 
+            width: 85%; 
+            max-width: 340px; 
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(20px); 
+            border-radius: 35px; 
+            border: 2px solid rgba(212, 175, 55, 0.4); 
+            padding: 35px 25px; 
+            margin: 15px 0;
+            position: relative;
+            transform-style: preserve-3d;
+            opacity: 0;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.05);
+        }
+
+        /* Elemen Emas melayang di sudut kartu */
+        .card::before {
+            content: '✨';
+            position: absolute;
+            top: -10px; right: -10px;
+            font-size: 1.5rem;
+            transform: translateZ(50px);
+        }
+
+        h2 { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 2.5rem; 
+            color: #ad1457; 
+            margin-bottom: 15px;
+            transform: translateZ(60px); /* Teks menonjol */
+            text-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #6d4c67;
+            transform: translateZ(40px);
+        }
+
+        .info-item b { color: #ad1457; }
+
+        .btn-maps { 
+            display: inline-block; 
+            padding: 12px 25px; 
+            background: linear-gradient(45deg, #d4af37, #f1d592);
+            color: white; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            margin-top: 15px;
+            transform: translateZ(80px); /* Tombol paling depan di kartu */
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigasi Bawah */
+        .nav-container {
+            position: fixed;
+            bottom: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .nav-btn { 
+            padding: 16px 40px; 
+            background: #ad1457; 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            box-shadow: 0 10px 25px rgba(173, 20, 87, 0.4);
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        /* Ornamen Partikel Melayang */
+        .leaf {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.2;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
-    <div class="card" id="akad">
-        <h2>Akad Nikah</h2>
-        <div class="info">
-            <p>📅 Minggu, 17 Mei 2026</p>
-            <p>⏰ 08.00 - 10.00 WIB</p>
-            <p>📍 Masjid Agung Al-Barakah</p>
+
+    <div class="scene" id="cardScene">
+        <div class="card" id="card1">
+            <h2>Akad Nikah</h2>
+            <div class="info-item">📅 <b>Minggu, 17 Mei 2026</b></div>
+            <div class="info-item">⏰ <b>08.00 - 10.00 WIB</b></div>
+            <div class="info-item">📍 Masjid Agung Al-Barakah</div>
+        </div>
+
+        <div class="card" id="card2">
+            <h2>Resepsi</h2>
+            <div class="info-item">📅 <b>Minggu, 17 Mei 2026</b></div>
+            <div class="info-item">⏰ <b>11.00 - Selesai</b></div>
+            <div class="info-item">📍 Grand Ballroom Mulia</div>
+            <a href="https://maps.google.com" class="btn-maps">Petunjuk Lokasi 📍</a>
         </div>
     </div>
-    <div class="card" id="resepsi">
-        <h2>Resepsi</h2>
-        <div class="info">
-            <p>📅 Minggu, 17 Mei 2026</p>
-            <p>⏰ 11.00 - Selesai</p>
-            <p>📍 Grand Ballroom Mulia</p>
-        </div>
-        <a href="https://maps.google.com" class="btn-maps">Buka Google Maps 📍</a>
+
+    <div class="nav-container">
+        <button class="nav-btn" onclick="next()">LIHAT MOMENT KAMI 📸</button>
     </div>
-    <button class="nav-btn" onclick="next()">LIHAT MOMENT KAMI 📸</button>
+
     <script>
-        gsap.to("#akad", { opacity: 1, scale: 1, duration: 1, delay: 0.3 });
-        gsap.to("#resepsi", { opacity: 1, scale: 1, duration: 1, delay: 0.6 });
-        function next() { window.location.href = "galeri.html"; }
+        // Animasi Masuk Cinematic
+        window.onload = () => {
+            const tl = gsap.timeline();
+            tl.to(".card", { 
+                opacity: 1, 
+                y: -20, 
+                duration: 1.2, 
+                stagger: 0.3, 
+                ease: "power4.out" 
+            });
+
+            // Efek 3D Interaktif (Tilt)
+            const scene = document.getElementById('cardScene');
+            
+            const handleMove = (e) => {
+                const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                
+                const moveY = (window.innerWidth / 2 - xVal) / 15;
+                const moveX = (yVal - window.innerHeight / 2) / 15;
+
+                gsap.to(scene, {
+                    rotationY: moveY,
+                    rotationX: moveX,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            };
+
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', (e) => handleMove(e));
+        };
+
+        function next() {
+            gsap.to("body", { opacity: 0, scale: 0.9, duration: 0.8 });
+            setTimeout(() => { window.location.href = "galeri.html"; }, 800);
+        }
     </script>
 </body>
 </html>
