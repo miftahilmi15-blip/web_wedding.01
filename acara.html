@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save The Date - Samira & Murad</title>
+    <title>Luxury Schedule - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
@@ -15,132 +15,106 @@
             background: #fce4ec; 
             background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 2000px; /* Kedalaman 3D */
+            height: 100vh; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            perspective: 2000px;
+        }
+
+        /* --- ORNAMEN BUNGA MELAYANG (3D LAYERS) --- */
+        .floral {
+            position: fixed; pointer-events: none; z-index: 1;
+            font-size: 3.5rem; opacity: 0.4; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
         }
 
         .scene {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform-style: preserve-3d;
-            padding-bottom: 100px;
+            width: 100%; display: flex; flex-direction: column;
+            align-items: center; transform-style: preserve-3d;
+            padding-bottom: 120px; z-index: 10;
         }
 
         .card { 
-            width: 85%; 
-            max-width: 340px; 
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(20px); 
-            border-radius: 35px; 
-            border: 2px solid rgba(212, 175, 55, 0.4); 
-            padding: 35px 25px; 
-            margin: 15px 0;
-            position: relative;
-            transform-style: preserve-3d;
-            opacity: 0;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.05);
+            width: 88%; max-width: 340px; 
+            background: rgba(255, 255, 255, 0.3); 
+            backdrop-filter: blur(25px); 
+            border-radius: 40px; 
+            border: 2px solid rgba(236, 64, 122, 0.3); 
+            padding: 40px 25px; margin: 12px 0;
+            position: relative; transform-style: preserve-3d;
+            opacity: 0; box-shadow: 0 30px 60px rgba(139, 94, 131, 0.1);
         }
 
-        /* Elemen Emas melayang di sudut kartu */
+        /* Border Glow Emas Tipis */
         .card::before {
-            content: '✨';
-            position: absolute;
-            top: -10px; right: -10px;
-            font-size: 1.5rem;
-            transform: translateZ(50px);
+            content: ''; position: absolute; inset: 0;
+            border-radius: 40px; padding: 2px;
+            background: linear-gradient(45deg, #ec407a, #f1d592, #ec407a);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0.5;
         }
 
         h2 { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 2.5rem; 
-            color: #ad1457; 
-            margin-bottom: 15px;
-            transform: translateZ(60px); /* Teks menonjol */
-            text-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            font-size: 2.6rem; color: #ad1457; 
+            margin-bottom: 20px; transform: translateZ(70px);
+            text-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         .info-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-            color: #6d4c67;
-            transform: translateZ(40px);
+            margin: 12px 0; font-size: 0.85rem; color: #6d4c67;
+            transform: translateZ(40px); letter-spacing: 0.5px;
         }
-
-        .info-item b { color: #ad1457; }
+        .info-item b { color: #ec407a; font-weight: 600; }
 
         .btn-maps { 
-            display: inline-block; 
-            padding: 12px 25px; 
-            background: linear-gradient(45deg, #d4af37, #f1d592);
-            color: white; 
-            text-decoration: none; 
-            border-radius: 50px; 
-            font-size: 0.75rem; 
-            font-weight: 700; 
-            margin-top: 15px;
-            transform: translateZ(80px); /* Tombol paling depan di kartu */
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: inline-block; padding: 12px 30px; 
+            background: linear-gradient(45deg, #ec407a, #ad1457);
+            color: white; text-decoration: none; border-radius: 50px; 
+            font-size: 0.75rem; font-weight: 700; margin-top: 20px;
+            transform: translateZ(90px);
+            box-shadow: 0 10px 20px rgba(236, 64, 122, 0.3);
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* Navigasi Bawah */
+        /* --- TOMBOL NAVIGASI MATCHING THEME --- */
         .nav-container {
-            position: fixed;
-            bottom: 40px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 1000;
+            position: fixed; bottom: 40px; width: 100%;
+            display: flex; justify-content: center; z-index: 1000;
         }
 
         .nav-btn { 
-            padding: 16px 40px; 
-            background: #ad1457; 
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            box-shadow: 0 10px 25px rgba(173, 20, 87, 0.4);
-            letter-spacing: 1px;
-            transition: 0.3s;
+            padding: 16px 45px; 
+            background: linear-gradient(45deg, #ad1457, #ec407a); 
+            color: white; border: none; border-radius: 50px; 
+            font-weight: 700; cursor: pointer; 
+            box-shadow: 0 10px 30px rgba(173, 20, 87, 0.3);
+            letter-spacing: 1.5px; font-size: 0.8rem;
+            text-transform: uppercase; transition: 0.4s;
         }
-
-        /* Ornamen Partikel Melayang */
-        .leaf {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.2;
-            z-index: -1;
-        }
+        .nav-btn:hover { transform: translateY(-5px) scale(1.05); }
     </style>
 </head>
 <body>
+
+    <div class="floral" style="top:5%; left:-5%;" data-depth="0.2">🌸</div>
+    <div class="floral" style="top:15%; right:-5%;" data-depth="0.5">🌺</div>
+    <div class="floral" style="bottom:10%; left:5%;" data-depth="0.3">🌹</div>
+    <div class="floral" style="bottom:25%; right:2%;" data-depth="0.4">🍃</div>
 
     <div class="scene" id="cardScene">
         <div class="card" id="card1">
             <h2>Akad Nikah</h2>
             <div class="info-item">📅 <b>Minggu, 17 Mei 2026</b></div>
             <div class="info-item">⏰ <b>08.00 - 10.00 WIB</b></div>
-            <div class="info-item">📍 Masjid Agung Al-Barakah</div>
+            <div class="info-item">📍 <b>Masjid Agung Al-Barakah</b></div>
         </div>
 
         <div class="card" id="card2">
             <h2>Resepsi</h2>
             <div class="info-item">📅 <b>Minggu, 17 Mei 2026</b></div>
             <div class="info-item">⏰ <b>11.00 - Selesai</b></div>
-            <div class="info-item">📍 Grand Ballroom Mulia</div>
+            <div class="info-item">📍 <b>Grand Ballroom Mulia</b></div>
             <a href="https://maps.google.com" class="btn-maps">Petunjuk Lokasi 📍</a>
         </div>
     </div>
@@ -150,20 +124,16 @@
     </div>
 
     <script>
-        // Animasi Masuk Cinematic
         window.onload = () => {
             const tl = gsap.timeline();
             tl.to(".card", { 
-                opacity: 1, 
-                y: -20, 
-                duration: 1.2, 
-                stagger: 0.3, 
-                ease: "power4.out" 
+                opacity: 1, y: 0, duration: 1.5, stagger: 0.4, ease: "power4.out" 
             });
 
-            // Efek 3D Interaktif (Tilt)
             const scene = document.getElementById('cardScene');
+            const florals = document.querySelectorAll('.floral');
             
+            // Mouse & Tilt Move
             const handleMove = (e) => {
                 const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
                 const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
@@ -171,11 +141,22 @@
                 const moveY = (window.innerWidth / 2 - xVal) / 15;
                 const moveX = (yVal - window.innerHeight / 2) / 15;
 
+                // Scene Card 3D
                 gsap.to(scene, {
                     rotationY: moveY,
                     rotationX: moveX,
-                    duration: 0.8,
+                    duration: 1,
                     ease: "power2.out"
+                });
+
+                // Bunga Parallax (Bergerak berlawanan arah kartu)
+                florals.forEach(f => {
+                    const d = f.getAttribute('data-depth');
+                    gsap.to(f, {
+                        x: moveY * (d * 40),
+                        y: -moveX * (d * 40),
+                        duration: 1.5
+                    });
                 });
             };
 
@@ -184,7 +165,7 @@
         };
 
         function next() {
-            gsap.to("body", { opacity: 0, scale: 0.9, duration: 0.8 });
+            gsap.to("body", { opacity: 0, scale: 1.2, duration: 0.8 });
             setTimeout(() => { window.location.href = "galeri.html"; }, 800);
         }
     </script>
