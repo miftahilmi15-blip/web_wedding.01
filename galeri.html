@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Cinematic Story - Samira & Murad</title>
+    <title>Our Story - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
@@ -16,35 +16,43 @@
             background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
             color: #8b5e83; 
-            overflow: hidden; /* Dikunci biar fokus ke story */
+            overflow: hidden; 
             height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- STORY SECTION --- */
+        /* --- STORY SECTION (Ditarik ke Atas) --- */
         .story-container {
             width: 90%; max-width: 500px; text-align: center;
-            position: absolute; top: 15%;
+            margin-top: 40px; /* Jarak dari atas layar */
+            height: 35vh; /* Alokasi ruang teks */
+            display: flex; flex-direction: column; justify-content: center;
         }
 
-        .line { overflow: hidden; margin-bottom: 10px; }
-        .line span { display: block; transform: translateY(100%); opacity: 0; }
+        .line { overflow: hidden; margin-bottom: 8px; }
+        .line h1 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: #ad1457; opacity: 0; transform: translateY(50px); }
+        .story-txt { display: block; transform: translateY(100%); opacity: 0; font-size: 0.85rem; line-height: 1.6; }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: #ad1457; margin-bottom: 20px; }
+        /* --- GALLERY SECTION (Di Bawah Teks) --- */
+        .gallery-wrapper {
+            height: 45vh; /* Ruang untuk galeri */
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; position: relative;
+            perspective: 1000px;
+        }
 
-        /* --- GALLERY SECTION --- */
         .gallery-container {
-            width: 280px; height: 350px;
-            position: relative; margin-top: 150px;
+            width: 220px; height: 280px; /* Ukuran lebih proporsional */
+            position: relative;
             transform-style: preserve-3d;
-            display: none; /* Sembunyi dulu */
+            display: none;
         }
 
         .img-box {
             position: absolute; width: 100%; height: 100%;
-            border-radius: 20px; overflow: hidden;
-            border: 10px solid white;
-            box-shadow: 0 20px 40px rgba(139, 94, 131, 0.2);
+            border-radius: 15px; overflow: hidden;
+            border: 6px solid white;
+            box-shadow: 0 15px 30px rgba(139, 94, 131, 0.2);
             transform-origin: center bottom;
         }
 
@@ -52,16 +60,16 @@
 
         /* --- NAV BUTTON --- */
         .btn-container {
-            position: fixed; bottom: 40px; 
-            opacity: 0; pointer-events: none; /* Sembunyi dulu */
-            transition: 0.5s;
+            position: fixed; bottom: 30px; 
+            opacity: 0; pointer-events: none;
+            z-index: 100;
         }
 
         .nav-btn {
-            padding: 16px 45px; background: #ec407a; color: white;
-            border-radius: 50px; border: none; font-weight: 700;
+            padding: 14px 40px; background: linear-gradient(45deg, #ad1457, #ec407a); 
+            color: white; border-radius: 50px; border: none; font-weight: 700;
             box-shadow: 0 10px 25px rgba(236, 64, 122, 0.4); 
-            cursor: pointer; text-transform: uppercase;
+            cursor: pointer; text-transform: uppercase; font-size: 0.8rem;
         }
     </style>
 </head>
@@ -69,16 +77,18 @@
 
     <div class="story-container">
         <div class="line"><h1>Our Story</h1></div>
-        <div class="line"><span class="story-txt">Berawal dari pertemuan tak terduga...</span></div>
-        <div class="line"><span class="story-txt">Dua hati menemukan satu tujuan yang sama.</span></div>
-        <div class="line"><span class="story-txt">Membangun mimpi di atas janji suci.</span></div>
+        <div class="line"><span class="story-txt">Semua bermula dari pandangan pertama...</span></div>
+        <div class="line"><span class="story-txt">Hingga akhirnya doa-doa kami menyatu.</span></div>
+        <div class="line"><span class="story-txt">Menuju lembaran baru yang penuh berkah.</span></div>
     </div>
 
-    <div class="gallery-container" id="gallery">
-        <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=300"></div>
-        <div class="img-box"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=300"></div>
-        <div class="img-box"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=300"></div>
-        <div class="img-box"><img src="https://images.unsplash.com/photo-1465495910483-0d6749718482?q=80&w=300"></div>
+    <div class="gallery-wrapper">
+        <div class="gallery-container" id="gallery">
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=300"></div>
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=300"></div>
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=300"></div>
+            <div class="img-box"><img src="https://images.unsplash.com/photo-1465495910483-0d6749718482?q=80&w=300"></div>
+        </div>
     </div>
 
     <div class="btn-container" id="btnNext">
@@ -89,52 +99,55 @@
         window.onload = () => {
             const tl = gsap.timeline();
 
-            // 1. Animasi Teks Muncul satu per satu
+            // 1. Animasi Teks (Dibuat lebih cepat sedikit agar tidak bosan)
             tl.to("h1", { y: 0, opacity: 1, duration: 1, ease: "power4.out" })
               .to(".story-txt", { 
                   y: 0, opacity: 1, duration: 1, 
-                  stagger: 1.5, // Kasih waktu buat orang baca
+                  stagger: 1.2, 
                   ease: "power3.out" 
               });
 
-            // 2. Munculkan Galeri setelah teks selesai
+            // 2. Munculkan Galeri di bawah teks setelah teks selesai
             tl.set(".gallery-container", { display: "block" })
               .from(".img-box", { 
-                  opacity: 0, scale: 0, rotation: 45, 
-                  stagger: 0.3, duration: 1, ease: "back.out(1.2)" 
+                  opacity: 0, y: 100, scale: 0.5, rotation: 15, 
+                  stagger: 0.2, duration: 1, ease: "back.out(1.2)" 
               });
 
-            // 3. Logika Ganti Foto (Shuffle)
-            const cards = document.querySelectorAll('.img-box');
-            let current = cards.length - 1;
+            // 3. Shuffle Smooth
+            const cards = Array.from(document.querySelectorAll('.img-box'));
+            let activeIndex = cards.length - 1;
 
             function shuffle() {
-                if (current < 0) return; // Berhenti kalau sudah habis (opsional)
-
-                const card = cards[current];
+                const card = cards[activeIndex];
                 
                 gsap.to(card, {
-                    x: 300, rotation: 20, opacity: 0, duration: 1.2, ease: "power2.inOut",
+                    x: 250, y: -50, rotation: 30, opacity: 0, duration: 1, ease: "power2.inOut",
                     onComplete: () => {
-                        // Taruh di paling bawah secara visual
+                        // Pindah ke paling belakang secara visual
                         card.style.zIndex = 0;
-                        gsap.set(card, { x: 0, rotation: 0 });
-                        gsap.to(card, { opacity: 1, scale: 0.9, duration: 0.5 });
+                        gsap.set(card, { x: 0, y: 0, rotation: 0, scale: 0.8 });
+                        gsap.to(card, { opacity: 1, scale: 0.9, duration: 0.4 });
                         
-                        current--;
-                        if (current < 0) {
-                            current = cards.length - 1;
-                            // Munculkan tombol di akhir siklus pertama
-                            gsap.to("#btnNext", { opacity: 1, pointerEvents: "auto", duration: 1 });
-                        }
+                        // Update index untuk kartu berikutnya
+                        activeIndex = activeIndex <= 0 ? cards.length - 1 : activeIndex - 1;
+
+                        // Tampilkan tombol saat siklus berjalan
+                        gsap.to("#btnNext", { opacity: 1, pointerEvents: "auto", duration: 1 });
+                    }
+                });
+
+                // Kartu di bawahnya naik sedikit
+                cards.forEach((c, i) => {
+                    if (i !== activeIndex) {
+                        gsap.to(c, { scale: 1, duration: 0.5 });
                     }
                 });
             }
 
-            // Jalankan shuffle setelah galeri masuk
             tl.add(() => {
-                setInterval(shuffle, 3500);
-            }, "+=0.5");
+                setInterval(shuffle, 3000);
+            }, "+=0.2");
         };
 
         function next() {
