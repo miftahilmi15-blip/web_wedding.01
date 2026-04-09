@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Pop-Out Edition - Samira & Murad</title>
+    <title>3D Luxury Wedding - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
@@ -12,18 +12,18 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: #1a0a16; /* Gelap di dasar untuk kontras 3D */
-            background-image: radial-gradient(circle at center, #4a148c 0%, #1a0a16 100%);
+            background: #fce4ec; 
+            background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden;
             height: 100vh;
-            perspective: 2000px; /* Perspektif sangat dalam */
+            perspective: 2000px; /* Perspektif sangat dalam untuk efek Pop-out */
         }
 
-        /* Ornamen Melayang (Parallax Layers) */
-        .layer {
-            position: fixed; pointer-events: none;
-            font-size: 3rem; opacity: 0.3;
+        /* Partikel melayang di background */
+        .particle {
+            position: fixed; background: rgba(236, 64, 122, 0.15);
+            border-radius: 50%; pointer-events: none; z-index: 0;
         }
 
         .scene {
@@ -32,81 +32,119 @@
             align-items: center; justify-content: center;
             transform-style: preserve-3d;
             will-change: transform;
+            padding-bottom: 80px; /* Jarak aman dari tombol */
         }
 
         .profile-card { 
             margin: 15px auto; 
             opacity: 0; 
+            position: relative;
             transform-style: preserve-3d;
-            width: 85%; max-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 85%; max-width: 320px;
+            background: rgba(255, 255, 255, 0.25);
             padding: 25px; border-radius: 40px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            /* Bayangan super tebal untuk depth */
-            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 40px 80px rgba(139, 94, 131, 0.15);
+        }
+
+        /* Efek Kilatan Cahaya (Shine) */
+        .profile-card::after {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            pointer-events: none;
         }
 
         .photo-wrapper {
             position: relative;
-            width: 140px; height: 140px; margin: 0 auto 15px;
+            width: 140px; height: 140px; margin: 0 auto 20px auto;
             transform-style: preserve-3d;
         }
         
+        .photo-frame {
+            position: absolute; top: -10px; left: -10px;
+            width: 160px; height: 160px;
+            border: 2px solid #ec407a; border-radius: 50%;
+            border-style: double; opacity: 0.3;
+            animation: rotateFrame 20s linear infinite;
+            transform: translateZ(-40px);
+        }
+
+        @keyframes rotateFrame { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         .photo { 
             width: 100%; height: 100%; 
             border-radius: 50%; object-fit: cover; 
-            border: 4px solid #fff;
-            transform: translateZ(80px); /* Keluar dari kartu */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 5px solid #fff;
+            transform: translateZ(100px); /* KELUAR DARI LAYAR */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         h2 { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 2.8rem; color: #fce4ec;
-            transform: translateZ(120px); /* Lebih depan lagi */
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-size: 2.8rem; margin: 10px 0; 
+            color: #ad1457;
+            transform: translateZ(120px); /* LEBIH DEPAN DARI FOTO */
+            text-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         .parent-info { 
-            font-size: 0.75rem; color: #f8bbd0; 
-            line-height: 1.5; transform: translateZ(50px);
+            font-size: 0.75rem; font-weight: 400; color: #6d4c67; 
+            line-height: 1.5; transform: translateZ(60px);
         }
 
         .ampersand { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 3.5rem; color: #ec407a;
-            transform: translateZ(150px) rotateZ(-10deg); /* Elemen paling depan */
+            font-size: 3.5rem; color: #ec407a; 
+            margin: 5px 0;
+            transform: translateZ(150px); /* PALING DEPAN */
+            text-shadow: 0 15px 30px rgba(236, 64, 122, 0.2);
         }
 
-        /* FIX TOMBOL KETUTUP */
-        .btn-container {
-            position: fixed; bottom: 40px; left: 0; width: 100%;
+        /* CONTAINER TOMBOL AGAR TIDAK KETUTUP */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            padding: 40px 0;
+            background: linear-gradient(to top, #fce4ec 70%, transparent);
+            z-index: 1000;
             display: flex; justify-content: center;
-            z-index: 999; /* Paling atas */
-            pointer-events: auto;
         }
 
         .btn-event {
-            padding: 16px 40px; 
-            background: linear-gradient(45deg, #ec407a, #ad1457);
-            color: white; border-radius: 50px; border: none; 
-            font-weight: 700; cursor: pointer;
-            box-shadow: 0 15px 30px rgba(236, 64, 122, 0.4);
-            text-transform: uppercase; letter-spacing: 2px;
-            transform: translateZ(200px); /* Tombol juga ikut 3D */
+            padding: 16px 45px; background: #ec407a; color: white;
+            border-radius: 50px; border: none; font-weight: 700;
+            box-shadow: 0 15px 35px rgba(236, 64, 122, 0.4); 
+            cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; font-size: 0.8rem;
+            transition: 0.3s;
         }
+        .btn-event:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
 
-    <div class="layer" style="top:10%; left:10%;" data-depth="0.2">🌸</div>
-    <div class="layer" style="top:70%; left:80%;" data-depth="0.5">✨</div>
-    <div class="layer" style="top:40%; left:5%;" data-depth="0.1">🌹</div>
+    <script>
+        for (let i = 0; i < 25; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            let size = Math.random() * 6 + 2;
+            p.style.width = size + 'px'; p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(p);
+            gsap.to(p, {
+                y: "random(-150, 150)", x: "random(-100, 100)",
+                duration: "random(4, 8)", repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
+        }
+    </script>
 
     <div class="scene" id="mainScene">
         <div class="profile-card" id="p1">
             <div class="photo-wrapper">
+                <div class="photo-frame"></div>
                 <img src="samira.png" class="photo" alt="Samira">
             </div>
             <h2>Samira Putri</h2>
@@ -117,101 +155,6 @@
 
         <div class="profile-card" id="p2">
             <div class="photo-wrapper">
-                <img src="murad.png" class="photo" alt="Murad">
-            </div>
-            <h2>Murad Al-Fatih</h2>
-            <p class="parent-info">Putra tercinta dari<br><b>Bpk. John</b> & <b>Ibu Doe</b></p>
-        </div>
-    </div>
-
-    <div class="btn-container">
-        <button class="btn-event" onclick="next()">Lanjut Acara</button>
-    </div>
-
-    <script>
-        window.onload = () => {
-            const tl = gsap.timeline();
-
-            // Animasi Masuk Cinematic
-            tl.to(".profile-card", { opacity: 1, duration: 1.5, stagger: 0.3, ease: "power4.out" })
-              .from(".profile-card", { z: -1000, rotationX: 45, duration: 2 }, "-=1.5");
-
-            // EFEK 3D TERCENGANG (TILT + AUTO)
-            const scene = document.getElementById('mainScene');
-            const layers = document.querySelectorAll('.layer');
-            
-            // Gerakan auto biar "hidup"
-            gsap.to(scene, {
-                rotationY: 10, rotationX: 5, 
-                duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
-
-            const handleMove = (e) => {
-                const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-                const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-                
-                const rotateY = (window.innerWidth / 2 - xVal) / 10; 
-                const rotateX = (yVal - window.innerHeight / 2) / 10;
-
-                // Scene bergerak
-                gsap.to(scene, {
-                    rotationY: rotateY,
-                    rotationX: rotateX,
-                    duration: 0.8,
-                    ease: "power2.out"
-                });
-
-                // Layer ornamen bergerak berlawanan (Parallax)
-                layers.forEach(layer => {
-                    const depth = layer.getAttribute('data-depth');
-                    gsap.to(layer, {
-                        x: rotateY * (depth * 50),
-                        y: -rotateX * (depth * 50),
-                        duration: 1
-                    });
-                });
-            };
-
-            window.addEventListener('mousemove', handleMove);
-            window.addEventListener('touchmove', (e) => handleMove(e));
-        };
-
-        function next() {
-            gsap.to("body", { opacity: 0, scale: 2, duration: 1 });
-            setTimeout(() => { window.location.href = "acara.html"; }, 1000);
-        }
-    </script>
-</body>
-</html>
-            z-index: 100;
-        }
-        .btn-event {
-            padding: 16px 45px; background: #ec407a; color: white;
-            border-radius: 50px; border: none; font-weight: 700;
-            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.4); 
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="decoration top-left">🌸</div>
-    <div class="decoration bottom-right">🌸</div>
-
-    <div class="scene" id="mainScene">
-        <div class="profile-card" id="p1">
-            <div class="photo-wrapper" id="pw1">
-                <div class="photo-frame"></div>
-                <img src="samira.png" class="photo" alt="Samira">
-            </div>
-            <h2>Samira Putri</h2>
-            <p class="parent-info">Putri tercinta dari<br><b>Bpk. Fulan</b> & <b>Ibu Fulanah</b></p>
-        </div>
-
-        <div class="ampersand" id="amp">&</div>
-
-        <div class="profile-card" id="p2">
-            <div class="photo-wrapper" id="pw2">
                 <div class="photo-frame"></div>
                 <img src="murad.png" class="photo" alt="Murad">
             </div>
@@ -220,56 +163,41 @@
         </div>
     </div>
 
-    <div class="btn-event-wrapper">
+    <div class="bottom-nav">
         <button class="btn-event" onclick="next()">LIHAT JADWAL ACARA</button>
     </div>
 
     <script>
-        // Buat partikel emas melayang untuk efek kedalaman
-        for (let i = 0; i < 20; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            let size = Math.random() * 5 + 2;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = Math.random() * 100 + 'vh';
-            document.body.appendChild(p);
-            
-            gsap.to(p, {
-                y: "random(-100, 100)",
-                x: "random(-50, 50)",
-                duration: "random(5, 10)",
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-        }
-
         window.onload = () => {
             const tl = gsap.timeline();
 
-            // Animasi masuk 3D
-            tl.to(".profile-card", { opacity: 1, duration: 1, stagger: 0.4 })
-              .to(".photo-wrapper", { opacity: 1, scale: 1, duration: 1, stagger: 0.4, ease: "back.out(2)" }, "-=1")
-              .to("#amp", { opacity: 1, duration: 0.5 }, "-=0.5");
+            // Animasi Masuk Super Smooth
+            tl.to(".profile-card", { opacity: 1, y: 0, duration: 1.5, stagger: 0.4, ease: "power4.out" })
+              .from(".photo", { z: 400, opacity: 0, duration: 1.2, stagger: 0.4, ease: "power2.out" }, "-=1");
 
-            // INTERAKSI 3D SENSITIF (Mouse & Tilt)
+            // INTERAKSI 3D SENSITIF
             const scene = document.getElementById('mainScene');
             
             const handleMove = (e) => {
                 const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
                 const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
                 
-                // Nilai rotasi lebih ekstrim biar "tampak" 3D
-                const rotateY = (window.innerWidth / 2 - xVal) / 10; 
-                const rotateX = (yVal - window.innerHeight / 2) / 15;
+                // Rotasi Scene
+                const rotateY = (window.innerWidth / 2 - xVal) / 12; 
+                const rotateX = (yVal - window.innerHeight / 2) / 12;
 
                 gsap.to(scene, {
                     rotationY: rotateY,
                     rotationX: rotateX,
-                    duration: 0.5,
-                    ease: "power1.out"
+                    duration: 0.7,
+                    ease: "power2.out"
+                });
+
+                // Efek Shine dinamis pada kartu
+                gsap.to(".profile-card::after", {
+                    x: rotateY * 5,
+                    y: rotateX * 5,
+                    duration: 0.7
                 });
             };
 
@@ -281,8 +209,8 @@
         };
 
         function next() {
-            gsap.to("body", { opacity: 0, duration: 0.5 });
-            setTimeout(() => { window.location.href = "acara.html"; }, 500);
+            gsap.to("body", { opacity: 0, scale: 1.1, duration: 0.8 });
+            setTimeout(() => { window.location.href = "acara.html"; }, 800);
         }
     </script>
 </body>
