@@ -20,16 +20,19 @@
             perspective: 2000px;
         }
 
-        /* --- ORNAMEN BUNGA MELAYANG (3D LAYERS) --- */
-        .floral {
-            position: fixed; pointer-events: none; z-index: 1;
-            font-size: 3.5rem; opacity: 0.4; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        /* --- EFEK BUNGA JATUH --- */
+        .falling-flower {
+            position: fixed; top: -10%;
+            pointer-events: none; z-index: 5;
+            opacity: 0.6;
+            user-select: none;
         }
 
         .scene {
             width: 100%; display: flex; flex-direction: column;
             align-items: center; transform-style: preserve-3d;
             padding-bottom: 120px; z-index: 10;
+            will-change: transform;
         }
 
         .card { 
@@ -37,21 +40,24 @@
             background: rgba(255, 255, 255, 0.3); 
             backdrop-filter: blur(25px); 
             border-radius: 40px; 
-            border: 2px solid rgba(236, 64, 122, 0.3); 
+            border: 1.5px solid rgba(236, 64, 122, 0.2); 
             padding: 40px 25px; margin: 12px 0;
             position: relative; transform-style: preserve-3d;
             opacity: 0; box-shadow: 0 30px 60px rgba(139, 94, 131, 0.1);
         }
 
-        /* Border Glow Emas Tipis */
-        .card::before {
+        /* Kilatan cahaya pada kartu */
+        .card::after {
             content: ''; position: absolute; inset: 0;
-            border-radius: 40px; padding: 2px;
-            background: linear-gradient(45deg, #ec407a, #f1d592, #ec407a);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-            opacity: 0.5;
+            background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: shine 5s infinite;
+            border-radius: 40px; pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% { background-position: -200% -200%; }
+            100% { background-position: 200% 200%; }
         }
 
         h2 { 
@@ -77,7 +83,6 @@
             text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* --- TOMBOL NAVIGASI MATCHING THEME --- */
         .nav-container {
             position: fixed; bottom: 40px; width: 100%;
             display: flex; justify-content: center; z-index: 1000;
@@ -90,17 +95,11 @@
             font-weight: 700; cursor: pointer; 
             box-shadow: 0 10px 30px rgba(173, 20, 87, 0.3);
             letter-spacing: 1.5px; font-size: 0.8rem;
-            text-transform: uppercase; transition: 0.4s;
+            text-transform: uppercase;
         }
-        .nav-btn:hover { transform: translateY(-5px) scale(1.05); }
     </style>
 </head>
 <body>
-
-    <div class="floral" style="top:5%; left:-5%;" data-depth="0.2">🌸</div>
-    <div class="floral" style="top:15%; right:-5%;" data-depth="0.5">🌺</div>
-    <div class="floral" style="bottom:10%; left:5%;" data-depth="0.3">🌹</div>
-    <div class="floral" style="bottom:25%; right:2%;" data-depth="0.4">🍃</div>
 
     <div class="scene" id="cardScene">
         <div class="card" id="card1">
@@ -124,6 +123,27 @@
     </div>
 
     <script>
+        // --- LOGIKA BUNGA JATUH ---
+        function createFlower() {
+            const flowers = ['🌸', '🌺', '🌹', '🍃', '✨'];
+            const f = document.createElement('div');
+            f.className = 'falling-flower';
+            f.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            document.body.appendChild(f);
+
+            gsap.to(f, {
+                y: window.innerHeight + 100,
+                x: `+=${Math.random() * 200 - 100}`,
+                rotation: Math.random() * 720,
+                duration: Math.random() * 5 + 5,
+                ease: "none",
+                onComplete: () => f.remove()
+            });
+        }
+        setInterval(createFlower, 400);
+
         window.onload = () => {
             const tl = gsap.timeline();
             tl.to(".card", { 
@@ -131,9 +151,7 @@
             });
 
             const scene = document.getElementById('cardScene');
-            const florals = document.querySelectorAll('.floral');
             
-            // Mouse & Tilt Move
             const handleMove = (e) => {
                 const xVal = e.clientX || (e.touches ? e.touches[0].clientX : 0);
                 const yVal = e.clientY || (e.touches ? e.touches[0].clientY : 0);
@@ -141,22 +159,11 @@
                 const moveY = (window.innerWidth / 2 - xVal) / 15;
                 const moveX = (yVal - window.innerHeight / 2) / 15;
 
-                // Scene Card 3D
                 gsap.to(scene, {
                     rotationY: moveY,
                     rotationX: moveX,
                     duration: 1,
                     ease: "power2.out"
-                });
-
-                // Bunga Parallax (Bergerak berlawanan arah kartu)
-                florals.forEach(f => {
-                    const d = f.getAttribute('data-depth');
-                    gsap.to(f, {
-                        x: moveY * (d * 40),
-                        y: -moveX * (d * 40),
-                        duration: 1.5
-                    });
                 });
             };
 
@@ -168,6 +175,9 @@
             gsap.to("body", { opacity: 0, scale: 1.2, duration: 0.8 });
             setTimeout(() => { window.location.href = "galeri.html"; }, 800);
         }
+    </script>
+</body>
+</html>        }
     </script>
 </body>
 </html>
