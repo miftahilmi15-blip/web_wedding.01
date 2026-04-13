@@ -4,37 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wishes - Samira & Murad</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%); font-family: 'Montserrat', sans-serif; padding: 30px; text-align: center; color: #8b5e83; }
-        .form-box { background: rgba(255,255,255,0.4); padding: 20px; border-radius: 20px; margin-bottom: 30px; }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #d4af37; outline: none; }
-        .btn-send { width: 100%; padding: 12px; background: #8b5e83; color: white; border: none; border-radius: 10px; font-weight: bold; }
-        .gift-box { border: 2px dashed #d4af37; padding: 20px; border-radius: 20px; background: white; margin-top: 20px; }
-        .btn-finish { margin-top: 40px; padding: 10px 20px; background: none; border: 1px solid #8b5e83; color: #8b5e83; border-radius: 50px; font-size: 0.7rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #fce4ec; 
+            background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
+            font-family: 'Montserrat', sans-serif; 
+            padding: 20px; 
+            color: #8b5e83; 
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
+
+        h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #ad1457; margin: 20px 0; }
+        h3 { font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin: 30px 0 15px; color: #ad1457; font-weight: 600; }
+
+        /* --- GLASS FORM BOX --- */
+        .form-box { 
+            width: 100%; max-width: 400px;
+            background: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(15px);
+            padding: 25px; 
+            border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(139, 94, 131, 0.1);
+            z-index: 10;
+        }
+
+        input, textarea { 
+            width: 100%; padding: 15px; margin: 8px 0; 
+            border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); 
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Montserrat', sans-serif; outline: none; 
+            transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: #ec407a; background: #fff; }
+
+        .btn-send { 
+            width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #ad1457, #ec407a); 
+            color: white; border: none; border-radius: 50px; 
+            font-weight: 700; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(173, 20, 87, 0.2);
+        }
+
+        /* --- LUXURY GIFT CARD --- */
+        .gift-card { 
+            width: 100%; max-width: 350px;
+            background: linear-gradient(135deg, #ad1457 0%, #6a0d33 100%);
+            padding: 25px; border-radius: 20px; 
+            color: white; position: relative; overflow: hidden;
+            box-shadow: 0 15px 30px rgba(106, 13, 51, 0.3);
+            text-align: left; margin-bottom: 20px;
+            z-index: 10;
+        }
+        .bank-name { font-size: 0.7rem; letter-spacing: 2px; opacity: 0.8; margin-bottom: 10px; }
+        .acc-number { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; letter-spacing: 2px; }
+        .acc-name { font-size: 0.8rem; text-transform: uppercase; opacity: 0.9; }
+
+        .btn-copy {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255,255,255,0.4);
+            color: white; padding: 6px 15px; border-radius: 10px; font-size: 0.65rem;
+            cursor: pointer; transition: 0.3s; font-weight: 600;
+        }
+        .btn-copy:active { background: #fff; color: #ad1457; }
+
+        /* --- DECORATION --- */
+        .particle { position: fixed; pointer-events: none; z-index: 1; color: #d4af37; opacity: 0.4; }
+
+        .btn-finish { 
+            margin: 40px 0; padding: 12px 30px; background: none; 
+            border: 1px solid #8b5e83; color: #8b5e83; 
+            border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+    <script>
+        for (let i = 0; i < 15; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.innerHTML = '✨';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(p);
+            gsap.to(p, {
+                y: "random(-100, 100)", x: "random(-50, 50)",
+                duration: "random(4, 8)", repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
+        }
+    </script>
+
     <h2>Kirim Doa Restu</h2>
+    
     <div class="form-box">
-        <input type="text" placeholder="Nama Anda">
-        <textarea placeholder="Tulis ucapan..." rows="4"></textarea>
+        <input type="text" id="nama" placeholder="Nama Anda">
+        <textarea id="pesan" placeholder="Tulis ucapan tulus..." rows="4"></textarea>
         <button class="btn-send" onclick="send()">KIRIM UCAPAN 💌</button>
     </div>
 
     <h3>Kado Digital 🎁</h3>
-    <div class="gift-box">
-        <p style="font-size: 0.8rem;">Bank Central Asia (BCA)</p>
-        <p style="font-weight: bold; font-size: 1.2rem;">1234567890</p>
-        <p style="font-size: 0.8rem;">a/n Samira Putri</p>
+    
+    <div class="gift-card">
+        <button class="btn-copy" onclick="copyRek('1234567890', this)">SALIN</button>
+        <p class="bank-name">BANK CENTRAL ASIA (BCA)</p>
+        <p class="acc-number">1234 5678 90</p>
+        <p class="acc-name">Samira Putri</p>
+    </div>
+
+    <div class="gift-card" style="background: linear-gradient(135deg, #2c3e50 0%, #000 100%);">
+        <button class="btn-copy" onclick="copyRek('0987654321', this)">SALIN</button>
+        <p class="bank-name">BANK MANDIRI</p>
+        <p class="acc-number">0987 6543 21</p>
+        <p class="acc-name">Murad Al-Fatih</p>
     </div>
 
     <button class="btn-finish" onclick="home()">KEMBALI KE DEPAN</button>
 
     <script>
-        function send() { alert('Terima kasih atas doa tulusnya!'); }
-        function home() { window.location.href = "index.html"; }
+        // Animasi Masuk GSAP
+        gsap.from(".form-box", { opacity: 0, y: 50, duration: 1.2, ease: "power3.out" });
+        gsap.from(".gift-card", { opacity: 0, scale: 0.9, duration: 1, stagger: 0.3, delay: 0.5 });
+
+        function send() {
+            const nama = document.getElementById('nama').value;
+            if(nama === "") { alert("Mohon isi nama Anda"); return; }
+            alert('Terima kasih ' + nama + ' atas doa tulusnya!');
+            document.getElementById('nama').value = "";
+            document.getElementById('pesan').value = "";
+        }
+
+        function copyRek(no, btn) {
+            navigator.clipboard.writeText(no);
+            const originalText = btn.innerText;
+            btn.innerText = "TERSALIN!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        }
+
+        function home() {
+            gsap.to("body", { opacity: 0, duration: 0.8, onComplete: () => {
+                window.location.href = "index.html";
+            }});
+        }
     </script>
 </body>
 </html>
