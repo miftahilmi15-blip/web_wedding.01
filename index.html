@@ -16,15 +16,49 @@
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh; width: 100vw;
             display: flex; justify-content: center; align-items: center;
+            position: relative; /* Penting untuk posisi bunga */
         }
 
-        /* --- CONTAINER UTAMA --- */
+        /* --- 1. BUNGA JATUH DI BACKGROUND (BELAKANG FRAME) --- */
+        .falling-flowers-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; /* Di atas background, di bawah frame */
+            pointer-events: none; /* Supaya tidak bisa diklik */
+        }
+
+        .flower {
+            position: absolute;
+            top: -10%; /* Mulai dari atas layar */
+            color: rgba(236, 64, 122, 0.4); /* Pink transparan soft */
+            font-size: 1.5rem;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        /* Variasi Ukuran Bunga */
+        .flower:nth-child(2n) { font-size: 2rem; color: rgba(212, 175, 55, 0.3); } /* Emas soft */
+        .flower:nth-child(3n) { font-size: 1rem; color: rgba(139, 94, 131, 0.4); } /* Ungu soft */
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0vh) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg); /* Jatuh ke bawah + berputar */
+                opacity: 0; /* Hilang perlahan di bawah */
+            }
+        }
+
+        /* --- CONTAINER UTAMA (DI DEPAN BUNGA JATUH) --- */
         .main-wrapper {
             position: relative;
             width: 320px; height: 550px;
+            z-index: 20; /* Lebih tinggi dari bunga jatuh */
         }
 
-        /* --- 1. NAMA TERBANG (HANYA DI ATAS FRAME) --- */
+        /* --- 2. NAMA TERBANG (HANYA DI ATAS FRAME) --- */
         .bounce-area {
             position: absolute;
             top: -60px; left: 0; width: 100%; height: 100px;
@@ -37,7 +71,7 @@
             text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
         }
 
-        /* --- 2. FRAME --- */
+        /* --- 3. FRAME --- */
         .frame-container {
             width: 100%; height: 100%;
             border: 1px solid rgba(212, 175, 55, 0.5);
@@ -46,7 +80,7 @@
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
             box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            position: relative; z-index: 20;
+            position: relative; z-index: 30; /* Paling depan */
         }
 
         .flower-vinyl {
@@ -84,6 +118,9 @@
 
     <div id="storm-layer"></div>
 
+    <div class="falling-flowers-container" id="flowers-bg">
+        </div>
+
     <div class="main-wrapper">
         <div class="bounce-area">
             <div id="bounce1" class="bounce-element">Samira 🌸</div>
@@ -110,12 +147,36 @@
     </div>
 
     <script>
-        // 1. Ambil Nama dari URL
+        // 1. Logika Bunga Jatuh di Background
+        function createFlowers() {
+            const container = document.getElementById('flowers-bg');
+            const flowerEmojis = ['🌸', '🌺', '🌹', '🍃', '✨'];
+            const numberOfFlowers = 25; // Jumlah bunga yang jatuh simultan
+
+            for (let i = 0; i < numberOfFlowers; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.innerText = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+                
+                // Atur posisi acak horizontal
+                flower.style.left = Math.random() * 100 + 'vw';
+                
+                // Atur delay acak agar tidak jatuh bersamaan
+                flower.style.animationDelay = Math.random() * 10 + 's';
+                
+                // Atur durasi jatuh acak (kecepatan berbeda)
+                flower.style.animationDuration = (Math.random() * 5 + 5) + 's'; // 5-10 detik
+
+                container.appendChild(flower);
+            }
+        }
+
+        // 2. Ambil Nama dari URL
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
-        // 2. Logika Bounce terbatas di area atas (.bounce-area)
+        // 3. Logika Bounce terbatas di area atas (.bounce-area)
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
@@ -135,15 +196,20 @@
         window.onload = () => {
             gsap.from(".main-wrapper", { opacity: 0, scale: 0.9, duration: 1.5 });
             gsap.to("#vinyl", { rotate: 360, duration: 10, repeat: -1, ease: "linear" });
+            
+            // Jalankan fungsi bunga jatuh & bounce nama
+            createFlowers();
             createBounce('bounce1');
             createBounce('bounce2');
         };
 
-        // 3. Fungsi Buka Undangan & Pindah ke profil.html
+        // 4. Fungsi Buka Undangan & Pindah ke profil.html
         function startStorm() {
-            // Play Musik
             const audio = document.getElementById('weddingAudio');
             audio.play();
+
+            // Sembunyikan bunga background agar tidak mengganggu ledakan
+            document.getElementById('flowers-bg').style.display = 'none';
 
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
@@ -163,10 +229,8 @@
                 });
             }
 
-            // Transisi keluar
             gsap.to(".main-wrapper", { opacity: 0, scale: 1.2, duration: 1, ease: "power2.in" });
 
-            // Pindah ke file profil.html (pastikan file ini ada di folder yang sama)
             setTimeout(() => { 
                 window.location.href = "profil.html"; 
             }, 1500);
