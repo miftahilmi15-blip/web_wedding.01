@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Journey of Samira & Murad</title>
+    <title>Our Story - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
@@ -18,122 +18,106 @@
             color: #8b5e83; 
             overflow: hidden; 
             height: 100vh;
-            display: flex; flex-direction: column;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- 1. AREA TEKS BERJALAN (ATAS) --- */
-        .story-header {
-            height: 40vh;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.1);
-            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-        }
-
-        .scroll-content {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            padding: 0 30px;
-            top: 100%; /* Mulai dari bawah area teks */
-        }
-
-        h1 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: #ad1457; margin-bottom: 20px; }
-        .story-paragraph { font-size: 0.9rem; line-height: 2; margin-bottom: 30px; font-weight: 300; }
-
-        /* --- 2. AREA FOTO SHUFFLE (BAWAH) --- */
-        .gallery-wrapper {
-            height: 60vh;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 1000px;
+        /* --- 1. JUDUL STATIS (Diam di atas) --- */
+        .header-title {
+            margin-top: 8vh;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #ad1457;
             z-index: 10;
         }
 
-        .gallery-container {
-            width: 240px;
-            height: 320px;
+        /* --- 2. TEKS BERJALAN (Area Scroll) --- */
+        .text-scroll-area {
+            height: 40vh;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
             position: relative;
-            transform-style: preserve-3d;
+            margin-top: 20px;
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        }
+
+        .scroll-wrapper {
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .story-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-weight: 300;
+            color: #6d4c67;
+        }
+
+        /* --- 3. GALLERY POLAROID LUXURY --- */
+        .gallery-container {
+            margin-top: 20px;
+            width: 240px; 
+            height: 300px;
+            display: none; /* Muncul otomatis setelah teks */
+            position: relative;
         }
 
         .img-box {
             position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 8px solid white;
-            box-shadow: 0 15px 35px rgba(139, 94, 131, 0.2);
-            opacity: 0;
-            transform-origin: center bottom;
+            width: 240px; height: 300px;
+            background: #fff;
+            padding: 15px 15px 50px 15px;
+            border-radius: 5px;
+            box-shadow: 0 20px 40px rgba(139, 94, 131, 0.3);
+            transform: rotateZ(-5deg);
         }
 
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .img-box img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            border-radius: 2px;
+        }
 
-        /* --- 3. TOMBOL TERKUNCI --- */
+        .img-box::after {
+            content: "Samira & Murad";
+            position: absolute;
+            bottom: 15px; width: 100%; left: 0;
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.3rem; color: #ad1457;
+        }
+
+        /* --- 4. TOMBOL NAVIGASI --- */
         .btn-container {
-            position: fixed;
-            bottom: -100px; /* Sembunyi di bawah layar */
-            left: 0; width: 100%;
-            display: flex; justify-content: center;
-            padding: 30px 0;
+            position: fixed; bottom: 30px; opacity: 0; pointer-events: none;
             z-index: 100;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .btn-container.show {
-            bottom: 20px;
-        }
-
         .nav-btn {
-            padding: 16px 45px;
-            background: linear-gradient(45deg, #ad1457, #ec407a);
-            color: white; border-radius: 50px; border: none;
-            font-weight: 700; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(173, 20, 87, 0.4);
-            text-transform: uppercase; letter-spacing: 1px;
+            padding: 14px 40px; background: #ec407a; color: white;
+            border-radius: 50px; border: none; font-weight: 700;
+            text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <div class="story-header">
-        <div class="scroll-content" id="scrollText">
-            <h1>Our Story</h1>
-            <p class="story-paragraph">
-                Semua dimulai di tahun 2020, saat takdir mempertemukan kita di sebuah perpustakaan kota. 
-                Sederhana, namun berkesan.
-            </p>
-            <p class="story-paragraph">
-                Dari sekadar teman diskusi, rasa itu tumbuh menjadi sandaran di masa sulit dan tawa di masa bahagia.
-                Setiap pesan singkat, setiap pertemuan, menjadi kepingan puzzle yang melengkapi hidup kita.
-            </p>
-            <p class="story-paragraph">
-                Tahun demi tahun kita lalui, rintangan datang hanya untuk menguatkan akar kepercayaan kita. 
-                Kita belajar bahwa cinta bukan hanya tentang perasaan, tapi tentang keputusan untuk tetap tinggal.
-            </p>
-            <p class="story-paragraph">
-                Hingga akhirnya, di hari yang penuh berkah ini, kita memutuskan untuk mengikat janji suci 
-                di hadapan Sang Pencipta. Ini bukanlah akhir, melainkan awal dari petualangan selamanya.
-            </p>
-            <p class="story-paragraph" style="color: #ad1457; font-weight: 600; padding-bottom: 100px;">
-                - TAMAT -
-            </p>
+    <div class="header-title" id="title">Our Story</div>
+
+    <div class="text-scroll-area">
+        <div class="scroll-wrapper" id="scrollContent">
+            <p class="story-text">Berawal dari pertemuan di lorong kampus yang tak terduga, siapa sangka takdir sedang merajut kisah kita.</p>
+            <p class="story-text">Tawa yang kita bagi dan mimpi yang kita susun perlahan menjadi alasan mengapa kita saling memilih setiap hari.</p>
+            <p class="story-text">Kini, setelah melewati berbagai musim bersama, kita siap melangkah ke babak yang lebih suci.</p>
+            <p class="story-text">Terima kasih telah menjadi bagian dari perjalanan yang luar biasa ini, Murad & Samira.</p>
         </div>
     </div>
 
-    <div class="gallery-wrapper">
-        <div class="gallery-container" id="gallery">
-            <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=300"></div>
-            <div class="img-box"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=300"></div>
-            <div class="img-box"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=300"></div>
-            <div class="img-box"><img src="https://images.unsplash.com/photo-1465495910483-0d6749718482?q=80&w=300"></div>
-            <div class="img-box"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=300"></div>
-        </div>
+    <div class="gallery-container" id="gallery">
+        <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=300"></div>
     </div>
 
     <div class="btn-container" id="btnNext">
@@ -142,60 +126,23 @@
 
     <script>
         window.onload = () => {
-            const scrollText = document.getElementById('scrollText');
-            const cards = Array.from(document.querySelectorAll('.img-box'));
-            const btn = document.getElementById('btnNext');
-            
-            // 1. Durasi teks berjalan (sesuaikan dengan panjang teks Bos)
-            const scrollDuration = 25; // detik
+            const tl = gsap.timeline();
 
-            // Animasi Teks Berjalan
-            gsap.to(scrollText, {
-                top: "-110%", // Berjalan sampai teks paling bawah hilang ke atas
-                duration: scrollDuration,
-                ease: "none",
-                onComplete: () => {
-                    // Tampilkan tombol hanya setelah teks SELESAI
-                    btn.classList.add('show');
-                }
-            });
-
-            // 2. Animasi Foto Shuffle Berulang selama teks berjalan
-            let activeIndex = cards.length - 1;
-
-            // Munculkan foto pertama kali
-            gsap.set(cards, { opacity: 0, scale: 0.8 });
-            gsap.to(cards[activeIndex], { opacity: 1, scale: 1, duration: 1 });
-
-            function shufflePhotos() {
-                const card = cards[activeIndex];
-                
-                gsap.to(card, {
-                    x: 300, y: -100, rotation: 45, opacity: 0, duration: 1.5, ease: "power2.inOut",
-                    onComplete: () => {
-                        card.style.zIndex = 0;
-                        gsap.set(card, { x: 0, y: 0, rotation: 0, scale: 0.8 });
-                        gsap.to(card, { opacity: 1, scale: 0.9, duration: 0.6 });
-                        
-                        activeIndex = activeIndex <= 0 ? cards.length - 1 : activeIndex - 1;
-                    }
-                });
-
-                // Kartu berikutnya di tumpukan naik ke atas
-                const nextCard = activeIndex <= 0 ? cards[cards.length - 1] : cards[activeIndex - 1];
-                gsap.to(nextCard, { opacity: 1, scale: 1, zIndex: 10, duration: 1 });
-            }
-
-            // Ganti foto setiap 4 detik
-            const photoInterval = setInterval(shufflePhotos, 4000);
-            
-            // Opsional: Hentikan foto jika sudah di akhir (tapi biasanya dibiarkan loop)
+            // 1. Judul Muncul (Diam di atas)
+            tl.to("#title", { opacity: 1, duration: 1.5 })
+              
+            // 2. Teks Berjalan otomatis
+              .to("#scrollContent", { top: "-100%", duration: 20, ease: "none" })
+              
+            // 3. Galeri Muncul setelah teks selesai
+              .set("#gallery", { display: "block" })
+              .from(".img-box", { opacity: 0, scale: 0.5, rotation: 10, duration: 1 })
+              
+            // 4. Tombol muncul setelah semuanya selesai
+              .to("#btnNext", { opacity: 1, pointerEvents: "auto", duration: 1 });
         };
 
-        function next() {
-            gsap.to("body", { opacity: 0, duration: 0.8 });
-            setTimeout(() => { window.location.href = "wish.html"; }, 800);
-        }
+        function next() { window.location.href = "wish.html"; }
     </script>
 </body>
 </html>
