@@ -21,54 +21,54 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- JUDUL STATIS (Muncul dari bawah lalu diam) --- */
+        /* --- JUDUL STATIS --- */
         .header-title {
-            margin-top: 10vh;
+            margin-top: 8vh;
             font-family: 'Great Vibes', cursive;
             font-size: 3.5rem;
             color: #ad1457;
-            opacity: 0;
+            z-index: 10;
         }
 
-        /* --- TEKS BERJALAN (Area Scroll) --- */
+        /* --- AREA TEKS BERJALAN --- */
         .text-scroll-area {
-            height: 50vh;
-            width: 85%;
-            max-width: 400px;
+            height: 35vh;
+            width: 90%;
+            max-width: 450px;
             overflow: hidden;
             position: relative;
             margin-top: 20px;
-            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            /* Efek pudar atas & bawah */
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
         }
 
         .scroll-wrapper {
             position: absolute;
-            top: 100%; /* Mulai dari bawah area scroll */
             width: 100%;
+            top: 100%; /* Mulai dari bawah area */
             text-align: center;
         }
 
         .story-text {
             font-size: 0.95rem;
             line-height: 1.8;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             font-weight: 300;
         }
 
-        /* --- GALLERY (Tampil di bawah setelah teks selesai) --- */
+        /* --- GALERI (Sembunyi dulu) --- */
         .gallery-container {
             margin-top: 20px;
             width: 220px; height: 280px;
-            display: none; /* Baru muncul nanti */
-            position: relative;
+            opacity: 0; /* Sembunyi sampai teks selesai */
+            display: flex; justify-content: center; align-items: center;
         }
 
         .img-box {
-            position: absolute; width: 100%; height: 100%;
+            position: absolute; width: 220px; height: 280px;
             border-radius: 15px; border: 6px solid white;
             box-shadow: 0 10px 30px rgba(139, 94, 131, 0.2);
         }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .btn-container {
             position: fixed; bottom: 30px; opacity: 0; pointer-events: none;
@@ -95,7 +95,6 @@
 
     <div class="gallery-container" id="gallery">
         <div class="img-box"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=300"></div>
-        <div class="img-box"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=300"></div>
     </div>
 
     <div class="btn-container" id="btnNext">
@@ -104,20 +103,21 @@
 
     <script>
         window.onload = () => {
-            const tl = gsap.timeline();
+            // 1. Judul langsung muncul (diam)
+            gsap.to("#title", { opacity: 1, duration: 1 });
 
-            // 1. Judul naik dari bawah ke atas lalu berhenti
-            tl.to("#title", { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" })
-              
-            // 2. Teks scroll berjalan
-              .to("#scrollContent", { top: "-100%", duration: 20, ease: "none" })
-              
-            // 3. Setelah teks selesai, munculkan gallery
-              .set("#gallery", { display: "block" })
-              .from(".img-box", { opacity: 0, scale: 0.5, stagger: 0.5, duration: 1 })
-              
-            // 4. Munculkan tombol
-              .to("#btnNext", { opacity: 1, pointerEvents: "auto", duration: 1 });
+            // 2. Teks berjalan (terpisah dari judul)
+            gsap.to("#scrollContent", { 
+                top: "-100%", 
+                duration: 20, 
+                ease: "none",
+                onComplete: () => {
+                    // 3. Setelah teks selesai, baru muncul galeri
+                    gsap.to("#gallery", { opacity: 1, duration: 1 });
+                    // 4. Setelah galeri muncul, munculkan tombol
+                    gsap.to("#btnNext", { opacity: 1, pointerEvents: "auto", duration: 1 });
+                }
+            });
         };
 
         function next() { window.location.href = "wish.html"; }
