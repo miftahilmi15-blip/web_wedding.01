@@ -2,9 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Wedding Invitation - Devkia & Miftah</title>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
@@ -16,10 +15,9 @@
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden; height: 100vh; width: 100vw;
             display: flex; justify-content: center; align-items: center;
-            position: relative;
         }
 
-        /* --- BUNGA JATUH --- */
+        /* --- BACKGROUND FLOWERS --- */
         .falling-flowers-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 10; pointer-events: none;
@@ -33,53 +31,62 @@
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* --- WRAPPER UTAMA --- */
+        /* --- WRAPPER UTAMA (Pusat Segala Sesuatu) --- */
         .main-wrapper {
-            position: relative; width: 320px; height: 550px;
-            z-index: 20; margin-top: 50px;
+            position: relative;
+            width: 300px; /* Lebar card */
+            height: 480px; /* Tinggi card */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
         }
 
-        /* --- BOUNCE AREA (DIPERLEBAR) --- */
+        /* --- BOUNCE AREA (Menempel di atas Frame) --- */
         .bounce-area {
-            position: absolute; top: -120px; left: 0; width: 100%; height: 120px;
-            z-index: 100; pointer-events: none;
+            position: absolute;
+            top: -60px; /* Jarak bounce di atas card */
+            width: 100%; height: 60px;
+            pointer-events: none;
+            overflow: visible;
         }
         .bounce-element {
             position: absolute; white-space: nowrap; font-family: 'Great Vibes', cursive;
-            color: #8b5e83; font-size: 1.6rem; text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+            color: #8b5e83; font-size: 1.5rem; text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
         }
 
-        /* --- FRAME CONTAINER (DIPERLEGA) --- */
+        /* --- FRAME CONTAINER (Kartu Undangan) --- */
         .frame-container {
-            width: 100%; height: 100%; border: 1px solid rgba(212, 175, 55, 0.3);
-            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px);
-            border-radius: 40px; display: flex; flex-direction: column; 
-            justify-content: space-between; align-items: center;
-            padding: 50px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            position: relative; z-index: 30;
+            width: 100%; height: 100%;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px); border-radius: 30px;
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
         }
 
-        .header-text { letter-spacing: 5px; font-size: 0.75rem; color: #8b5e83; font-weight: 900; }
-        .couple-name { font-family: 'Great Vibes', cursive; color: #8b5e83; font-size: 3rem; text-align: center; line-height: 1.2; }
-        .guest-section { text-align: center; margin: 20px 0; }
-        .guest-name { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.4rem; margin-top: 10px; }
+        .header-text { letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 900; margin-bottom: 5px; }
+        .couple-name { font-family: 'Great Vibes', cursive; color: #8b5e83; font-size: 2.8rem; text-align: center; line-height: 1.1; margin-bottom: 20px; }
+        .guest-section { text-align: center; }
+        .guest-label { font-size: 0.75rem; color: #8b5e83; letter-spacing: 1px; }
+        .guest-name { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.2rem; margin: 10px 0; }
         
         .btn-buka {
-            padding: 14px 45px; background: #8b5e83; color: white; border: none; 
+            padding: 12px 35px; background: #8b5e83; color: white; border: none; 
             border-radius: 50px; font-weight: 600; cursor: pointer; 
-            transition: 0.4s; box-shadow: 0 5px 20px rgba(139,94,131,0.4);
-            text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s; box-shadow: 0 5px 15px rgba(139,94,131,0.3);
+            margin-top: 15px;
         }
 
-        .flower-vinyl { position: absolute; bottom: 15px; right: 15px; width: 70px; height: 70px; z-index: 50; opacity: 0.8; }
+        .flower-vinyl { position: absolute; bottom: 15px; right: 15px; width: 60px; height: 60px; opacity: 0.7; }
         #storm-layer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: none; }
     </style>
 </head>
 <body>
 
-    <audio id="weddingAudio" loop>
-        <source src="musik-kamu.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="weddingAudio" loop><source src="musik-kamu.mp3" type="audio/mpeg"></audio>
 
     <div id="storm-layer"></div>
     <div class="falling-flowers-container" id="flowers-bg"></div>
@@ -90,23 +97,20 @@
             <div id="bounce2" class="bounce-element">Miftah 🌺</div>
         </div>
 
-        <div class="frame-container" id="main-frame">
+        <div class="frame-container">
             <div>
                 <p class="header-text">THE WEDDING OF</p>
-                <h1 class="couple-name">Devkia & Miftah</h1>
+                <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
             </div>
 
             <div class="guest-section">
-                <p style="font-size: 0.8rem; color: #8b5e83; letter-spacing: 1px;">Kepada Yth:</p>
+                <p class="guest-label">Kepada Yth:</p>
                 <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
                 <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
             </div>
 
             <div class="flower-vinyl" id="vinyl">
-                <svg viewBox="0 0 100 100">
-                    <path fill="#d4af37" d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/>
-                    <circle cx="50" cy="50" r="10" fill="white" stroke="#d4af37"/>
-                </svg>
+                <svg viewBox="0 0 100 100"><path fill="#d4af37" d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/><circle cx="50" cy="50" r="10" fill="white" stroke="#d4af37"/></svg>
             </div>
         </div>
     </div>
@@ -115,12 +119,12 @@
         function createFlowers() {
             const container = document.getElementById('flowers-bg');
             const flowerEmojis = ['🌸', '🌺', '🌹', '🍃', '✨'];
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 20; i++) {
                 const flower = document.createElement('div');
                 flower.className = 'flower';
                 flower.innerText = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
                 flower.style.left = Math.random() * 100 + 'vw';
-                flower.style.animationDelay = Math.random() * 10 + 's';
+                flower.style.animationDelay = Math.random() * 8 + 's';
                 flower.style.animationDuration = (Math.random() * 5 + 5) + 's';
                 container.appendChild(flower);
             }
@@ -133,8 +137,8 @@
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
-            let pos = { x: Math.random() * (container.offsetWidth - 80), y: Math.random() * 30 };
-            let vel = { x: 0.8, y: 0.5 };
+            let pos = { x: Math.random() * 50, y: Math.random() * 20 };
+            let vel = { x: 0.6, y: 0.4 };
             function update() {
                 pos.x += vel.x; pos.y += vel.y;
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= container.offsetWidth) vel.x *= -1;
@@ -154,24 +158,18 @@
         };
 
         function startStorm() {
-            const audio = document.getElementById('weddingAudio');
-            audio.play().catch(e => console.log("Audio play blocked"));
+            document.getElementById('weddingAudio').play().catch(e => console.log("Audio blocked"));
             document.getElementById('flowers-bg').style.display = 'none';
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
-            const stormEmojis = ['🌸', '🌺', '🌹'];
-            for(let i=0; i<40; i++) {
+            for(let i=0; i<30; i++) {
                 let div = document.createElement('div');
-                div.innerHTML = stormEmojis[Math.floor(Math.random() * stormEmojis.length)];
+                div.innerHTML = ['🌸', '🌺', '🌹'][Math.floor(Math.random()*3)];
                 div.style.position = 'fixed'; div.style.left = '50vw'; div.style.top = '50vh';
                 div.style.fontSize = '2rem'; storm.appendChild(div);
-                gsap.to(div, { 
-                    x: (Math.random() - 0.5) * window.innerWidth * 1.5, 
-                    y: (Math.random() - 0.5) * window.innerHeight * 1.5, 
-                    rotation: 720, duration: 2, opacity: 0, ease: "power2.out" 
-                });
+                gsap.to(div, { x: (Math.random()-0.5)*800, y: (Math.random()-0.5)*800, rotation: 720, duration: 2, opacity: 0 });
             }
-            gsap.to(".main-wrapper", { opacity: 0, scale: 1.2, duration: 1, ease: "power2.in" });
+            gsap.to(".main-wrapper", { opacity: 0, scale: 1.5, duration: 1 });
             setTimeout(() => { window.location.href = "profil.html"; }, 1500);
         }
     </script>
