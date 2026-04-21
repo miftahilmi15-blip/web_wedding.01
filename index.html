@@ -19,82 +19,60 @@
             position: relative;
         }
 
-        /* --- 1. BUNGA JATUH DI BACKGROUND --- */
+        /* --- BUNGA JATUH --- */
         .falling-flowers-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; pointer-events: none;
         }
-
         .flower {
-            position: absolute;
-            top: -10%;
-            color: rgba(236, 64, 122, 0.4);
-            font-size: 1.5rem;
-            animation: fall linear infinite;
+            position: absolute; top: -10%; color: rgba(236, 64, 122, 0.4);
+            font-size: 1.5rem; animation: fall linear infinite;
         }
-
         @keyframes fall {
             0% { transform: translateY(0vh) rotate(0deg); opacity: 0.8; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* --- CONTAINER UTAMA --- */
+        /* --- WRAPPER UTAMA --- */
         .main-wrapper {
-            position: relative;
-            width: 320px; height: 550px;
-            z-index: 20;
+            position: relative; width: 320px; height: 550px;
+            z-index: 20; margin-top: 50px;
         }
 
+        /* --- BOUNCE AREA (DIPERLEBAR) --- */
         .bounce-area {
-            position: absolute;
-            top: -60px; left: 0; width: 100%; height: 100px;
+            position: absolute; top: -120px; left: 0; width: 100%; height: 120px;
             z-index: 100; pointer-events: none;
         }
         .bounce-element {
-            position: absolute; white-space: nowrap;
-            font-family: 'Great Vibes', cursive;
-            color: #8b5e83; font-size: 1.5rem;
-            text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+            position: absolute; white-space: nowrap; font-family: 'Great Vibes', cursive;
+            color: #8b5e83; font-size: 1.6rem; text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
         }
 
+        /* --- FRAME CONTAINER (DIPERLEGA) --- */
         .frame-container {
-            width: 100%; height: 100%;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px); border-radius: 40px;
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            width: 100%; height: 100%; border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px);
+            border-radius: 40px; display: flex; flex-direction: column; 
+            justify-content: space-between; align-items: center;
+            padding: 50px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05);
             position: relative; z-index: 30;
         }
 
-        .flower-vinyl {
-            position: absolute; bottom: 20px; right: 20px;
-            width: 85px; height: 85px; z-index: 50;
-        }
-
-        .couple-name {
-            font-family: 'Great Vibes', cursive; color: #8b5e83;
-            font-size: 3.2rem; text-align: center; margin: 20px 0;
-        }
-
-        .guest-name {
-            font-family: 'Great Vibes', cursive; color: #d4af37;
-            font-size: 2.2rem; margin: 10px 0;
-        }
-
+        .header-text { letter-spacing: 5px; font-size: 0.75rem; color: #8b5e83; font-weight: 900; }
+        .couple-name { font-family: 'Great Vibes', cursive; color: #8b5e83; font-size: 3rem; text-align: center; line-height: 1.2; }
+        .guest-section { text-align: center; margin: 20px 0; }
+        .guest-name { font-family: 'Great Vibes', cursive; color: #d4af37; font-size: 2.4rem; margin-top: 10px; }
+        
         .btn-buka {
-            margin-top: 30px; padding: 12px 40px; background: #8b5e83;
-            color: white; border: none; border-radius: 50px; font-weight: 600;
-            cursor: pointer; transition: 0.4s; box-shadow: 0 5px 15px rgba(139,94,131,0.3);
+            padding: 14px 45px; background: #8b5e83; color: white; border: none; 
+            border-radius: 50px; font-weight: 600; cursor: pointer; 
+            transition: 0.4s; box-shadow: 0 5px 20px rgba(139,94,131,0.4);
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
-        #storm-layer {
-            position: fixed; inset: 0; z-index: 9999; 
-            pointer-events: none; display: none;
-        }
+        .flower-vinyl { position: absolute; bottom: 15px; right: 15px; width: 70px; height: 70px; z-index: 50; opacity: 0.8; }
+        #storm-layer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: none; }
     </style>
 </head>
 <body>
@@ -104,7 +82,6 @@
     </audio>
 
     <div id="storm-layer"></div>
-
     <div class="falling-flowers-container" id="flowers-bg"></div>
 
     <div class="main-wrapper">
@@ -114,11 +91,13 @@
         </div>
 
         <div class="frame-container" id="main-frame">
-            <p style="letter-spacing: 4px; font-size: 0.7rem; color: #8b5e83; font-weight: 600;">THE WEDDING OF</p>
-            <h1 class="couple-name">Devkia & Miftah</h1>
+            <div>
+                <p class="header-text">THE WEDDING OF</p>
+                <h1 class="couple-name">Devkia & Miftah</h1>
+            </div>
 
-            <div style="text-align: center; margin-top: 20px;">
-                <p style="font-size: 0.8rem; color: #8b5e83;">Kepada Yth:</p>
+            <div class="guest-section">
+                <p style="font-size: 0.8rem; color: #8b5e83; letter-spacing: 1px;">Kepada Yth:</p>
                 <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
                 <button class="btn-buka" onclick="startStorm()">BUKA UNDANGAN</button>
             </div>
@@ -133,7 +112,6 @@
     </div>
 
     <script>
-        // 1. Logika Bunga Jatuh di Background
         function createFlowers() {
             const container = document.getElementById('flowers-bg');
             const flowerEmojis = ['🌸', '🌺', '🌹', '🍃', '✨'];
@@ -148,18 +126,15 @@
             }
         }
 
-        // 2. Ambil Nama dari URL
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
-        // 3. Logika Bounce Nama
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
             let pos = { x: Math.random() * (container.offsetWidth - 80), y: Math.random() * 30 };
             let vel = { x: 0.8, y: 0.5 };
-
             function update() {
                 pos.x += vel.x; pos.y += vel.y;
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= container.offsetWidth) vel.x *= -1;
@@ -178,42 +153,26 @@
             createBounce('bounce2');
         };
 
-        // 4. Buka Undangan (DI SINI YANG TADI MACET)
         function startStorm() {
             const audio = document.getElementById('weddingAudio');
             audio.play().catch(e => console.log("Audio play blocked"));
-
             document.getElementById('flowers-bg').style.display = 'none';
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
-
             const stormEmojis = ['🌸', '🌺', '🌹'];
-
             for(let i=0; i<40; i++) {
                 let div = document.createElement('div');
-                // PERBAIKAN: Pilih satu emoji secara acak
                 div.innerHTML = stormEmojis[Math.floor(Math.random() * stormEmojis.length)];
-                div.style.position = 'fixed';
-                div.style.left = '50vw';
-                div.style.top = '50vh';
-                div.style.fontSize = '2rem';
-                storm.appendChild(div);
-                
+                div.style.position = 'fixed'; div.style.left = '50vw'; div.style.top = '50vh';
+                div.style.fontSize = '2rem'; storm.appendChild(div);
                 gsap.to(div, { 
                     x: (Math.random() - 0.5) * window.innerWidth * 1.5, 
                     y: (Math.random() - 0.5) * window.innerHeight * 1.5, 
-                    rotation: 720, 
-                    duration: 2, 
-                    opacity: 0, 
-                    ease: "power2.out" 
+                    rotation: 720, duration: 2, opacity: 0, ease: "power2.out" 
                 });
             }
-
             gsap.to(".main-wrapper", { opacity: 0, scale: 1.2, duration: 1, ease: "power2.in" });
-
-            setTimeout(() => { 
-                window.location.href = "profil.html"; 
-            }, 1500);
+            setTimeout(() => { window.location.href = "profil.html"; }, 1500);
         }
     </script>
 </body>
