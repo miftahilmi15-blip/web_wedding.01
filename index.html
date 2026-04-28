@@ -19,6 +19,19 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* --- SISTEM HALAMAN (Agar musik tidak mati) --- */
+        .page-section {
+            position: absolute;
+            inset: 0;
+            display: none; /* Sembunyi secara default */
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+        .page-section.active {
+            display: flex; /* Muncul jika aktif */
+        }
+
         .falling-flowers-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; pointer-events: none;
@@ -35,11 +48,10 @@
         .main-wrapper {
             position: relative;
             width: 320px;
-            height: 520px; /* Sedikit lebih tinggi biar tidak sesak */
+            height: 520px;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 20;
             perspective: 1000px;
         }
 
@@ -71,7 +83,6 @@
             overflow: hidden;
         }
 
-        /* Elemen Dekoratif Baru untuk mengisi kekosongan */
         .decor-line {
             width: 80%; height: 1px;
             background: linear-gradient(90deg, transparent, #ad1457, transparent);
@@ -111,35 +122,49 @@
 </head>
 <body>
 
-    <audio id="weddingAudio" loop><source src="musik-kamu.mp3" type="audio/mpeg"></audio>
+    <audio id="weddingAudio" loop>
+        <source src="musik-kamu.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="storm-layer"></div>
     <div class="falling-flowers-container" id="flowers-bg"></div>
 
-    <div class="main-wrapper">
-        <div class="bounce-area">
-            <div id="bounce1" class="bounce-element">Devkia 🌸</div>
-            <div id="bounce2" class="bounce-element">Miftah 🌺</div>
+    <section id="opener-section" class="page-section active">
+        <div class="main-wrapper" id="opener-wrapper">
+            <div class="bounce-area">
+                <div id="bounce1" class="bounce-element">Devkia 🌸</div>
+                <div id="bounce2" class="bounce-element">Miftah 🌺</div>
+            </div>
+
+            <div class="frame-container">
+                <div>
+                    <p class="header-text">The Wedding Of</p>
+                    <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
+                </div>
+
+                <div class="decor-line"><div class="decor-icon">✧</div></div>
+
+                <div class="guest-section">
+                    <p class="guest-label">Kepada Yth:</p>
+                    <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
+                    <button class="btn-buka" onclick="startStorm()">Buka Undangan</button>
+                </div>
+
+                <div class="flower-vinyl" id="vinyl">
+                    <svg viewBox="0 0 100 100"><path fill="#ad1457" d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/><circle cx="50" cy="50" r="10" fill="white" stroke="#ad1457"/></svg>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="frame-container">
-            <div>
-                <p class="header-text">The Wedding Of</p>
-                <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
-            </div>
-
-            <div class="decor-line"><div class="decor-icon">✧</div></div>
-
-            <div class="guest-section">
-                <p class="guest-label">Kepada Yth:</p>
-                <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-                <button class="btn-buka" onclick="startStorm()">Buka Undangan</button>
-            </div>
-
-            <div class="flower-vinyl" id="vinyl">
-                <svg viewBox="0 0 100 100"><path fill="#ad1457" d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/><circle cx="50" cy="50" r="10" fill="white" stroke="#ad1457"/></svg>
+    <section id="profil-section" class="page-section">
+        <div class="main-wrapper">
+            <div class="frame-container">
+                <h1 class="couple-name" style="font-size: 2rem;">Mempelai</h1>
+                <p style="color: #ad1457; text-align: center;">Konten profil kamu taruh di sini ya Bos.</p>
             </div>
         </div>
-    </div>
+    </section>
 
     <script>
         function createFlowers() {
@@ -160,12 +185,10 @@
         const nama = params.get('to');
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
-        // Perbaikan Bounce: Velocity lebih acak agar tidak clumping
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
             let pos = { x: Math.random() * 100, y: Math.random() * 30 };
-            // Kecepatan acak antara 0.5 hingga 1.5
             let vel = { 
                 x: (Math.random() * 1 + 0.5) * (Math.random() > 0.5 ? 1 : -1), 
                 y: (Math.random() * 1 + 0.5) * (Math.random() > 0.5 ? 1 : -1) 
@@ -174,11 +197,8 @@
             function update() {
                 pos.x += vel.x; 
                 pos.y += vel.y;
-                
-                // Pantulan dinding dengan sedikit random offset agar tidak monoton
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= container.offsetWidth) vel.x *= -1;
                 if (pos.y <= 0 || pos.y + el.offsetHeight >= container.offsetHeight) vel.y *= -1;
-                
                 el.style.left = pos.x + 'px'; 
                 el.style.top = pos.y + 'px';
                 requestAnimationFrame(update);
@@ -187,7 +207,7 @@
         }
 
         window.onload = () => {
-            gsap.from(".main-wrapper", { opacity: 0, scale: 0.8, duration: 1.5, ease: "power4.out" });
+            gsap.from("#opener-wrapper", { opacity: 0, scale: 0.8, duration: 1.5, ease: "power4.out" });
             gsap.to("#vinyl", { rotate: 360, duration: 12, repeat: -1, ease: "linear" });
             createFlowers();
             createBounce('bounce1');
@@ -195,10 +215,14 @@
         };
 
         function startStorm() {
-            document.getElementById('weddingAudio').play().catch(e => console.log("Audio blocked"));
+            // PLAY MUSIK: Dimulai saat tombol diklik
+            const audio = document.getElementById('weddingAudio');
+            audio.play().catch(e => console.log("Audio blocked by browser"));
+
             document.getElementById('flowers-bg').style.display = 'none';
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
+
             for(let i=0; i<40; i++) {
                 let div = document.createElement('div');
                 div.innerHTML = ['🌸', '🌺', '🌹'][Math.floor(Math.random()*3)];
@@ -206,8 +230,13 @@
                 div.style.fontSize = '2rem'; storm.appendChild(div);
                 gsap.to(div, { x: (Math.random()-0.5)*1000, y: (Math.random()-0.5)*1000, rotation: 720, duration: 2, opacity: 0 });
             }
-            gsap.to(".main-wrapper", { opacity: 0, scale: 2, duration: 1.2, ease: "power2.in" });
-            setTimeout(() => { window.location.href = "profil.html"; }, 1500);
+
+            // ANIMASI PINDAH SECTION (Tanpa Reload Page)
+            gsap.to("#opener-wrapper", { opacity: 0, scale: 2, duration: 1.2, ease: "power2.in", onComplete: () => {
+                document.getElementById('opener-section').classList.remove('active');
+                document.getElementById('profil-section').classList.add('active');
+                gsap.from("#profil-section", { opacity: 0, y: 50, duration: 1 });
+            }});
         }
     </script>
 </body>
