@@ -8,9 +8,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // --- GANTI BAGIAN INI DENGAN DATA DARI FIREBASE CONSOLE KAMU ---
+        const firebaseConfig = {
+            apiKey: "ISI_API_KEY_KAMU_DISINI",
+            authDomain: "wedding-4646f.firebaseapp.com",
+            databaseURL: "https://wedding-4646f-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "wedding-4646f",
+            storageBucket: "wedding-4646f.appspot.com",
+            messagingSenderId: "ISI_SENDER_ID",
+            appId: "ISI_APP_ID"
+        };
+        // -------------------------------------------------------------
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Export fungsi agar bisa dipanggil tombol HTML
+        window.db = db;
+        window.ref = ref;
+        window.push = push;
+        window.set = set;
+    </script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body { 
             background: #fce4ec; 
             background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
@@ -21,11 +46,9 @@
             display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
         }
-
         h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #ad1457; margin: 20px 0; }
         h3 { font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin: 30px 0 15px; color: #ad1457; font-weight: 600; }
 
-        /* --- GLASS FORM BOX --- */
         .form-box { 
             width: 100%; max-width: 400px;
             background: rgba(255, 255, 255, 0.4); 
@@ -36,7 +59,6 @@
             box-shadow: 0 20px 40px rgba(139, 94, 131, 0.1);
             z-index: 10;
         }
-
         input, textarea { 
             width: 100%; padding: 15px; margin: 8px 0; 
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); 
@@ -54,7 +76,6 @@
             box-shadow: 0 10px 20px rgba(173, 20, 87, 0.2);
         }
 
-        /* --- LUXURY GIFT CARD --- */
         .gift-card { 
             width: 100%; max-width: 350px;
             background: linear-gradient(135deg, #ad1457 0%, #6a0d33 100%);
@@ -76,7 +97,6 @@
         }
         .btn-copy:active { background: #fff; color: #ad1457; }
 
-        /* --- DECORATION --- */
         .particle { position: fixed; pointer-events: none; z-index: 1; color: #d4af37; opacity: 0.4; }
 
         .btn-finish { 
@@ -132,16 +152,36 @@
     <button class="btn-finish" onclick="home()">LiHAT UCAPAN</button>
 
     <script>
-        // Animasi Masuk GSAP
         gsap.from(".form-box", { opacity: 0, y: 50, duration: 1.2, ease: "power3.out" });
         gsap.from(".gift-card", { opacity: 0, scale: 0.9, duration: 1, stagger: 0.3, delay: 0.5 });
 
-        function send() {
+        async function send() {
             const nama = document.getElementById('nama').value;
-            if(nama === "") { alert("Mohon isi nama Anda"); return; }
-            alert('Terima kasih ' + nama + ' atas doa tulusnya!');
-            document.getElementById('nama').value = "";
-            document.getElementById('pesan').value = "";
+            const pesan = document.getElementById('pesan').value;
+
+            if(nama === "" || pesan === "") { 
+                alert("Mohon isi nama dan pesan Anda"); 
+                return; 
+            }
+
+            try {
+                // Mengirim data ke path 'ucapan' di Firebase
+                const ucapanRef = window.ref(window.db, 'ucapan');
+                const newUcapanRef = window.push(ucapanRef);
+                
+                await window.set(newUcapanRef, {
+                    nama: nama,
+                    pesan: pesan,
+                    timestamp: Date.now()
+                });
+
+                alert('Terima kasih ' + nama + ' atas doa tulusnya!');
+                document.getElementById('nama').value = "";
+                document.getElementById('pesan').value = "";
+            } catch (error) {
+                console.error("Gagal: ", error);
+                alert("Gagal mengirim, periksa koneksi.");
+            }
         }
 
         function copyRek(no, btn) {
