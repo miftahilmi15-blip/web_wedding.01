@@ -6,261 +6,80 @@
     <title>Wedding Invitation - Devkia & Miftah</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;900&family=Amiri&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background: #fce4ec; 
-            background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
-            font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; 
-            height: 100vh; 
-            width: 100vw;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-        }
-
-        .page-section { 
-            position: absolute; 
-            inset: 0; 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 20; 
-        }
+        body { background: radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%); font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; }
+        .page-section { position: absolute; inset: 0; display: none; justify-content: center; align-items: center; z-index: 20; }
         .page-section.active { display: flex; }
-
-        .falling-flowers-container { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 5; 
-            pointer-events: none; 
-        }
-        .flower { 
-            position: absolute; 
-            top: -10%; 
-            color: rgba(236, 64, 122, 0.4); 
-            font-size: 1.5rem; 
-            animation: fall linear infinite; 
-        }
-        @keyframes fall { 
-            0% { transform: translateY(0vh) rotate(0deg); opacity: 0.6; } 
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } 
-        }
-
-        .main-wrapper { 
-            position: relative; 
-            width: 90%; 
-            max-width: 340px; 
-            height: 550px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            perspective: 1000px; 
-        }
-
-        .bounce-area { 
-            position: absolute; 
-            top: -80px; 
-            width: 100%; 
-            height: 80px; 
-            pointer-events: none; 
-        }
-        .bounce-element { 
-            position: absolute; 
-            white-space: nowrap; 
-            font-family: 'Great Vibes', cursive; 
-            color: #ad1457; 
-            font-size: 1.6rem; 
-            text-shadow: 0 5px 15px rgba(255, 255, 255, 0.8); 
-            font-weight: bold; 
-        }
-
-        .frame-container { 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(25px); 
-            border-radius: 40px; 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-evenly; 
-            align-items: center; 
-            padding: 40px 25px; 
-            box-shadow: 0 30px 60px rgba(139, 94, 131, 0.15); 
-            position: relative; 
-            overflow: hidden; 
-            text-align: center;
-        }
-
-        .decor-line { width: 80%; height: 1px; background: linear-gradient(90deg, transparent, #ad1457, transparent); margin: 15px 0; position: relative; }
-        .decor-icon { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fff3f8; padding: 0 10px; color: #ad1457; border-radius: 50%; }
         
-        .frame-container::after { 
-            content: ''; 
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); 
-            background-size: 200% 200%; 
-            animation: shine 5s infinite; 
-            pointer-events: none; 
-        }
-        @keyframes shine { 0% { background-position: -200% -200%; } 100% { background-position: 200% 200%; } }
-
-        .header-text { letter-spacing: 5px; font-size: 0.75rem; color: #ad1457; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
-        .couple-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 3.2rem; line-height: 1.1; text-shadow: 0 5px 10px rgba(0,0,0,0.05); }
-        .guest-label { font-size: 0.85rem; color: #6d4c67; margin-bottom: 8px; }
-        .guest-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.6rem; margin-bottom: 15px; }
-
-        .btn-buka { 
-            padding: 15px 40px; 
-            background: linear-gradient(45deg, #ec407a, #ad1457); 
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.4); 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            font-size: 0.8rem; 
-        }
-        .btn-buka:hover { transform: scale(1.05); }
-
-        .flower-vinyl { position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; opacity: 0.6; }
+        /* Frame Style */
+        .frame-wrapper { width: 90%; max-width: 350px; }
+        .frame-container { width: 100%; min-height: 500px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(15px); border-radius: 40px; display: flex; flex-direction: column; padding: 40px 25px; align-items: center; border: 2px solid rgba(255, 255, 255, 0.5); box-shadow: 0 20px 45px rgba(0,0,0,0.05); text-align: center; }
+        
+        /* Ar-Rum Style */
+        .arabic { font-family: 'Amiri', serif; font-size: 1.2rem; color: #8b5e83; line-height: 2; margin: 20px 0; direction: rtl; }
+        .artinya { font-size: 0.85rem; color: #6d4c67; line-height: 1.7; font-style: italic; }
+        
+        /* UI Elements */
+        .btn-buka { padding: 15px 40px; background: linear-gradient(45deg, #ec407a, #ad1457); color: white; border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
         #storm-layer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: none; }
+        .bounce-element { position: absolute; font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 1.6rem; z-index: 100; }
     </style>
 </head>
 <body>
 
     <div id="storm-layer"></div>
-    <div class="falling-flowers-container" id="flowers-bg"></div>
 
     <section id="opener-section" class="page-section active">
-        <div class="main-wrapper" id="opener-wrapper">
-            <div class="bounce-area">
-                <div id="bounce1" class="bounce-element">Devkia 🌸</div>
-                <div id="bounce2" class="bounce-element">Miftah 🌺</div>
-            </div>
-
+        <div class="frame-wrapper" id="opener-wrapper">
             <div class="frame-container">
-                <div>
-                    <p class="header-text">The Wedding Of</p>
-                    <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
-                </div>
-
-                <div class="decor-line">
-                    <div class="decor-icon">✧</div>
-                </div>
-
-                <div class="guest-section">
-                    <p class="guest-label">Kepada Yth:</p>
-                    <h2 class="guest-name" id="nama-tamu">Tamu Undangan</h2>
-                    <button class="btn-buka" onclick="startStorm()">Buka Undangan</button>
-                </div>
-
-                <div class="flower-vinyl" id="vinyl">
-                    <svg viewBox="0 0 100 100">
-                        <path fill="#ad1457" d="M50 50 Q60 10 50 0 Q40 10 50 50 M50 50 Q90 40 100 50 Q90 60 50 50 M50 50 Q40 90 50 100 Q60 90 50 50 M50 50 Q10 60 0 50 Q10 40 50 50"/>
-                        <circle cx="50" cy="50" r="10" fill="white" stroke="#ad1457"/>
-                    </svg>
-                </div>
+                <p>The Wedding Of</p>
+                <h1>Devkia & Miftah</h1>
+                <h2 id="nama-tamu">Tamu Undangan</h2>
+                <button class="btn-buka" onclick="startStorm()">Buka Undangan</button>
             </div>
         </div>
     </section>
 
-    <section id="profil-section" class="page-section"></section>
+    <section id="profil-section" class="page-section">
+        <div class="frame-wrapper">
+            <div class="frame-container">
+                <p style="font-size: 0.6rem;">Ar-Rum : 21</p>
+                <div class="arabic" id="txtArab"></div>
+                <div class="artinya" id="typewriter"></div>
+            </div>
+        </div>
+    </section>
 
     <script>
-        function createFlowers() {
-            const container = document.getElementById('flowers-bg');
-            const flowerEmojis = ['🌸', '🌺', '🌹', '✨'];
-            for (let i = 0; i < 20; i++) {
-                const flower = document.createElement('div');
-                flower.className = 'flower';
-                flower.innerText = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
-                flower.style.left = Math.random() * 100 + 'vw';
-                flower.style.animationDelay = Math.random() * 8 + 's';
-                flower.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                container.appendChild(flower);
-            }
-        }
-
-        const params = new URLSearchParams(window.location.search);
-        const nama = params.get('to');
-        if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
-
-        function createBounce(id) {
-            const el = document.getElementById(id);
-            const container = document.querySelector('.bounce-area');
-            let pos = { x: Math.random() * 100, y: Math.random() * 30 };
-            let vel = { x: (Math.random() * 0.8 + 0.4), y: (Math.random() * 0.8 + 0.4) };
-            
-            function update() {
-                pos.x += vel.x; pos.y += vel.y;
-                if (pos.x <= 0 || pos.x + el.offsetWidth >= container.offsetWidth) vel.x *= -1;
-                if (pos.y <= 0 || pos.y + el.offsetHeight >= container.offsetHeight) vel.y *= -1;
-                el.style.left = pos.x + 'px'; 
-                el.style.top = pos.y + 'px';
-                requestAnimationFrame(update);
-            }
-            update();
-        }
-
-        window.onload = () => {
-            gsap.from("#opener-wrapper", { opacity: 0, scale: 0.8, duration: 1.5, ease: "power4.out" });
-            gsap.to("#vinyl", { rotate: 360, duration: 12, repeat: -1, ease: "linear" });
-            createFlowers();
-            createBounce('bounce1');
-            createBounce('bounce2');
-        };
+        gsap.registerPlugin(TextPlugin);
 
         function startStorm() {
+            // Animasi Storm Bunga
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
-
-            for(let i=0; i<40; i++) {
+            for(let i=0; i<30; i++) {
                 let div = document.createElement('div');
-                div.innerHTML = ['🌸', '🌺', '🌹'][Math.floor(Math.random()*3)];
-                div.style.position = 'fixed'; 
-                div.style.left = '50vw'; 
-                div.style.top = '50vh';
-                div.style.fontSize = '2rem'; 
+                div.innerHTML = '🌸';
+                div.style.position = 'fixed'; div.style.left = '50vw'; div.style.top = '50vh';
                 storm.appendChild(div);
-                gsap.to(div, { 
-                    x: (Math.random()-0.5)*1200, 
-                    y: (Math.random()-0.5)*1200, 
-                    rotation: 720, 
-                    duration: 2, 
-                    opacity: 0,
-                    onComplete: () => div.remove()
-                });
+                gsap.to(div, { x: (Math.random()-0.5)*1000, y: (Math.random()-0.5)*1000, opacity: 0, duration: 2, onComplete: () => div.remove() });
             }
 
-            gsap.to("#opener-wrapper", { opacity: 0, scale: 1.5, duration: 1, ease: "power2.in", onComplete: () => {
-                fetch('profil.html')
-                    .then(response => {
-                        if (!response.ok) throw new Error();
-                        return response.text();
-                    })
-                    .then(html => {
-                        document.getElementById('profil-section').innerHTML = html;
-                        document.getElementById('opener-section').classList.remove('active');
-                        document.getElementById('profil-section').classList.add('active');
-                        gsap.from("#profil-section", { opacity: 0, y: 30, duration: 1 });
-                    })
-                    .catch(() => {
-                        alert("Gagal memuat profil.html. Pastikan file ada di folder yang sama!");
-                    });
+            // Ganti Halaman
+            gsap.to("#opener-section", { opacity: 0, duration: 1, onComplete: () => {
+                document.getElementById('opener-section').classList.remove('active');
+                document.getElementById('profil-section').classList.add('active');
+                initProfilAnimations();
             }});
+        }
+
+        function initProfilAnimations() {
+            gsap.to("#txtArab", { duration: 4, text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ", ease: "none" });
+            gsap.to("#typewriter", { duration: 6, text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri...”", ease: "none" });
         }
     </script>
 </body>
