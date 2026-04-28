@@ -10,63 +10,16 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background: #fce4ec; 
-            font-family: 'Montserrat', sans-serif; 
-            color: #8b5e83; 
-            height: 100vh;
-            overflow: hidden; /* Kita kunci scroll bawaan browser */
-            display: flex; flex-direction: column;
-        }
-
-        header { 
-            padding: 30px 20px; text-align: center; 
-            background: rgba(255,255,255,0.6); backdrop-filter: blur(10px);
-            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.5);
-        }
+        body { background: #fce4ec; font-family: 'Montserrat', sans-serif; color: #8b5e83; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        header { padding: 30px 20px; text-align: center; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.5); }
         h1 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: #ad1457; }
-
-        /* --- AREA JALANNYA UCAPAN --- */
-        .marquee-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-        }
-
-        .scroll-content {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px 0;
-        }
-
-        /* --- KARTU UCAPAN (Ringan & Elegan) --- */
-        .wish-card {
-            width: 90%; max-width: 450px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(139, 94, 131, 0.05);
-            border: 1px solid white;
-        }
-
+        .marquee-container { flex: 1; position: relative; overflow: hidden; width: 100%; mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); }
+        .scroll-content { position: absolute; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 50px 0; }
+        .wish-card { width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.7); padding: 20px; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(139, 94, 131, 0.05); border: 1px solid white; }
         .guest-name { font-weight: 700; color: #ad1457; font-size: 0.9rem; }
         .message { font-size: 0.85rem; margin-top: 5px; line-height: 1.5; font-style: italic; }
-
-        /* --- NAVIGASI --- */
-        .footer-nav {
-            padding: 20px; text-align: center; background: white; z-index: 100;
-        }
-        .btn-back {
-            padding: 10px 30px; background: #8b5e83; color: white; border-radius: 50px;
-            text-decoration: none; font-size: 0.8rem; font-weight: 600;
-        }
+        .footer-nav { padding: 20px; text-align: center; background: white; z-index: 100; }
+        .btn-back { padding: 10px 30px; background: #8b5e83; color: white; border-radius: 50px; text-decoration: none; font-size: 0.8rem; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -76,13 +29,8 @@
         <p style="font-size: 0.7rem; letter-spacing: 2px;">SCROLL UNTUK MEMBACA</p>
     </header>
 
-    <div class="marquee-container" id="container">
+    <div class="marquee-container">
         <div class="scroll-content" id="content">
-            <div class="wish-card"><span class="guest-name">Budi & Susi</span><p class="message">"Samawa ya kawan! Maaf belum bisa hadir."</p></div>
-            <div class="wish-card"><span class="guest-name">Andi Hermawan</span><p class="message">"Selamat menempuh hidup baru Murad!"</p></div>
-            <div class="wish-card"><span class="guest-name">Siti Aminah</span><p class="message">"Barakallahu lakum, semoga berkah rumah tangganya."</p></div>
-            <div class="wish-card"><span class="guest-name">Geng Motor 90an</span><p class="message">"Gas terus ke pelaminan! Mantap!"</p></div>
-            <div class="wish-card"><span class="guest-name">Alumni SMP 2</span><p class="message">"Selamat ya Samira, akhirnya sah!"</p></div>
             </div>
     </div>
 
@@ -90,53 +38,58 @@
         <a href="index.html" class="btn-back">KEMBALI KE DEPAN</a>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // GANTI DENGAN CONFIG PUNYA KAMU
+        const firebaseConfig = {
+            databaseURL: "https://wedding-4646f-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
         const content = document.getElementById('content');
-        
-        // --- LOGIKA UNTUK RIBUAN DATA ---
-        // Kita duplikasi kontennya agar bisa looping tanpa putus
-        content.innerHTML += content.innerHTML; 
+        const wishesRef = ref(db, 'ucapan');
 
-        // Jalankan animasi scroll otomatis yang smooth
-        let scrollSpeed = 0.5; // Bisa Bos atur kecepatannya
-        let currentPos = 0;
+        // Fungsi Ambil Data
+        onValue(wishesRef, (snapshot) => {
+            const data = snapshot.val();
+            content.innerHTML = ""; // Bersihkan dulu
 
-        function animateScroll() {
-            currentPos -= scrollSpeed;
-            
-            // Jika konten pertama sudah lewat, reset ke nol tanpa terlihat tamu
-            if (Math.abs(currentPos) >= content.offsetHeight / 2) {
-                currentPos = 0;
+            if (data) {
+                // Loop data
+                Object.values(data).forEach(item => {
+                    content.innerHTML += `
+                        <div class="wish-card">
+                            <span class="guest-name">${item.nama}</span>
+                            <p class="message">"${item.pesan}"</p>
+                        </div>
+                    `;
+                });
+                
+                // Duplikasi konten untuk efek infinite loop
+                content.innerHTML += content.innerHTML; 
+            } else {
+                content.innerHTML = "<p style='text-align:center;'>Belum ada ucapan...</p>";
             }
-            
+        });
+
+        // --- ANIMASI ---
+        let currentPos = 0;
+        function animateScroll() {
+            currentPos -= 0.5; // Kecepatan scroll
+            if (Math.abs(currentPos) >= content.offsetHeight / 2) currentPos = 0;
             content.style.transform = `translateY(${currentPos}px)`;
             requestAnimationFrame(animateScroll);
         }
-
-        // Jalankan animasi
         animateScroll();
 
-        // Tambahan: Tamu bisa narik/swipe buat baca lebih cepat
-        let isDown = false;
-        let startY;
-        let scrollTop;
-
+        // Drag/Touch Support
+        let isDown = false, startY, currentY;
         window.addEventListener('mousedown', (e) => { isDown = true; startY = e.pageY - currentPos; });
         window.addEventListener('mouseup', () => { isDown = false; });
-        window.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            const y = e.pageY - startY;
-            currentPos = y;
-        });
-
-        // Touch support buat HP
-        window.addEventListener('touchstart', (e) => { isDown = true; startY = e.touches[0].pageY - currentPos; });
-        window.addEventListener('touchend', () => { isDown = false; });
-        window.addEventListener('touchmove', (e) => {
-            if (!isDown) return;
-            const y = e.touches[0].pageY - startY;
-            currentPos = y;
-        });
+        window.addEventListener('mousemove', (e) => { if(isDown) currentPos = e.pageY - startY; });
     </script>
 </body>
 </html>
