@@ -19,7 +19,6 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- BACKGROUND FLOWERS --- */
         .falling-flowers-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; pointer-events: none;
@@ -33,11 +32,10 @@
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* --- WRAPPER UTAMA --- */
         .main-wrapper {
             position: relative;
             width: 320px;
-            height: 500px;
+            height: 520px; /* Sedikit lebih tinggi biar tidak sesak */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -45,7 +43,6 @@
             perspective: 1000px;
         }
 
-        /* --- BOUNCE AREA (Nama Mantul) --- */
         .bounce-area {
             position: absolute;
             top: -70px;
@@ -60,22 +57,32 @@
             font-weight: bold;
         }
 
-        /* --- FRAME CONTAINER (Luxury Card) --- */
         .frame-container {
             width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(25px); 
             border-radius: 40px; 
-            border: 1.5px solid rgba(236, 64, 122, 0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.5); 
             display: flex; flex-direction: column; 
-            justify-content: space-between; align-items: center;
-            padding: 50px 25px; 
+            justify-content: space-evenly; align-items: center;
+            padding: 30px 25px; 
             box-shadow: 0 30px 60px rgba(139, 94, 131, 0.15);
             position: relative;
             overflow: hidden;
         }
 
-        /* Efek Kilau Luxury */
+        /* Elemen Dekoratif Baru untuk mengisi kekosongan */
+        .decor-line {
+            width: 80%; height: 1px;
+            background: linear-gradient(90deg, transparent, #ad1457, transparent);
+            margin: 10px 0;
+            position: relative;
+        }
+        .decor-icon {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.4); padding: 0 10px; color: #ad1457;
+        }
+
         .frame-container::after {
             content: ''; position: absolute; inset: 0;
             background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
@@ -83,58 +90,28 @@
             animation: shine 5s infinite;
             pointer-events: none;
         }
-        @keyframes shine {
-            0% { background-position: -200% -200%; }
-            100% { background-position: 200% 200%; }
-        }
+        @keyframes shine { 0% { background-position: -200% -200%; } 100% { background-position: 200% 200%; } }
 
-        .header-text { 
-            letter-spacing: 5px; font-size: 0.75rem; 
-            color: #ad1457; font-weight: 900; 
-            text-transform: uppercase;
-        }
-
-        .couple-name { 
-            font-family: 'Great Vibes', cursive; 
-            color: #ad1457; font-size: 3.2rem; 
-            text-align: center; line-height: 1.1; 
-            margin-top: 10px;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .guest-section { text-align: center; margin-bottom: 20px; }
-        .guest-label { font-size: 0.8rem; color: #6d4c67; letter-spacing: 1px; font-weight: 400; }
-        .guest-name { 
-            font-family: 'Great Vibes', cursive; 
-            color: #ad1457; font-size: 2.6rem; 
-            margin: 10px 0; 
-        }
+        .header-text { letter-spacing: 6px; font-size: 0.7rem; color: #ad1457; font-weight: 900; text-transform: uppercase; }
+        .couple-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 3rem; text-align: center; line-height: 1.1; text-shadow: 0 5px 10px rgba(0,0,0,0.05); }
+        .guest-section { text-align: center; }
+        .guest-label { font-size: 0.8rem; color: #6d4c67; margin-bottom: 5px; }
+        .guest-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.4rem; }
         
         .btn-buka {
-            padding: 15px 40px; 
-            background: linear-gradient(45deg, #ec407a, #ad1457);
-            color: white; border: none; 
-            border-radius: 50px; font-weight: 700; cursor: pointer; 
-            transition: 0.4s; 
-            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3);
-            text-transform: uppercase; letter-spacing: 2px;
-            font-size: 0.75rem;
-        }
-        .btn-buka:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(236, 64, 122, 0.4); }
-
-        .flower-vinyl { 
-            position: absolute; bottom: 15px; right: 15px; 
-            width: 65px; height: 65px; opacity: 0.8; 
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+            padding: 14px 35px; background: linear-gradient(45deg, #ec407a, #ad1457);
+            color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; 
+            transition: 0.4s; box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3);
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; margin-top: 20px;
         }
 
+        .flower-vinyl { position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; opacity: 0.6; }
         #storm-layer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: none; }
     </style>
 </head>
 <body>
 
     <audio id="weddingAudio" loop><source src="musik-kamu.mp3" type="audio/mpeg"></audio>
-
     <div id="storm-layer"></div>
     <div class="falling-flowers-container" id="flowers-bg"></div>
 
@@ -144,11 +121,13 @@
             <div id="bounce2" class="bounce-element">Miftah 🌺</div>
         </div>
 
-        <div class="frame-container" id="main-frame">
-            <div style="text-align: center;">
+        <div class="frame-container">
+            <div>
                 <p class="header-text">The Wedding Of</p>
                 <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
             </div>
+
+            <div class="decor-line"><div class="decor-icon">✧</div></div>
 
             <div class="guest-section">
                 <p class="guest-label">Kepada Yth:</p>
@@ -181,16 +160,27 @@
         const nama = params.get('to');
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
+        // Perbaikan Bounce: Velocity lebih acak agar tidak clumping
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
-            let pos = { x: Math.random() * 50, y: Math.random() * 20 };
-            let vel = { x: 0.7, y: 0.5 };
+            let pos = { x: Math.random() * 100, y: Math.random() * 30 };
+            // Kecepatan acak antara 0.5 hingga 1.5
+            let vel = { 
+                x: (Math.random() * 1 + 0.5) * (Math.random() > 0.5 ? 1 : -1), 
+                y: (Math.random() * 1 + 0.5) * (Math.random() > 0.5 ? 1 : -1) 
+            };
+            
             function update() {
-                pos.x += vel.x; pos.y += vel.y;
+                pos.x += vel.x; 
+                pos.y += vel.y;
+                
+                // Pantulan dinding dengan sedikit random offset agar tidak monoton
                 if (pos.x <= 0 || pos.x + el.offsetWidth >= container.offsetWidth) vel.x *= -1;
                 if (pos.y <= 0 || pos.y + el.offsetHeight >= container.offsetHeight) vel.y *= -1;
-                el.style.left = pos.x + 'px'; el.style.top = pos.y + 'px';
+                
+                el.style.left = pos.x + 'px'; 
+                el.style.top = pos.y + 'px';
                 requestAnimationFrame(update);
             }
             update();
