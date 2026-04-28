@@ -23,7 +23,6 @@
             align-items: center;
         }
 
-        /* Navigasi Antar Section */
         .page-section { 
             position: absolute; 
             inset: 0; 
@@ -34,7 +33,6 @@
         }
         .page-section.active { display: flex; }
 
-        /* Latar Belakang Bunga Gugur */
         .falling-flowers-container { 
             position: fixed; 
             top: 0; 
@@ -56,7 +54,6 @@
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } 
         }
 
-        /* Container Utama */
         .main-wrapper { 
             position: relative; 
             width: 90%; 
@@ -68,7 +65,6 @@
             perspective: 1000px; 
         }
 
-        /* Animasi Nama Melayang */
         .bounce-area { 
             position: absolute; 
             top: -80px; 
@@ -86,7 +82,6 @@
             font-weight: bold; 
         }
 
-        /* Bingkai Undangan */
         .frame-container { 
             width: 100%; 
             height: 100%; 
@@ -105,7 +100,6 @@
             text-align: center;
         }
 
-        /* Dekorasi */
         .decor-line { width: 80%; height: 1px; background: linear-gradient(90deg, transparent, #ad1457, transparent); margin: 15px 0; position: relative; }
         .decor-icon { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fff3f8; padding: 0 10px; color: #ad1457; border-radius: 50%; }
         
@@ -120,13 +114,11 @@
         }
         @keyframes shine { 0% { background-position: -200% -200%; } 100% { background-position: 200% 200%; } }
 
-        /* Typography */
         .header-text { letter-spacing: 5px; font-size: 0.75rem; color: #ad1457; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
         .couple-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 3.2rem; line-height: 1.1; text-shadow: 0 5px 10px rgba(0,0,0,0.05); }
         .guest-label { font-size: 0.85rem; color: #6d4c67; margin-bottom: 8px; }
         .guest-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.6rem; margin-bottom: 15px; }
 
-        /* Tombol */
         .btn-buka { 
             padding: 15px 40px; 
             background: linear-gradient(45deg, #ec407a, #ad1457); 
@@ -148,10 +140,6 @@
     </style>
 </head>
 <body>
-
-    <audio id="weddingAudio" loop>
-        <source src="musik.mp3" type="audio/mpeg">
-    </audio>
 
     <div id="storm-layer"></div>
     <div class="falling-flowers-container" id="flowers-bg"></div>
@@ -192,7 +180,6 @@
     <section id="profil-section" class="page-section"></section>
 
     <script>
-        // Fungsi Membuat Bunga Jatuh
         function createFlowers() {
             const container = document.getElementById('flowers-bg');
             const flowerEmojis = ['🌸', '🌺', '🌹', '✨'];
@@ -207,12 +194,10 @@
             }
         }
 
-        // Ambil Nama dari URL (?to=Nama%20Tamu)
         const params = new URLSearchParams(window.location.search);
         const nama = params.get('to');
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
-        // Animasi Bounce Nama Melayang
         function createBounce(id) {
             const el = document.getElementById(id);
             const container = document.querySelector('.bounce-area');
@@ -238,15 +223,10 @@
             createBounce('bounce2');
         };
 
-        // Fungsi Transisi Saat Tombol Diklik
         function startStorm() {
-            const audio = document.getElementById('weddingAudio');
-            audio.play().catch(() => console.log("Audio di-mute browser"));
-
             const storm = document.getElementById('storm-layer');
             storm.style.display = 'block';
 
-            // Partikel Bunga Saat Transisi
             for(let i=0; i<40; i++) {
                 let div = document.createElement('div');
                 div.innerHTML = ['🌸', '🌺', '🌹'][Math.floor(Math.random()*3)];
@@ -265,7 +245,6 @@
                 });
             }
 
-            // Load Halaman Profil
             gsap.to("#opener-wrapper", { opacity: 0, scale: 1.5, duration: 1, ease: "power2.in", onComplete: () => {
                 fetch('profil.html')
                     .then(response => {
