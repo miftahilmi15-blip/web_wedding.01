@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story - Devkia & Miftah</title>
+    <title>Our Journey - Devkia & Miftah</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
@@ -13,122 +13,107 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: radial-gradient(circle at center, #fff, #f8bbd0 70%, #f3a6c3);
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3a6c3);
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
             height: 100vh;
             display: flex;
-            justify-content: center; /* Tengah horizontal */
-            align-items: center;     /* Tengah vertikal */
-            color: #6d4c67;
+            justify-content: center;
+            align-items: center;
+            color: #4a148c; /* Ungu gelap elegan */
             position: relative;
         }
 
-        /* Background effects */
-        body::before, body::after {
-            content: ""; position: absolute; width: 400px; height: 400px;
-            border-radius: 50%; filter: blur(100px); opacity: .3; z-index: 0;
+        /* Aesthetic overlay */
+        .overlay {
+            position: absolute; inset: 0;
+            background: rgba(255,255,255,0.2);
+            pointer-events: none;
         }
-        body::before { background: #fff; top: -100px; left: -100px; }
-        body::after { background: #ffc1d6; bottom: -100px; right: -100px; }
 
-        .sparkles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-        .sparkles span {
-            position: absolute; width: 3px; height: 3px; border-radius: 50%;
-            background: #fff; opacity: .6; animation: floatSpark 8s linear infinite;
-        }
-        @keyframes floatSpark { from { transform: translateY(100vh); } to { transform: translateY(-10vh); } }
-
-        /* Container Utama */
         .content {
             position: relative;
             z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 400px; /* Batas lebar biar rapi di HP */
+            width: 90%;
+            max-width: 450px;
             padding: 20px;
         }
 
         .header-title {
             font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: #ad1457;
+            font-size: 3.2rem;
+            color: #880e4f;
             opacity: 0;
-            text-shadow: 0 3px 10px rgba(255, 255, 255, .6);
             margin-bottom: 5px;
         }
 
         .divider {
             width: 0; height: 1px;
-            background: linear-gradient(to right, transparent, #ad1457, transparent);
+            background: #880e4f;
             margin-bottom: 40px;
             opacity: 0;
         }
 
-        /* Story Container - Presisi Tengah */
+        /* Box Cerita Aesthetic */
         .story-box {
             width: 100%;
-            height: 80px; /* Tinggi box stabil */
+            min-height: 120px; /* Ditinggikan biar teks panjang muat */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
+            padding: 10px;
         }
 
         .type-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            font-weight: 400;
-            color: #6d4c67;
-            width: 100%;
-            display: inline-block;
-            white-space: nowrap; /* Teks memanjang satu baris */
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #553366;
+            font-style: italic;
         }
 
         /* Gallery */
         .gallery-container {
-            margin-top: 30px;
-            width: 260px;
-            height: 280px;
+            margin-top: 40px;
+            width: 280px;
+            height: 300px;
             position: relative;
             display: none;
         }
 
         .img-box {
-            position: absolute; width: 190px; height: 240px;
-            background: #fff; padding: 8px 8px 35px;
-            box-shadow: 0 15px 35px rgba(139,94,131,.2);
-            border-radius: 4px; opacity: 0;
+            position: absolute; width: 180px; height: 230px;
+            background: white; padding: 10px 10px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 2px; opacity: 0;
+            transition: 0.5s;
         }
 
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .img-box::after {
-            content: "Devkia & Miftah";
-            position: absolute; bottom: 8px; left: 0; width: 100%;
-            text-align: center; font-family: 'Great Vibes', cursive;
-            color: #ad1457; font-size: 1rem;
-        }
+        
+        .img1 { left: 0; top: 20px; transform: rotate(-6deg); }
+        .img2 { left: 50px; top: 0px; transform: rotate(0deg); z-index: 2; }
+        .img3 { left: 100px; top: 20px; transform: rotate(6deg); }
 
-        .img1 { left: 0; top: 20px; transform: rotate(-8deg); }
-        .img2 { left: 35px; top: 5px; transform: rotate(5deg); }
-        .img3 { left: 70px; top: 15px; transform: rotate(-3deg); }
-
-        .btn-container { position: fixed; bottom: 50px; opacity: 0; z-index: 100; }
+        .btn-container { position: fixed; bottom: 40px; opacity: 0; z-index: 100; }
         .nav-btn {
-            padding: 15px 35px; border: none; border-radius: 50px;
-            background: linear-gradient(45deg,#ec407a,#ad1457);
-            color: white; font-weight: 700; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(236, 64, 122, .35);
-            text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;
+            padding: 12px 30px; border: 1px solid #880e4f; border-radius: 0;
+            background: transparent; color: #880e4f;
+            font-weight: 600; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; font-size: 0.75rem;
+            transition: 0.3s;
         }
+        .nav-btn:hover { background: #880e4f; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="sparkles" id="sparkles"></div>
+    <div class="overlay"></div>
     
     <div class="content">
         <div class="header-title" id="title">Our Story</div>
@@ -146,70 +131,52 @@
     </div>
 
     <div class="btn-container" id="btnNext">
-        <button class="nav-btn" onclick="next()">KIRIM DOA & UCAPAN ✨</button>
+        <button class="nav-btn" onclick="next()">KIRIM DOA ✨</button>
     </div>
 
     <script>
-        // Register GSAP Plugin
         gsap.registerPlugin(TextPlugin);
 
-        // Sparkle generator
-        for(let i=0; i<30; i++){
-            let s = document.createElement('span');
-            s.style.left = Math.random()*100+'%';
-            s.style.animationDuration = (Math.random()*6+5)+'s';
-            s.style.animationDelay = Math.random()*5+'s';
-            document.getElementById('sparkles').appendChild(s);
-        }
-
-        // Kumpulan baris cerita
+        // Narasi yang lebih panjang dan mendalam
         const storyLines = [
-            "Berawal dari pertemuan sederhana...",
-            "Yang tak pernah kami duga sebelumnya.",
-            "Semesta diam-diam merancang kisah,",
-            "Menjadi sebuah cerita yang terindah.",
-            "Kini kami siap melangkah bersama,",
-            "Menuju ikatan suci yang penuh ridha."
+            "Tak pernah ada dalam rencana kami untuk bertemu.",
+            "Namun semesta punya cara indah untuk menyatukan dua hati.",
+            "Banyak tawa, diskusi, dan doa yang kita lalui bersama.",
+            "Hingga akhirnya kami sadar, kitalah rumah yang dicari.",
+            "Perbedaan kini melengkapi, bukan lagi menjadi penghalang.",
+            "Kini, kami mantap melangkah ke jenjang yang lebih suci.",
+            "Mohon doakan kami agar selalu dalam ridha-Nya selamanya."
         ];
 
         const tl = gsap.timeline();
 
-        // 1. Munculkan Judul
-        tl.to("#title", { opacity: 1, duration: 1.5, ease: "power2.out" })
-          .to("#divider", { opacity: 1, width: 140, duration: 1 }, "-=0.5");
+        tl.to("#title", { opacity: 1, duration: 1.5 })
+          .to("#divider", { opacity: 1, width: 120, duration: 1 }, "-=0.5");
 
-        // 2. Loop Efek Mengetik Baris demi Baris
         storyLines.forEach((line) => {
-            // Ngetik muncul
             tl.to("#typingTarget", {
-                duration: line.length * 0.05, // Kecepatan ngetik proporsional jumlah huruf
+                duration: line.length * 0.06, 
                 text: line,
                 ease: "none"
             })
-            // Diem sebentar (stay)
-            .to({}, { duration: 2 })
-            // Hapus/Hilang (fade out + blur)
+            .to({}, { duration: 2.2 }) // Durasi tayang teks
             .to("#typingTarget", {
                 opacity: 0,
-                filter: "blur(10px)",
-                duration: 0.8,
+                duration: 0.5,
                 onComplete: () => {
                     document.getElementById("typingTarget").textContent = "";
-                    gsap.set("#typingTarget", { opacity: 1, filter: "blur(0px)" });
+                    gsap.set("#typingTarget", { opacity: 1 });
                 }
             });
         });
 
-        // 3. Munculkan Gallery
         tl.set("#gallery", { display: "block" })
-          .to(".img1", { opacity: 1, y: -20, rotation: -8, duration: 1, ease: "back.out" })
-          .to(".img2", { opacity: 1, y: -20, rotation: 5, duration: 1, ease: "back.out" }, "-=0.6")
-          .to(".img3", { opacity: 1, y: -20, rotation: -3, duration: 1, ease: "back.out" }, "-=0.6")
-          .to("#btnNext", { opacity: 1, y: -10, duration: 1 });
+          .to(".img1", { opacity: 1, y: -20, duration: 1, ease: "power2.out" })
+          .to(".img2", { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=0.6")
+          .to(".img3", { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=0.6")
+          .to("#btnNext", { opacity: 1, duration: 1 });
 
-        function next() {
-            window.location.href = "wish.html";
-        }
+        function next() { window.location.href = "wish.html"; }
     </script>
 </body>
 </html>
