@@ -6,6 +6,7 @@
     <title>Our Story - Devkia & Miftah</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -17,8 +18,8 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center; /* Tengah horizontal */
+            align-items: center;     /* Tengah vertikal */
             color: #6d4c67;
             position: relative;
         }
@@ -38,7 +39,7 @@
         }
         @keyframes floatSpark { from { transform: translateY(100vh); } to { transform: translateY(-10vh); } }
 
-        /* Content Wrapper */
+        /* Container Utama */
         .content {
             position: relative;
             z-index: 10;
@@ -46,48 +47,50 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
+            max-width: 400px; /* Batas lebar biar rapi di HP */
+            padding: 20px;
         }
 
         .header-title {
-            margin-top: 10vh;
             font-family: 'Great Vibes', cursive;
             font-size: 3.5rem;
             color: #ad1457;
             opacity: 0;
             text-shadow: 0 3px 10px rgba(255, 255, 255, .6);
+            margin-bottom: 5px;
         }
 
         .divider {
             width: 0; height: 1px;
             background: linear-gradient(to right, transparent, #ad1457, transparent);
-            margin: 10px auto 30px;
+            margin-bottom: 40px;
             opacity: 0;
         }
 
-        /* Story Container */
+        /* Story Container - Presisi Tengah */
         .story-box {
-            width: 85%;
-            height: 200px;
+            width: 100%;
+            height: 80px; /* Tinggi box stabil */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             position: relative;
-            perspective: 1000px;
         }
 
-        .line {
-            display: block;
-            opacity: 0;
+        .type-text {
             font-size: 1.1rem;
-            line-height: 2;
+            line-height: 1.6;
             font-weight: 400;
-            filter: blur(5px);
-            transform: translateY(20px);
-            position: absolute;
+            color: #6d4c67;
             width: 100%;
+            display: inline-block;
+            white-space: nowrap; /* Teks memanjang satu baris */
         }
 
         /* Gallery */
         .gallery-container {
-            margin-top: 20px;
+            margin-top: 30px;
             width: 260px;
             height: 280px;
             position: relative;
@@ -113,12 +116,12 @@
         .img2 { left: 35px; top: 5px; transform: rotate(5deg); }
         .img3 { left: 70px; top: 15px; transform: rotate(-3deg); }
 
-        .btn-container { position: fixed; bottom: 40px; opacity: 0; z-index: 100; }
+        .btn-container { position: fixed; bottom: 50px; opacity: 0; z-index: 100; }
         .nav-btn {
             padding: 15px 35px; border: none; border-radius: 50px;
             background: linear-gradient(45deg,#ec407a,#ad1457);
             color: white; font-weight: 700; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(236,64,122,.35);
+            box-shadow: 0 10px 25px rgba(236, 64, 122, .35);
             text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;
         }
     </style>
@@ -131,13 +134,8 @@
         <div class="header-title" id="title">Our Story</div>
         <div class="divider" id="divider"></div>
 
-        <div class="story-box" id="storyBox">
-            <span class="line" id="l1">Berawal dari pertemuan sederhana...</span>
-            <span class="line" id="l2">Yang tak pernah kami duga sebelumnya.</span>
-            <span class="line" id="l3">Semesta diam-diam merancang kisah,</span>
-            <span class="line" id="l4">Menjadi sebuah cerita yang terindah.</span>
-            <span class="line" id="l5">Kini kami siap melangkah bersama,</span>
-            <span class="line" id="l6">Menuju ikatan suci yang penuh ridha.</span>
+        <div class="story-box">
+            <p class="type-text" id="typingTarget"></p>
         </div>
 
         <div class="gallery-container" id="gallery">
@@ -152,6 +150,9 @@
     </div>
 
     <script>
+        // Register GSAP Plugin
+        gsap.registerPlugin(TextPlugin);
+
         // Sparkle generator
         for(let i=0; i<30; i++){
             let s = document.createElement('span');
@@ -161,32 +162,49 @@
             document.getElementById('sparkles').appendChild(s);
         }
 
+        // Kumpulan baris cerita
+        const storyLines = [
+            "Berawal dari pertemuan sederhana...",
+            "Yang tak pernah kami duga sebelumnya.",
+            "Semesta diam-diam merancang kisah,",
+            "Menjadi sebuah cerita yang terindah.",
+            "Kini kami siap melangkah bersama,",
+            "Menuju ikatan suci yang penuh ridha."
+        ];
+
         const tl = gsap.timeline();
 
         // 1. Munculkan Judul
-        tl.to("#title", { opacity: 1, y: -15, duration: 1.5, ease: "power2.out" })
+        tl.to("#title", { opacity: 1, duration: 1.5, ease: "power2.out" })
           .to("#divider", { opacity: 1, width: 140, duration: 1 }, "-=0.5");
 
-        // 2. Fungsi Animasi Baris (Presisi Mode Bicara)
-        // Duration: kecepatan muncul | Delay: jeda antar baris
-        function animateLine(id, dur = 1.5, stay = 2) {
-            tl.to(id, { opacity: 1, y: 0, filter: "blur(0px)", duration: dur, ease: "power2.out" })
-              .to(id, { opacity: 0, y: -20, filter: "blur(5px)", duration: 0.8, ease: "power2.in" }, `+=${stay}`);
-        }
-
-        // Jalankan urutan baris (Bos bisa ubah angka durasi/delay di sini agar pas suara)
-        animateLine("#l1", 1.2, 1.5);
-        animateLine("#l2", 1.2, 1.5);
-        animateLine("#l3", 1.2, 1.5);
-        animateLine("#l4", 1.2, 1.5);
-        animateLine("#l5", 1.2, 1.5);
-        animateLine("#l6", 1.2, 2.0);
+        // 2. Loop Efek Mengetik Baris demi Baris
+        storyLines.forEach((line) => {
+            // Ngetik muncul
+            tl.to("#typingTarget", {
+                duration: line.length * 0.05, // Kecepatan ngetik proporsional jumlah huruf
+                text: line,
+                ease: "none"
+            })
+            // Diem sebentar (stay)
+            .to({}, { duration: 2 })
+            // Hapus/Hilang (fade out + blur)
+            .to("#typingTarget", {
+                opacity: 0,
+                filter: "blur(10px)",
+                duration: 0.8,
+                onComplete: () => {
+                    document.getElementById("typingTarget").textContent = "";
+                    gsap.set("#typingTarget", { opacity: 1, filter: "blur(0px)" });
+                }
+            });
+        });
 
         // 3. Munculkan Gallery
         tl.set("#gallery", { display: "block" })
-          .to(".img1", { opacity: 1, y: -15, rotation: -8, duration: 1, ease: "back.out" })
-          .to(".img2", { opacity: 1, y: -15, rotation: 5, duration: 1, ease: "back.out" }, "-=0.6")
-          .to(".img3", { opacity: 1, y: -15, rotation: -3, duration: 1, ease: "back.out" }, "-=0.6")
+          .to(".img1", { opacity: 1, y: -20, rotation: -8, duration: 1, ease: "back.out" })
+          .to(".img2", { opacity: 1, y: -20, rotation: 5, duration: 1, ease: "back.out" }, "-=0.6")
+          .to(".img3", { opacity: 1, y: -20, rotation: -3, duration: 1, ease: "back.out" }, "-=0.6")
           .to("#btnNext", { opacity: 1, y: -10, duration: 1 });
 
         function next() {
