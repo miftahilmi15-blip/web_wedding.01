@@ -1,133 +1,245 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wedding Invitation - Devkia & Miftah</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Invitation - Devkia & Miftah</title><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;900&display=swap" rel="stylesheet"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;900&display=swap" rel="stylesheet">
+body{
+    font-family:'Montserrat',sans-serif;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    radial-gradient(circle at top left,#ffdbe8,#f8bbd0 40%,#f3a6c3 100%);
+    position:relative;
+}
 
-    <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+/* FLOATING GLOW PARTICLES */
+body::before,
+body::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.35;
+    animation:moveGlow 12s ease-in-out infinite alternate;
+}
 
-        body { 
-            background: #fce4ec; 
-            background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
-            font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; 
-            height: 100vh; 
-            width: 100vw;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-        }
+body::before{
+    background:#fff;
+    top:-100px;left:-100px;
+}
+body::after{
+    background:#ffc1d6;
+    bottom:-100px;right:-100px;
+}
 
-        .main-wrapper { 
-            position: relative; 
-            width: 320px; 
-            height: 520px; 
-            z-index: 20; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
+@keyframes moveGlow{
+    from{transform:translate(0,0);}
+    to{transform:translate(40px,-30px);}
+}
 
-        .frame-container { 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(25px); 
-            border-radius: 40px; 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-evenly; 
-            align-items: center;
-            padding: 30px 25px; 
-            box-shadow: 0 30px 60px rgba(139, 94, 131, 0.15); 
-            text-align: center;
-        }
+/* SHIMMER PARTICLE */
+.sparkles{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
 
-        .couple-name { 
-            font-family: 'Great Vibes', cursive; 
-            color: #ad1457; 
-            font-size: 3rem; 
-            line-height: 1.1; 
-        }
+.sparkles span{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:white;
+    border-radius:50%;
+    opacity:.6;
+    animation:floatSpark 10s linear infinite;
+}
 
-        .btn-buka {
-            padding: 14px 35px; 
-            background: linear-gradient(45deg, #ec407a, #ad1457);
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: 0.4s; 
-            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3);
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            font-size: 0.75rem; 
-            margin-top: 20px;
-        }
+@keyframes floatSpark{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
 
-        #storm-layer { 
-            position: fixed; 
-            inset: 0; 
-            z-index: 9999; 
-            pointer-events: none; 
-            display: none; 
-        }
-    </style>
-</head>
-<body>
+/* MAIN CARD */
+.main-wrapper{
+    width:340px;
+    height:560px;
+    position:relative;
+    z-index:10;
+    animation:zoomSlow 8s ease-in-out infinite alternate;
+}
 
-    <div id="storm-layer"></div>
+@keyframes zoomSlow{
+    from{transform:scale(1);}
+    to{transform:scale(1.02);}
+}
 
-    <div class="main-wrapper">
-        <div class="frame-container">
-            <div>
-                <p style="letter-spacing: 6px; font-size: 0.7rem; color: #ad1457; font-weight: 900;">
-                    THE WEDDING OF
-                </p>
-                <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
-            </div>
-            
-            <div class="guest-section">
-                <p style="font-size: 0.8rem; color: #6d4c67; margin-bottom: 5px;">Kepada Yth:</p>
-                <h2 style="font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.4rem;" id="nama-tamu">
-                    Tamu Undangan
-                </h2>
-                <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
-            </div>
-        </div>
+.frame-container{
+    width:100%;
+    height:100%;
+    border-radius:40px;
+    background:rgba(255,255,255,0.32);
+    backdrop-filter:blur(22px);
+    border:1px solid rgba(255,255,255,0.5);
+    box-shadow:0 25px 60px rgba(122,40,80,0.18);
+    padding:40px 28px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+/* GOLD FRAME LINE */
+.frame-container::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:30px;
+}
+
+/* LIGHT SWEEP */
+.frame-container::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-150%;
+    width:120%;
+    height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.25),transparent);
+    animation:sweep 7s infinite;
+}
+@keyframes sweep{
+    to{left:150%;}
+}
+
+.top-text{
+    margin-top:20px;
+}
+
+.wedding-label{
+    letter-spacing:7px;
+    font-size:.7rem;
+    color:#ad1457;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.couple-name{
+    font-family:'Great Vibes',cursive;
+    color:#ad1457;
+    font-size:4rem;
+    line-height:1;
+    text-shadow:0 3px 10px rgba(255,255,255,0.5);
+}
+
+/* ORNAMENT LINE */
+.divider{
+    width:120px;
+    height:1px;
+    background:linear-gradient(to right,transparent,#ad1457,transparent);
+    margin:20px auto;
+}
+
+/* GUEST */
+.guest-section{
+    margin-bottom:40px;
+}
+
+.guest-label{
+    font-size:.8rem;
+    color:#7a4c62;
+    margin-bottom:10px;
+}
+
+#nama-tamu{
+    font-family:'Great Vibes',cursive;
+    color:#ad1457;
+    font-size:2.6rem;
+    margin-bottom:25px;
+}
+
+/* BUTTON */
+.btn-buka{
+    padding:14px 40px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(45deg,#ec407a,#ad1457);
+    color:#fff;
+    font-weight:700;
+    letter-spacing:2px;
+    cursor:pointer;
+    box-shadow:0 12px 25px rgba(236,64,122,.3);
+    transition:.4s;
+}
+.btn-buka:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 35px rgba(236,64,122,.45);
+}
+</style></head><body><div class="sparkles" id="sparkles"></div><div class="main-wrapper">
+    <div class="frame-container">    <div class="top-text">
+        <p class="wedding-label">THE WEDDING OF</p>
+        <h1 class="couple-name">Devkia<br>&<br>Miftah</h1>
+        <div class="divider"></div>
     </div>
 
-    <script>
-        // Tangkap nama tamu
-        const params = new URLSearchParams(window.location.search);
-        const nama = params.get('to');
-        if (nama) {
-            document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
-        }
+    <div class="guest-section">
+        <p class="guest-label">Kepada Yth:</p>
+        <h2 id="nama-tamu">Tamu Undangan</h2>
+        <button class="btn-buka" onclick="bukaUndangan()">BUKA UNDANGAN</button>
+    </div>
 
-        // Fungsi transisi
-        function bukaUndangan() {
-            gsap.to(".main-wrapper", { 
-                opacity: 0, 
-                scale: 1.2, 
-                duration: 0.8, 
-                ease: "power2.in", 
-                onComplete: () => {
-                    window.location.href = "profil.html"; 
-                }
-            });
-        }
-    </script>
-</body>
+</div>
+
+</div><script>
+// nama tamu dinamis
+const params=new URLSearchParams(window.location.search);
+const nama=params.get('to');
+if(nama){
+ document.getElementById('nama-tamu').innerText=decodeURIComponent(nama);
+}
+
+// sparkle generate
+for(let i=0;i<35;i++){
+ let s=document.createElement('span');
+ s.style.left=Math.random()*100+'%';
+ s.style.animationDuration=(Math.random()*6+5)+'s';
+ s.style.animationDelay=Math.random()*5+'s';
+ document.getElementById('sparkles').appendChild(s);
+}
+
+// opening animation
+gsap.from(".main-wrapper",{
+ opacity:0,
+ y:40,
+ duration:1.8,
+ ease:"power3.out"
+});
+
+gsap.from(".couple-name",{
+ opacity:0,
+ scale:.8,
+ delay:.6,
+ duration:1.5
+});
+
+function bukaUndangan(){
+ gsap.to(".main-wrapper",{
+   opacity:0,
+   scale:1.15,
+   duration:.9,
+   ease:"power2.inOut",
+   onComplete:()=>{window.location.href="profil.html";}
+ });
+}
+</script></body>
 </html>
