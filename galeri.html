@@ -7,28 +7,22 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3a6c3);
-            font-family: 'Montserrat', sans-serif;
+            background: #fdfaf6; /* Warna kertas krem/putih tulang (aesthetic) */
+            font-family: 'Cormorant Garamond', serif;
             overflow: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #4a148c; /* Ungu gelap elegan */
+            color: #4a3728; /* Warna teks kopi gelap, lebih soft dari hitam */
             position: relative;
-        }
-
-        /* Aesthetic overlay */
-        .overlay {
-            position: absolute; inset: 0;
-            background: rgba(255,255,255,0.2);
-            pointer-events: none;
         }
 
         .content {
@@ -38,83 +32,83 @@
             flex-direction: column;
             align-items: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             padding: 20px;
         }
 
         .header-title {
             font-family: 'Great Vibes', cursive;
-            font-size: 3.2rem;
-            color: #880e4f;
+            font-size: 3.5rem;
+            color: #8d6e63;
             opacity: 0;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .divider {
             width: 0; height: 1px;
-            background: #880e4f;
+            background: #8d6e63;
             margin-bottom: 40px;
             opacity: 0;
         }
 
-        /* Box Cerita Aesthetic */
         .story-box {
             width: 100%;
-            min-height: 120px; /* Ditinggikan biar teks panjang muat */
+            min-height: 140px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 10px;
         }
 
         .type-text {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-            color: #553366;
+            font-size: 1.4rem; /* Lebih besar & readable */
+            line-height: 1.6;
+            font-weight: 400;
             font-style: italic;
+            color: #5d4037;
+            letter-spacing: 0.5px;
         }
 
-        /* Gallery */
+        /* Gallery 6 Foto */
         .gallery-container {
-            margin-top: 40px;
-            width: 280px;
-            height: 300px;
+            margin-top: 50px;
+            width: 100%;
+            height: 250px;
             position: relative;
             display: none;
         }
 
         .img-box {
-            position: absolute; width: 180px; height: 230px;
-            background: white; padding: 10px 10px 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-radius: 2px; opacity: 0;
-            transition: 0.5s;
+            position: absolute; width: 140px; height: 180px;
+            background: #fff; padding: 5px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            opacity: 0;
         }
 
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        .img1 { left: 0; top: 20px; transform: rotate(-6deg); }
-        .img2 { left: 50px; top: 0px; transform: rotate(0deg); z-index: 2; }
-        .img3 { left: 100px; top: 20px; transform: rotate(6deg); }
+        /* Posisi 6 foto (variasi rotasi) */
+        .img1 { left: 0%; top: 0; transform: rotate(-5deg); }
+        .img2 { left: 20%; top: 20px; transform: rotate(3deg); }
+        .img3 { left: 40%; top: 0; transform: rotate(-2deg); }
+        .img4 { left: 0%; top: 40px; transform: rotate(4deg); }
+        .img5 { left: 20%; top: 60px; transform: rotate(-4deg); }
+        .img6 { left: 40%; top: 40px; transform: rotate(2deg); }
 
-        .btn-container { position: fixed; bottom: 40px; opacity: 0; z-index: 100; }
+        .btn-container { position: fixed; bottom: 50px; opacity: 0; z-index: 100; }
         .nav-btn {
-            padding: 12px 30px; border: 1px solid #880e4f; border-radius: 0;
-            background: transparent; color: #880e4f;
+            padding: 10px 40px; border: 1px solid #8d6e63;
+            background: transparent; color: #8d6e63;
+            font-family: 'Cormorant Garamond', serif;
             font-weight: 600; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 2px; font-size: 0.75rem;
-            transition: 0.3s;
+            letter-spacing: 3px; font-size: 0.9rem;
+            transition: 0.4s;
         }
-        .nav-btn:hover { background: #880e4f; color: white; }
+        .nav-btn:hover { background: #8d6e63; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div>
-    
     <div class="content">
         <div class="header-title" id="title">Our Story</div>
         <div class="divider" id="divider"></div>
@@ -124,20 +118,22 @@
         </div>
 
         <div class="gallery-container" id="gallery">
-            <div class="img-box img1"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=500"></div>
-            <div class="img-box img2"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=500"></div>
-            <div class="img-box img3"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=500"></div>
+            <div class="img-box img1"><img src="gambar1.png"></div>
+            <div class="img-box img2"><img src="gambar2.png"></div>
+            <div class="img-box img3"><img src="gambar3.png"></div>
+            <div class="img-box img4"><img src="gambar4.png"></div>
+            <div class="img-box img5"><img src="gambar5.png"></div>
+            <div class="img-box img6"><img src="gambar6.png"></div>
         </div>
     </div>
 
     <div class="btn-container" id="btnNext">
-        <button class="nav-btn" onclick="next()">KIRIM DOA ✨</button>
+        <button class="nav-btn" onclick="next()">KIRIM DOA</button>
     </div>
 
     <script>
         gsap.registerPlugin(TextPlugin);
 
-        // Narasi yang lebih panjang dan mendalam
         const storyLines = [
             "Tak pernah ada dalam rencana kami untuk bertemu.",
             "Namun semesta punya cara indah untuk menyatukan dua hati.",
@@ -151,18 +147,18 @@
         const tl = gsap.timeline();
 
         tl.to("#title", { opacity: 1, duration: 1.5 })
-          .to("#divider", { opacity: 1, width: 120, duration: 1 }, "-=0.5");
+          .to("#divider", { opacity: 1, width: 100, duration: 1 }, "-=0.5");
 
         storyLines.forEach((line) => {
             tl.to("#typingTarget", {
-                duration: line.length * 0.06, 
+                duration: line.length * 0.05, 
                 text: line,
                 ease: "none"
             })
-            .to({}, { duration: 2.2 }) // Durasi tayang teks
+            .to({}, { duration: 2 }) 
             .to("#typingTarget", {
                 opacity: 0,
-                duration: 0.5,
+                duration: 0.4,
                 onComplete: () => {
                     document.getElementById("typingTarget").textContent = "";
                     gsap.set("#typingTarget", { opacity: 1 });
@@ -170,10 +166,14 @@
             });
         });
 
+        // Animasi Gallery 6 Foto
         tl.set("#gallery", { display: "block" })
-          .to(".img1", { opacity: 1, y: -20, duration: 1, ease: "power2.out" })
-          .to(".img2", { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=0.6")
-          .to(".img3", { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=0.6")
+          .to([".img1", ".img2", ".img3", ".img4", ".img5", ".img6"], { 
+              opacity: 1, 
+              stagger: 0.2, 
+              duration: 0.8, 
+              ease: "power2.out" 
+          })
           .to("#btnNext", { opacity: 1, duration: 1 });
 
         function next() { window.location.href = "wish.html"; }
