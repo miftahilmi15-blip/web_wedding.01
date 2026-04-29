@@ -10,35 +10,80 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Smooth Scroll biar enak pas pindah section */
+        html { scroll-behavior: smooth; }
+
         body { 
             background: #fce4ec; 
             background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
             font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; height: 100vh; width: 100vw;
-            display: flex; justify-content: center; align-items: center;
+            color: #4a4a4a;
+            overflow-x: hidden; /* Biar nggak goyang kiri kanan */
         }
-        .main-wrapper { position: relative; width: 320px; height: 520px; z-index: 20; display: flex; justify-content: center; align-items: center; }
+
+        /* Container tiap halaman */
+        section {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Wrapper Cover (Halaman Depan) */
+        .cover-wrapper {
+            position: fixed; /* Menutup layar di awal */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000;
+            background: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 1s ease-in-out;
+        }
+
         .frame-container { 
-            width: 100%; height: 100%; background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(25px); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.5); 
+            width: 320px; height: 520px; 
+            background: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(10px); /* Dikurangi biar nggak lag */
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.5); 
             display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;
             padding: 30px 25px; box-shadow: 0 30px 60px rgba(139, 94, 131, 0.15); text-align: center;
+            will-change: transform; /* Boost Performa */
         }
+
         .couple-name { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 3rem; line-height: 1.1; }
+        
         .btn-buka {
             padding: 14px 35px; background: linear-gradient(45deg, #ec407a, #ad1457);
             color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; 
-            transition: 0.4s; box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3);
-            text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3);
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;
         }
-        #storm-layer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: none; }
+
+        /* Style untuk konten setelah dibuka */
+        .content-section {
+            background: white;
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h2 { font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.5rem; margin-bottom: 15px; }
+
+        /* Sembunyikan isi sebelum tombol diklik */
+        #main-invitation { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="storm-layer"></div>
-
-    <div class="main-wrapper">
+    <div class="cover-wrapper" id="cover">
         <div class="frame-container">
             <div>
                 <p style="letter-spacing: 6px; font-size: 0.7rem; color: #ad1457; font-weight: 900;">THE WEDDING OF</p>
@@ -47,10 +92,45 @@
             
             <div class="guest-section">
                 <p style="font-size: 0.8rem; color: #6d4c67; margin-bottom: 5px;">Kepada Yth:</p>
-                <h2 style="font-family: 'Great Vibes', cursive; color: #ad1457; font-size: 2.4rem;" id="nama-tamu">Tamu Undangan</h2>
+                <h2 id="nama-tamu">Tamu Undangan</h2>
                 <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
             </div>
         </div>
+    </div>
+
+    <div id="main-invitation">
+        
+        <section id="profil">
+            <div class="content-section">
+                <h2>Profil Kami</h2>
+                <p>Miftah & Devkia</p>
+            </div>
+        </section>
+
+        <section id="mempelai">
+            <div class="content-section">
+                <h2>Mempelai</h2>
+                </div>
+        </section>
+
+        <section id="acara">
+            <div class="content-section">
+                <h2>Acara</h2>
+                </div>
+        </section>
+
+        <section id="galeri">
+            <div class="content-section">
+                <h2>Galeri</h2>
+                </div>
+        </section>
+
+        <section id="wish">
+            <div class="content-section">
+                <h2>Ucapan & Doa</h2>
+                </div>
+        </section>
+
     </div>
 
     <script>
@@ -60,11 +140,19 @@
         if (nama) document.getElementById('nama-tamu').innerText = decodeURIComponent(nama);
 
         function bukaUndangan() {
-            // Efek transisi simpel
-            gsap.to(".main-wrapper", { opacity: 0, scale: 1.2, duration: 0.8, ease: "power2.in", onComplete: () => {
-                // Pindah halaman dengan cara standar (paling anti-error)
-                window.location.href = "profil.html"; 
-            }});
+            // Animasi Cover Menghilang ke Atas
+            gsap.to("#cover", { 
+                y: "-100%", 
+                duration: 1.5, 
+                ease: "power4.inOut",
+                onStart: () => {
+                    document.getElementById('main-invitation').style.display = 'block';
+                    document.body.style.overflow = 'auto'; // Aktifkan scroll
+                },
+                onComplete: () => {
+                    document.getElementById('cover').style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
