@@ -118,17 +118,50 @@
             window.addEventListener('click', () => document.getElementById('weddingAudio').play(), {once: true});
 
             const tl = gsap.timeline();
+            
+            // 1. Munculkan Frame Awal
             tl.to("#main-frame", { opacity: 1, duration: 1.5 })
-              .to("#txtArab", { duration: 6, text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ", ease: "none" })
-              .to("#typewriter", { duration: 8, text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”", ease: "none" })
+              
+              // 2. Typing Arab (10 detik)
+              .to("#txtArab", { 
+                  duration: 10, 
+                  text: "وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةًۗ اِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ", 
+                  ease: "none" 
+              })
+              
+              // 3. Typing Artinya (18 detik)
+              .to("#typewriter", { 
+                  duration: 18, 
+                  text: "“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”", 
+                  ease: "none" 
+              })
+              
+              // 4. Merge Effect
               .add(() => {
                 isBouncing = false;
-                // Merge Effect
-                gsap.to("#bounce1", { left: "50%", top: "50%", xPercent: -50, yPercent: -50, fontSize: "2.5rem", duration: 1.5, ease: "power2.inOut", onComplete: () => { document.getElementById("bounce1").innerHTML = "Devkia & Miftah"; } });
+                gsap.to("#bounce1", { 
+                    left: "50%", 
+                    top: "50%", 
+                    xPercent: -50, 
+                    yPercent: -50, 
+                    fontSize: "2.5rem", 
+                    duration: 1.5, 
+                    ease: "power2.inOut", 
+                    onComplete: () => { 
+                        document.getElementById("bounce1").innerHTML = "Devkia & Miftah"; 
+                    } 
+                });
                 gsap.to("#bounce2", { opacity: 0, scale: 0, duration: 1 });
                 gsap.to(".frame-container", { opacity: 0, duration: 1 });
-              }, "+=1")
-              .to("#btnNext", { display: "block", opacity: 1, y: -20, duration: 1 }, "+=0.5");
+              }, "+=1.5") // Jeda setelah teks selesai
+              
+              // 5. Munculkan tombol
+              .to("#btnNext", { 
+                  display: "block", 
+                  opacity: 1, 
+                  y: -20, 
+                  duration: 1 
+              }, "+=0.5");
         };
 
         function nextPage() {
