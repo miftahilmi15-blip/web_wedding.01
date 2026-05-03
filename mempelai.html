@@ -2,14 +2,20 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- KUNCI ZOOM 1: Meta tag diperketat -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Luxury Wedding - Samira & Murad</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            /* KUNCI ZOOM 2: Mencegah seleksi teks dan highlight saat disentuh */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
         
         body { 
             background: #fce4ec; 
@@ -17,10 +23,11 @@
             font-family: 'Montserrat', sans-serif; 
             overflow: hidden;
             height: 100vh;
-            perspective: 1500px; /* Perspective disesuaikan agar tidak terlalu distorsi di layar kecil */
+            perspective: 1500px;
+            /* KUNCI ZOOM 3: Mematikan gesture browser bawaan */
+            touch-action: none;
         }
 
-        /* Partikel menggunakan CSS Animation (Lebih Ringan) */
         .particle {
             position: fixed; background: rgba(236, 64, 122, 0.15);
             border-radius: 50%; pointer-events: none; z-index: 0;
@@ -49,21 +56,11 @@
             position: relative;
             transform-style: preserve-3d;
             width: 85%; max-width: 300px;
-            background: rgba(255, 255, 255, 0.4); /* Opacity dinaikkan sedikit */
+            background: rgba(255, 255, 255, 0.4); 
             padding: 20px; border-radius: 35px;
-            backdrop-filter: blur(6px); /* Blur dikurangi agar tidak berat */
+            backdrop-filter: blur(6px); 
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 30px 60px rgba(139, 94, 131, 0.1);
-            will-change: transform;
-        }
-
-        /* Shine Effect */
-        .profile-card::after {
-            content: ''; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            pointer-events: none;
         }
 
         .photo-wrapper {
@@ -87,9 +84,8 @@
             width: 100%; height: 100%; 
             border-radius: 50%; object-fit: cover; 
             border: 4px solid #fff;
-            transform: translateZ(80px); /* Pop-out effect */
+            transform: translateZ(80px); 
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            will-change: transform;
         }
 
         h2 { 
@@ -97,7 +93,6 @@
             font-size: 2.4rem; margin: 5px 0; 
             color: #ad1457;
             transform: translateZ(100px);
-            text-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .parent-info { 
@@ -110,7 +105,6 @@
             font-size: 3rem; color: #ec407a; 
             margin: 2px 0;
             transform: translateZ(130px);
-            text-shadow: 0 10px 20px rgba(236, 64, 122, 0.2);
         }
 
         .bottom-nav {
@@ -127,25 +121,31 @@
             box-shadow: 0 10px 25px rgba(236, 64, 122, 0.3); 
             cursor: pointer; text-transform: uppercase;
             letter-spacing: 2px; font-size: 0.75rem;
-            transition: transform 0.2s;
         }
-        .btn-event:active { transform: scale(0.95); }
 
-        /* Media Query untuk HP Kecil */
         @media (max-height: 700px) {
             .profile-card { padding: 15px; max-width: 260px; }
             .photo-wrapper { width: 100px; height: 100px; }
             .photo-frame { width: 116px; height: 116px; }
             h2 { font-size: 2rem; }
-            .ampersand { font-size: 2.5rem; }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Bonus: Matikan klik kanan -->
 
     <script>
-        // Generate Partikel (Optimasi: Gunakan animasi CSS)
-        const particleCount = 15; // Dikurangi agar lebih enteng
+        // KUNCI ZOOM 4: Blokir Pinch Zoom lewat JS (Untuk Safari Mobile)
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', (e) => {
+            e.preventDefault();
+        });
+
+        const particleCount = 12;
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
             p.className = 'particle';
@@ -155,7 +155,6 @@
             p.style.left = Math.random() * 100 + 'vw';
             p.style.top = Math.random() * 100 + 'vh';
             p.style.animationDelay = (Math.random() * 5) + 's';
-            p.style.animationDuration = (6 + Math.random() * 4) + 's';
             document.body.appendChild(p);
         }
     </script>
@@ -189,15 +188,12 @@
     <script>
         window.onload = () => {
             const tl = gsap.timeline();
-
-            // Entry Animation
             tl.to(".profile-card", { opacity: 1, duration: 1.2, stagger: 0.3, ease: "power3.out" })
               .from(".photo", { z: 300, opacity: 0, duration: 1, stagger: 0.3, ease: "back.out(1.7)" }, "-=0.8");
 
             const scene = document.getElementById('mainScene');
             let ticking = false;
 
-            // 3D Interaction with Throttling (RequestAnimationFrame)
             const handleMove = (e) => {
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
@@ -208,26 +204,22 @@
                         const rotateX = (yVal - window.innerHeight / 2) / 15;
 
                         gsap.to(scene, {
-                            rotationY: rotateY,
-                            rotationX: rotateX,
-                            duration: 0.8,
-                            ease: "power2.out"
+                            rotationY: rotateY, rotationX: rotateX,
+                            duration: 0.8, ease: "power2.out"
                         });
-                        
                         ticking = false;
                     });
                     ticking = true;
                 }
             };
 
+            // Pasang listener mouse dan touch
             window.addEventListener('mousemove', handleMove);
-            window.addEventListener('touchmove', (e) => {
-                handleMove(e);
-            }, { passive: true });
+            window.addEventListener('touchmove', handleMove, { passive: false });
         };
 
         function next() {
-            gsap.to("body", { opacity: 0, scale: 1.05, duration: 0.5, ease: "power2.in", onComplete: () => {
+            gsap.to("body", { opacity: 0, scale: 1.05, duration: 0.5, onComplete: () => {
                 window.location.href = "acara.html";
             }});
         }
