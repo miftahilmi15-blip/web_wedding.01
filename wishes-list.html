@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Papan Ucapan Ribuan Doa</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -10,34 +10,36 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             background: #fce4ec; 
             font-family: 'Montserrat', sans-serif; 
             color: #8b5e83; 
             height: 100vh; 
+            height: -webkit-fill-available; /* Fix untuk browser mobile */
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
         }
+
         header { 
-            padding: 25px 20px; 
+            padding: 15px 10px; 
             text-align: center; 
-            background: rgba(255,255,255,0.7); 
+            background: rgba(255,255,255,0.8); 
             backdrop-filter: blur(10px); 
             z-index: 100; 
             border-bottom: 1px solid rgba(255,255,255,0.5); 
-            box-shadow: 0 4px 15px rgba(173, 20, 87, 0.05);
         }
-        h1 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: #ad1457; margin-bottom: 5px; }
+
+        h1 { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #ad1457; }
         
         .marquee-container { 
             flex: 1; 
             position: relative; 
             overflow: hidden; 
             width: 100%; 
-            /* Efek fade atas bawah supaya smooth */
-            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
         
         .scroll-content { 
@@ -46,43 +48,50 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 100px 0; /* Jeda awal agar tidak langsung nempel atas */
+            padding: 20px 0; 
         }
         
         .wish-card { 
-            width: 90%; 
-            max-width: 450px; 
-            background: rgba(255, 255, 255, 0.8); 
-            padding: 25px; 
-            margin-bottom: 25px; 
-            border-radius: 25px; 
-            box-shadow: 0 10px 25px rgba(139, 94, 131, 0.08); 
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            transition: transform 0.3s ease;
+            width: 88%; 
+            max-width: 400px; 
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 18px; 
+            margin-bottom: 15px; 
+            border-radius: 20px; 
+            box-shadow: 0 8px 20px rgba(139, 94, 131, 0.06); 
+            border: 1px solid white;
         }
         
-        .guest-name { font-weight: 700; color: #ad1457; font-size: 1rem; display: block; margin-bottom: 8px; }
-        .message { font-size: 0.9rem; line-height: 1.6; font-style: italic; color: #6d4c67; }
+        .guest-name { font-weight: 700; color: #ad1457; font-size: 0.9rem; display: block; margin-bottom: 5px; }
+        .message { font-size: 0.85rem; line-height: 1.5; font-style: italic; color: #6d4c67; }
         
         .footer-nav { 
-            padding: 20px; 
+            padding: 15px 10px; 
             text-align: center; 
-            background: white; 
+            background: rgba(255, 255, 255, 0.9); 
             z-index: 100; 
             border-top: 1px solid #fce4ec;
         }
         
         .btn-back { 
             display: inline-block;
-            padding: 12px 35px; 
+            padding: 10px 40px; 
             background: #ad1457; 
             color: white; 
             border-radius: 50px; 
             text-decoration: none; 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             font-weight: 600; 
             letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(173, 20, 87, 0.2);
+            box-shadow: 0 4px 12px rgba(173, 20, 87, 0.2);
+            transition: 0.3s;
+        }
+
+        /* Khusus Layar Kecil */
+        @media (max-height: 600px) {
+            h1 { font-size: 1.8rem; }
+            header { padding: 10px; }
+            .footer-nav { padding: 10px; }
         }
     </style>
 </head>
@@ -90,12 +99,13 @@
 
     <header>
         <h1>Ribuan Doa Restu</h1>
-        <p style="font-size: 0.7rem; letter-spacing: 2px; color: #ad1457; font-weight: 600;">TERIMA KASIH ATAS DOA ANDA</p>
+        <p style="font-size: 0.6rem; letter-spacing: 1px; color: #ad1457; font-weight: 600; opacity: 0.8;">TAP/TAHAN UNTUK BERHENTI</p>
     </header>
 
     <div class="marquee-container" id="marquee">
         <div class="scroll-content" id="content">
-            </div>
+            <!-- Data Firebase -->
+        </div>
     </div>
 
     <div class="footer-nav">
@@ -119,16 +129,12 @@
         let currentPos = 0;
         let isMoving = true;
 
-        // Fungsi Ambil Data
         onValue(wishesRef, (snapshot) => {
             const data = snapshot.val();
             content.innerHTML = ""; 
 
             if (data) {
-                // Balik urutan supaya yang terbaru bisa diatur (opsional)
-                const list = Object.values(data);
-                
-                list.forEach(item => {
+                Object.values(data).forEach(item => {
                     content.innerHTML += `
                         <div class="wish-card">
                             <span class="guest-name">♥ ${item.nama}</span>
@@ -137,16 +143,15 @@
                     `;
                 });
             } else {
-                content.innerHTML = "<p style='text-align:center; margin-top: 50px;'>Menunggu kiriman doa...</p>";
+                content.innerHTML = "<p style='text-align:center; margin-top: 50px; font-size:0.8rem;'>Menunggu kiriman doa...</p>";
             }
         });
 
-        // --- ANIMASI SCROLL OTOMATIS ---
         function animateScroll() {
             if (isMoving) {
-                currentPos -= 0.6; // Kecepatan pelan & elegan
+                currentPos -= 0.7; // Sedikit lebih cepat agar enak dilihat
                 
-                // Jika sudah mentok ke atas, balikkan ke bawah marquee (posisi container)
+                // Reset posisi kalau sudah habis
                 if (Math.abs(currentPos) >= content.offsetHeight) {
                     currentPos = marquee.offsetHeight; 
                 }
@@ -156,10 +161,9 @@
             requestAnimationFrame(animateScroll);
         }
 
-        // Jalankan animasi
         animateScroll();
 
-        // Fitur: Berhenti saat disentuh (supaya tamu bisa baca tenang)
+        // Kontrol interaksi
         marquee.addEventListener('touchstart', () => { isMoving = false; });
         marquee.addEventListener('touchend', () => { isMoving = true; });
         marquee.addEventListener('mouseenter', () => { isMoving = false; });
