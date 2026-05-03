@@ -16,6 +16,7 @@
             font-family: 'Montserrat', sans-serif; 
             color: #8b5e83; 
             height: 100vh; 
+            /* Fix untuk address bar mobile */
             height: -webkit-fill-available;
             overflow: hidden; 
             display: flex; 
@@ -23,23 +24,23 @@
         }
 
         header { 
-            padding: 20px 10px; 
+            padding: 15px 10px; 
             text-align: center; 
-            background: rgba(255,255,255,0.85); 
+            background: rgba(255,255,255,0.8); 
             backdrop-filter: blur(10px); 
             z-index: 100; 
             border-bottom: 1px solid rgba(255,255,255,0.5);
             flex-shrink: 0;
         }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #ad1457; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 2rem; color: #ad1457; }
         
         .marquee-container { 
             flex: 1; 
             position: relative; 
             overflow: hidden; 
             width: 100%; 
-            /* Fade effect */
+            /* Efek halus atas bawah */
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
@@ -50,26 +51,25 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding-top: 20px; /* Jarak aman dari atas */
-            padding-bottom: 50px;
+            padding: 20px 0;
         }
         
         .wish-card { 
-            width: 88%; 
+            width: 85%; 
             max-width: 400px; 
             background: rgba(255, 255, 255, 0.85); 
-            padding: 18px; 
+            padding: 15px; 
             margin-bottom: 15px; 
-            border-radius: 20px; 
-            box-shadow: 0 8px 20px rgba(139, 94, 131, 0.06); 
+            border-radius: 18px; 
+            box-shadow: 0 5px 15px rgba(139, 94, 131, 0.05); 
             border: 1px solid white;
         }
         
-        .guest-name { font-weight: 700; color: #ad1457; font-size: 0.9rem; display: block; margin-bottom: 5px; }
-        .message { font-size: 0.85rem; line-height: 1.5; font-style: italic; color: #6d4c67; }
+        .guest-name { font-weight: 700; color: #ad1457; font-size: 0.85rem; display: block; margin-bottom: 4px; }
+        .message { font-size: 0.8rem; line-height: 1.4; font-style: italic; color: #6d4c67; }
         
         .footer-nav { 
-            padding: 20px 10px 30px 10px; /* Tambah padding bawah untuk safety area HP */
+            padding: 15px 10px 25px 10px; /* Padding bawah ditambah dikit buat navigasi HP */
             text-align: center; 
             background: rgba(255, 255, 255, 0.9); 
             z-index: 100; 
@@ -79,15 +79,15 @@
         
         .btn-back { 
             display: inline-block;
-            padding: 12px 45px; 
+            padding: 10px 35px; 
             background: #ad1457; 
             color: white; 
             border-radius: 50px; 
             text-decoration: none; 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             font-weight: 600; 
             letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(173, 20, 87, 0.2);
+            box-shadow: 0 4px 10px rgba(173, 20, 87, 0.2);
         }
     </style>
 </head>
@@ -95,12 +95,12 @@
 
     <header>
         <h1>Ribuan Doa Restu</h1>
-        <p style="font-size: 0.6rem; letter-spacing: 1px; color: #ad1457; font-weight: 600; opacity: 0.8;">TERIMA KASIH ATAS DOA ANDA</p>
+        <p style="font-size: 0.6rem; letter-spacing: 1px; color: #ad1457; font-weight: 600;">TERIMA KASIH ATAS DOA ANDA</p>
     </header>
 
     <div class="marquee-container" id="marquee">
         <div class="scroll-content" id="content">
-            <!-- Data Doa -->
+            <!-- Data dari Firebase akan muncul di sini -->
         </div>
     </div>
 
@@ -122,7 +122,7 @@
         const marquee = document.getElementById('marquee');
         const wishesRef = ref(db, 'ucapan');
 
-        let currentPos = 10; // Start sedikit di bawah header
+        let currentPos = 0;
         let isMoving = true;
 
         onValue(wishesRef, (snapshot) => {
@@ -131,15 +131,16 @@
 
             if (data) {
                 Object.values(data).forEach(item => {
-                    content.innerHTML += `
-                        <div class="wish-card">
-                            <span class="guest-name">♥ ${item.nama}</span>
-                            <p class="message">"${item.pesan}"</p>
-                        </div>
+                    const card = document.createElement('div');
+                    card.className = 'wish-card';
+                    card.innerHTML = `
+                        <span class="guest-name">♥ ${item.nama}</span>
+                        <p class="message">"${item.pesan}"</p>
                     `;
+                    content.appendChild(card);
                 });
             } else {
-                content.innerHTML = "<p style='text-align:center; margin-top: 50px; font-size:0.8rem;'>Menunggu kiriman doa...</p>";
+                content.innerHTML = "<p style='text-align:center; margin-top: 50px; font-size: 0.8rem;'>Menunggu kiriman doa...</p>";
             }
         });
 
@@ -147,8 +148,8 @@
             if (isMoving) {
                 currentPos -= 0.6; 
                 
-                // Jika sudah hilang semua ke atas, muncul lagi dari bawah container
-                if (currentPos < -(content.offsetHeight)) {
+                // Jika sudah scroll sampai habis ke atas
+                if (Math.abs(currentPos) >= content.offsetHeight) {
                     currentPos = marquee.offsetHeight; 
                 }
                 
@@ -159,7 +160,7 @@
 
         animateScroll();
 
-        // Control
+        // Touch interactions
         marquee.addEventListener('touchstart', () => { isMoving = false; });
         marquee.addEventListener('touchend', () => { isMoving = true; });
         marquee.addEventListener('mouseenter', () => { isMoving = false; });
