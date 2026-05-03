@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishes - Samira & Murad</title>
+    <title>Wishes - Devkia & Miftah</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // --- GANTI BAGIAN INI DENGAN DATA DARI FIREBASE CONSOLE KAMU ---
         const firebaseConfig = {
             apiKey: "AIzaSyAyFx2PZ8_l3URsfHJZAzodrNgyEW4RkSg",
             authDomain: "wedding-4646f.firebaseapp.com",
@@ -22,12 +21,10 @@
             messagingSenderId: "952816746342",
             appId: "1:952816746342:web:93b09218ac8f91cc5a12a7"
         };
-        // -------------------------------------------------------------
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Export fungsi agar bisa dipanggil tombol HTML
         window.db = db;
         window.ref = ref;
         window.push = push;
@@ -35,7 +32,7 @@
     </script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
             background: #fce4ec; 
             background-image: radial-gradient(circle at center, #fff 0%, #f8bbd0 100%);
@@ -51,30 +48,34 @@
 
         .form-box { 
             width: 100%; max-width: 400px;
-            background: rgba(255, 255, 255, 0.4); 
+            background: rgba(255, 255, 255, 0.5); 
             backdrop-filter: blur(15px);
             padding: 25px; 
             border-radius: 30px; 
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 40px rgba(139, 94, 131, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(173, 20, 87, 0.1);
             z-index: 10;
         }
         input, textarea { 
             width: 100%; padding: 15px; margin: 8px 0; 
-            border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); 
-            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px; border: 1px solid rgba(173, 20, 87, 0.1); 
+            background: rgba(255, 255, 255, 0.8);
             font-family: 'Montserrat', sans-serif; outline: none; 
             transition: 0.3s;
         }
         input:focus, textarea:focus { border-color: #ec407a; background: #fff; }
 
+        /* TOMBOL UTAMA MENYALA */
         .btn-send { 
-            width: 100%; padding: 15px; 
-            background: linear-gradient(45deg, #ad1457, #ec407a); 
+            width: 100%; padding: 16px; 
+            background: linear-gradient(45deg, #ad1457, #ff4081); 
             color: white; border: none; border-radius: 50px; 
             font-weight: 700; cursor: pointer; margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(173, 20, 87, 0.2);
+            box-shadow: 0 8px 20px rgba(173, 20, 87, 0.3);
+            letter-spacing: 1px;
+            transition: 0.3s;
         }
+        .btn-send:active { transform: scale(0.95); }
 
         .gift-card { 
             width: 100%; max-width: 350px;
@@ -95,42 +96,52 @@
             color: white; padding: 6px 15px; border-radius: 10px; font-size: 0.65rem;
             cursor: pointer; transition: 0.3s; font-weight: 600;
         }
-        .btn-copy:active { background: #fff; color: #ad1457; }
 
-        .particle { position: fixed; pointer-events: none; z-index: 1; color: #d4af37; opacity: 0.4; }
-
+        /* TOMBOL FINISH BERWARNA */
         .btn-finish { 
-            margin: 40px 0; padding: 12px 30px; background: none; 
-            border: 1px solid #8b5e83; color: #8b5e83; 
-            border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+            margin: 40px 0 60px; padding: 15px 40px; 
+            background: white; 
+            color: #ad1457; 
+            border: 2px solid #ad1457;
+            border-radius: 50px; font-size: 0.85rem; font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(173, 20, 87, 0.15);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
+        .btn-finish:hover {
+            background: #ad1457;
+            color: white;
+        }
+
+        .particle { position: fixed; pointer-events: none; z-index: 1; color: #ff4081; opacity: 0.4; }
     </style>
 </head>
 <body>
 
     <script>
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 20; i++) {
             let p = document.createElement('div');
             p.className = 'particle';
-            p.innerHTML = '✨';
+            p.innerHTML = '🌸';
             p.style.left = Math.random() * 100 + 'vw';
             p.style.top = Math.random() * 100 + 'vh';
-            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            p.style.fontSize = (Math.random() * 15 + 10) + 'px';
             document.body.appendChild(p);
             gsap.to(p, {
-                y: "random(-100, 100)", x: "random(-50, 50)",
-                duration: "random(4, 8)", repeat: -1, yoyo: true, ease: "sine.inOut"
+                y: "random(-150, 150)", x: "random(-80, 80)",
+                duration: "random(5, 10)", repeat: -1, yoyo: true, ease: "sine.inOut"
             });
         }
     </script>
 
-    <h2>Kirim Doa Restu</h2>
+    <h2>Doa Restu</h2>
     
     <div class="form-box">
         <input type="text" id="nama" placeholder="Nama Anda">
         <textarea id="pesan" placeholder="Tulis ucapan tulus..." rows="4"></textarea>
-        <button class="btn-send" onclick="send()">KIRIM UCAPAN 💌</button>
+        <button class="btn-send" onclick="send()">KIRIM UCAPAN SEKARANG 💌</button>
     </div>
 
     <h3>Kado Digital 🎁</h3>
@@ -139,17 +150,17 @@
         <button class="btn-copy" onclick="copyRek('1234567890', this)">SALIN</button>
         <p class="bank-name">BANK CENTRAL ASIA (BCA)</p>
         <p class="acc-number">1234 5678 90</p>
-        <p class="acc-name">Samira Putri</p>
+        <p class="acc-name">Devkia Putri</p>
     </div>
 
-    <div class="gift-card" style="background: linear-gradient(135deg, #2c3e50 0%, #000 100%);">
+    <div class="gift-card" style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);">
         <button class="btn-copy" onclick="copyRek('0987654321', this)">SALIN</button>
         <p class="bank-name">BANK MANDIRI</p>
         <p class="acc-number">0987 6543 21</p>
-        <p class="acc-name">Murad Al-Fatih</p>
+        <p class="acc-name">Miftah Ilmi</p>
     </div>
 
-    <button class="btn-finish" onclick="home()">LiHAT UCAPAN</button>
+    <button class="btn-finish" onclick="home()">Lihat Semua Ucapan ✨</button>
 
     <script>
         gsap.from(".form-box", { opacity: 0, y: 50, duration: 1.2, ease: "power3.out" });
@@ -165,7 +176,6 @@
             }
 
             try {
-                // Mengirim data ke path 'ucapan' di Firebase
                 const ucapanRef = window.ref(window.db, 'ucapan');
                 const newUcapanRef = window.push(ucapanRef);
                 
